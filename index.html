@@ -93,9 +93,10 @@ h2{text-align:center;color:#0a7cff}
 </div>
 
 <div class="abas">
-<button class="ativa" onclick="mostrarCategoria('banheiro',this)">Banheiro</button>
-<button onclick="mostrarCategoria('limpeza',this)">Produtos de Limpeza</button>
-<button onclick="mostrarCategoria('casa',this)">Casa</button>
+  <button class="ativa" onclick="mostrarCategoria('banheiro',this)">Banheiro</button>
+  <button onclick="mostrarCategoria('limpeza',this)">Produtos de Limpeza</button>
+  <button onclick="mostrarCategoria('casa',this)">Casa</button>
+  <button onclick="mostrarCategoria('automotivo',this)">Automotivo</button>
 </div>
 
 <div class="container">
@@ -289,21 +290,6 @@ h2{text-align:center;color:#0a7cff}
 </div>
 </div>
 
- <div class="produto">
-<img src="img/solupan.jpg">
-<h3>Solupan</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span>1L — R$ 13,00</span>
-    <button onclick="addProduto('Solupan 1L',13)">Adicionar</button>
-  </div>
-  <div class="linha">
-    <span>5L — R$ 40,00</span>
-    <button onclick="addProduto('Solupan 5L',40)">Adicionar</button>
-  </div>
-</div>
- </div>
-
 <div class="produto">
 <img src="img/lava-canil.jpg">
 <h3>Lava Canil</h3>
@@ -330,21 +316,6 @@ h2{text-align:center;color:#0a7cff}
   <div class="linha">
     <span>5L — R$ 25,00</span>
     <button onclick="addProduto('Veja Bonrruque 5L',25)">Adicionar</button>
-  </div>
-</div>
-</div>
-
- <div class="produto">
-<img src="img/pneu-pretinho.jpg">
-<h3>Pneu Pretinho</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span>1L — R$ 13,00</span>
-    <button onclick="addProduto('Pneu Pretinho 1L',13)">Adicionar</button>
-  </div>
-  <div class="linha">
-    <span>5L — R$ 40,0/</span>
-    <button onclick="addProduto('Pneu Pretinho 5L',40)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -504,6 +475,55 @@ h2{text-align:center;color:#0a7cff}
 </div>
 </div>
 
+ <div id="automotivo" class="categoria">
+<h2>Automotivo</h2>
+<div class="produtos">
+
+<div class="produto">
+  <img src="img/cheirinho-uva.jpg">
+  <h3>Cheirinho de Uva</h3>
+  <div class="variacoes">
+    <div class="linha">
+      <span>1L — R$ 13,00</span>
+      <button onclick="addProduto('Cheirinho de Uva 1L',13)">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<div class="produto">
+  <img src="img/pneu-pretinho.jpg">
+  <h3>Pneu Pretinho</h3>
+  <div class="variacoes">
+    <div class="linha">
+      <span>1L — R$ 13,00</span>
+      <button onclick="addProduto('Pneu Pretinho 1L',13)">Adicionar</button>
+    </div>
+    <div class="linha">
+      <span>5L — R$ 40,00</span>
+      <button onclick="addProduto('Pneu Pretinho 5L',40)">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<div class="produto">
+  <img src="img/solupan.jpg">
+  <h3>Solupan</h3>
+  <div class="variacoes">
+    <div class="linha">
+      <span>1L — R$ 13,00</span>
+      <button onclick="addProduto('Solupan 1L',13)">Adicionar</button>
+    </div>
+    <div class="linha">
+      <span>5L — R$ 40,00</span>
+      <button onclick="addProduto('Solupan 5L',40)">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+ 
 </div>
 <div id="carrinho">
 <h3>🛒 Seu Carrinho</h3>
