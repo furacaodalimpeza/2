@@ -464,11 +464,12 @@ body {
 
 /* TEXTO DO TOPO FORA DA IMAGEM */
 .header-conteudo {
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff, #f4f8ff);
   text-align: center;
-  padding: 20px;
-  margin-top: -10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,.1);
+  padding: 24px;
+  margin-top: -25px;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.15);
 }
 
 .header-conteudo h1 {
@@ -477,6 +478,55 @@ body {
 
 .header-conteudo p {
   color: #555;
+}
+
+  .topo-imagem img {
+  max-height: 280px;
+  object-fit: cover;
+}
+
+  .linha button {
+  background: linear-gradient(180deg, #25d366, #1ebe5d);
+}
+
+.linha button:active {
+  transform: scale(0.95);
+}
+
+  /* TOTAL FLUTUANTE */
+#totalFlutuante {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(180deg, #25d366, #1ebe5d);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 16px;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,.3);
+  z-index: 3000;
+}
+
+  /* ANIMAÇÃO DO TOTAL QUANDO MUDA */
+#totalFlutuante.animar {
+  animation: totalPulse 0.4s ease;
+}
+
+@keyframes totalPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 </style>
@@ -494,7 +544,7 @@ body {
 
   <div class="header-conteudo">
     <h1>🌪️ Furacão da Limpeza 🛒</h1>
-    <p>Tudo para sua casa, do jeito que você gosta</p>
+    <p><p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
   </div>
 
 </header>
@@ -506,6 +556,11 @@ body {
 <div id="btnCarrinho" class="carrinho-btn" onclick="toggleCarrinho()">
 🛒 Carrinho <span id="contador">0</span>
 </div>
+
+  <div id="totalFlutuante" onclick="toggleCarrinho()">
+  <span>💰 Total</span>
+  <strong>R$ <span id="totalFlutuanteValor">0.00</span></strong>
+  </div>
 
 <div class="abas">
   <div class="linha-abas">
@@ -1300,7 +1355,8 @@ body {
 <script>
 let carrinho = [];
 let totalGeral = 0;
-
+let ultimoTotal = 0;
+  
 // FUNÇÃO PARA ADICIONAR PRODUTO
 function addProduto(nome, preco) {
   let item = carrinho.find(p => p.nome === nome);
@@ -1359,6 +1415,20 @@ function atualizar() {
   if(!btnWhatsapp.disabled) {
     btnWhatsapp.classList.add("liberado");
     setTimeout(()=>btnWhatsapp.classList.remove("liberado"),400);
+
+    const totalFlutuante = document.getElementById("totalFlutuante");
+const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
+
+totalFlutuanteValor.innerText = totalGeral.toFixed(2);
+totalFlutuante.style.display = carrinho.length ? "flex" : "none";
+
+if (totalGeral !== ultimoTotal) {
+  totalFlutuante.classList.remove("animar");
+  void totalFlutuante.offsetWidth;
+  totalFlutuante.classList.add("animar");
+  ultimoTotal = totalGeral;
+}
+
   }
 }
 
@@ -1467,17 +1537,19 @@ function confirmarPedido() {
   msg += `%0A💰 *Total:* R$ ${totalGeral.toFixed(2)}%0A%0A`;
   msg += "🙏🏼 Aguardando confirmação.";
 
+    // ABRE WHATSAPP EM OUTRA ABA (SEM SAIR DO SITE)
   window.open(
     "https://wa.me/5515996585967?text=" + msg,
     "_blank"
   );
 
-    carrinho = [];
-  atualizar();
-  fecharModal();
-
+  // MOSTRA TELA DE SUCESSO IMEDIATAMENTE
   document.getElementById("telaSucesso").style.display = "flex";
 
+  // LIMPA CARRINHO DEPOIS
+  carrinho = [];
+  atualizar();
+  fecharModal();
 }
 
   function voltarComprar() {
@@ -1494,9 +1566,11 @@ function confirmarPedido() {
     <div class="check">✔️</div>
     <h2>Pedido enviado com sucesso!</h2>
     <p>
-      Recebemos seu pedido 💙<br>
-      Em breve entraremos em contato para confirmar.
-    </p>
+      Seu pedido foi registrado com sucesso 💙<br>
+      Finalize o envio no WhatsApp para concluir.
+   </p>
+    
+<br>
 
     <button onclick="voltarComprar()">Voltar às compras</button>
   </div>
