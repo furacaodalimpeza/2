@@ -12,25 +12,11 @@ body {
   background: #e9f3ff;
 }
 header {
-  background-image:
-    linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
-    url("img/fundo-limpeza.jpg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; /* EFEITO DE ESTRADA */
-  height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #fff;
-  
-  box-shadow: inset 0 -60px 80px rgba(0,0,0,.4);
-  
+  background: none;
+  padding: 0;
 }
 
   .header-conteudo {
-  backdrop-filter: blur(2px);
   padding: 20px 30px;
   border-radius: 14px;
 }
@@ -423,21 +409,6 @@ body {
   background: linear-gradient(180deg, #e9f3ff, #ffffff);
 }
 
-/* TOPO MAIS LUXO */
-header {
-  position: relative;
-}
-
-header::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 70px;
-  background: linear-gradient(to top, rgba(0,0,0,.35), transparent);
-}
-
 /* PRODUTOS MAIS BONITOS */
 .produto {
   border: 1px solid #eef2ff;
@@ -480,6 +451,34 @@ header::after {
   100% { transform: scale(1); }
 }
 
+  /* IMAGEM DO TOPO SEM CORTAR */
+.topo-imagem {
+  width: 100%;
+}
+
+.topo-imagem img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* TEXTO DO TOPO FORA DA IMAGEM */
+.header-conteudo {
+  background: #ffffff;
+  text-align: center;
+  padding: 20px;
+  margin-top: -10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.1);
+}
+
+.header-conteudo h1 {
+  color: #0a7cff;
+}
+
+.header-conteudo p {
+  color: #555;
+}
+
 </style>
 </head>
 
@@ -488,10 +487,16 @@ header::after {
 <audio id="somAdd" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
 
 <header id="topo">
+
+  <div class="topo-imagem">
+    <img src="img/fundo-limpeza.jpg" alt="Furacão da Limpeza">
+  </div>
+
   <div class="header-conteudo">
     <h1>🌪️ Furacão da Limpeza 🛒</h1>
     <p>Tudo para sua casa, do jeito que você gosta</p>
   </div>
+
 </header>
 
 <div id="cardClienteTopo" class="card-cliente">
