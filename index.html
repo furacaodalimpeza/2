@@ -6,90 +6,235 @@
 <title>Furacão da Limpeza</title>
 
 <style>
-body{font-family:Arial,sans-serif;margin:0;background:#e9f3ff}
-header{background:url("img/fundo-limpeza.jpg") center/cover;height:220px}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #e9f3ff;
+}
+header {
+  background: url("img/fundo-limpeza.jpg") center/cover;
+  height: 220px;
+}
 
 /* BOTÃO CARRINHO */
-.carrinho-btn{
- position:fixed;top:20px;right:20px;
- background:#0a7cff;color:#fff;
- padding:12px 18px;border-radius:50px;
- display:flex;gap:8px;cursor:pointer;
- box-shadow:0 4px 10px rgba(0,0,0,.3);
- z-index:3000;transition:.2s
+.carrinho-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #0a7cff;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 50px;
+  display: flex;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,.3);
+  z-index: 3000;
+  transition: .2s;
 }
-.carrinho-btn.animar{transform:scale(1.15)}
-.carrinho-btn span{
- background:#ff3d00;border-radius:50%;
- padding:4px 8px;font-size:12px
+.carrinho-btn.animar { transform: scale(1.15); }
+.carrinho-btn span {
+  background: #ff3d00;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 12px;
 }
 
-/* ABAS */
-.abas{display:flex;justify-content:center;gap:10px;margin:20px;z-index:10;position:relative}
-.abas button{
- background:#fff;color:#0a7cff;
- border:none;padding:10px 18px;
- border-radius:20px;font-weight:bold;cursor:pointer
+.abas {
+  display: flex;
+  flex-direction: column; /* organiza em colunas, 1 linha em cima e 1 embaixo */
+  align-items: center;    /* centraliza horizontalmente */
+  gap: 10px;              /* espaço entre as linhas */
+  margin: 20px 0;
 }
-.abas button.ativa{background:#0a7cff;color:#fff}
 
-.categoria{display:none}
-.categoria.ativa{display:block}
+.linha-abas {
+  display: flex;
+  justify-content: center; /* centraliza os botões da linha */
+  gap: 15px;               /* espaço entre os botões */
+  flex-wrap: wrap;         /* permite que os botões quebrem linha se a tela for pequena */
+}
 
-.container{max-width:1100px;margin:auto;padding:15px}
-h2{text-align:center;color:#0a7cff}
+.abas button {
+  background: #fff;
+  color: #0a7cff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.abas button.ativa {
+  background: #0a7cff;
+  color: #fff;
+}
+
+.categoria { display: none; }
+.categoria.ativa { display: block; }
+
+.container { max-width: 1100px; margin: auto; padding: 15px; }
+h2 { text-align: center; color: #0a7cff; }
 
 /* PRODUTOS */
-.produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
-.produto{background:#fff;padding:15px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.2);text-align:center}
-.produto img{
-    width:100%;
-    height:auto;        /* MUITO IMPORTANTE */
-    object-fit:contain;
-    border-radius:8px;
-    display:block;
+.produtos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap: 20px;
 }
- 
-.linha{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.linha button{
- background:#25d366;color:#fff;border:none;
- padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:bold
+.produto {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  text-align: center;
+}
+.produto img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+
+.linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.linha button {
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 /* CARRINHO */
-#carrinho{
- position:fixed;top:0;right:-360px;
- width:320px;height:100%;
- background:#fff;padding:15px;
- box-shadow:-4px 0 15px rgba(0,0,0,.3);
- transition:.3s;z-index:2500;overflow-y:auto
+#carrinho {
+  position: fixed;
+  top: 0;
+  right: -360px;
+  width: 320px;
+  height: 100%;
+  background: #fff;
+  padding: 15px;
+  box-shadow: -4px 0 15px rgba(0,0,0,.3);
+  transition: .3s;
+  z-index: 2500;
+  overflow-y: auto;
 }
-#carrinho.aberto{right:0}
+#carrinho.aberto { right: 0; }
 
-.item-carrinho{
- display:flex;justify-content:space-between;align-items:center;margin-bottom:10px
+.item-carrinho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
-.item-carrinho button{
- background:#0a7cff;color:#fff;border:none;
- padding:6px;border-radius:6px;cursor:pointer
+.item-carrinho button {
+  background: #0a7cff;
+  color: #fff;
+  border: none;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
 }
-.item-carrinho .lixeira{background:#ff3d00}
+.item-carrinho .lixeira { background: #ff3d00; }
 
-.finalizar{
- background:#0a7cff;
- color:#fff;
- border:none;
- padding:12px;
- width:100%;
- border-radius:8px;
- font-size:16px;
+.finalizar {
+  background: #0a7cff;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 16px;
 }
+
+.continuar {
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 6px;
+  font-weight: bold;
+}
+
+/* BOTÃO WHATSAPP ANIMADO */
+.btn-whatsapp {
+  background: #25D366;
+  color: white;
+  border: none;
+  padding: 14px;
+  width: 100%;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
+  margin-top: 10px;
+}
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+.btn-whatsapp.liberado { animation: liberar 0.4s ease; }
+@keyframes liberar {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.btn-whatsapp:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+  animation: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+/* BOTÃO TROCAR NOME */
+.btn-trocar-nome {
+  background: #f1f1f1;
+  color: #333;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+/* CARD DO CLIENTE */
+.card-cliente {
+  background: #f0f6ff;
+  border-left: 5px solid #0a7cff;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 10px 0;
+  font-weight: bold;
+  color: #0a7cff;
+  text-align: center;
+}
+#cardClienteTopo {
+  max-width: 1100px;
+  margin: 15px auto 5px auto;
+}
+  .linha-abas {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px; /* espaço entre as linhas */
+  }
   
-.continuar{
- background:#25d366;color:#fff;
- border:none;padding:10px;width:100%;
- border-radius:8px;margin-top:6px;font-weight:bold
-}
 </style>
 </head>
 
@@ -99,98 +244,33 @@ h2{text-align:center;color:#0a7cff}
 
 <header></header>
 
+<div id="cardClienteTopo" class="card-cliente">
+  👤 Cliente: <span id="nomeClienteTopo">não informado</span>
+</div>
+
 <div id="btnCarrinho" class="carrinho-btn" onclick="toggleCarrinho()">
 🛒 Carrinho <span id="contador">0</span>
 </div>
 
 <div class="abas">
-  <button class="ativa" onclick="mostrarCategoria('banheiro',this)">Banheiro</button>
-  <button onclick="mostrarCategoria('limpeza',this)">Produtos de Limpeza</button>
-  <button onclick="mostrarCategoria('casa',this)">Casa</button>
-  <button onclick="mostrarCategoria('automotivo',this)">Automotivo</button>
+  <div class="linha-abas">
+    <button onclick="mostrarCategoria('limpeza',this)">Produtos de Limpeza</button>
+    <button onclick="mostrarCategoria('casa',this)">Casa</button>
+    <button onclick="mostrarCategoria('automotivo',this)">Automotivo</button>
+  </div>
+  <div class="linha-abas">
+    <button onclick="mostrarCategoria('banheiro',this)">Banheiro</button>
+    <button onclick="mostrarCategoria('essencias',this)">Essências</button>
+  </div>
 </div>
+
 
 <div class="container">
-
-<div id="banheiro" class="categoria ativa">
-<h2>Banheiro</h2>
-<div class="produtos">
-
-<!-- produtos banheiro -->
-  <div class="produto">
-<img src="img/papel-higienico.jpg">
-<h3>Papel Higiênico</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span> R$ 30,00</span>
-    <button onclick="addProduto('Papel Higiênico',30)">Adicionar</button>
-  </div>
-</div>
-</div>
-
-<div class="produto">
-<img src="img/pedra-sanitaria.jpg">
-<h3>Pedra Sanitária</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span> R$ 3,00</span>
-    <button onclick="addProduto('Pedra Sanitária',3)">Adicionar</button>
-  </div>
-</div>
-</div>
- 
-<div class="produto">
-<img src="img/vassoura-de-vaso.jpg">
-<h3>Vassoura de Vaso</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span>R$ 12,00</span>
-    <button onclick="addProduto('Vassoura de Vaso ',12)">Adicionar</button>
-  </div>
-</div>
-</div>
-
-<div class="produto">
-<img src="img/saco-de-lixo-banheiro.jpg">
-<h3>Saco de Lixo de Banheiro</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span>R$ 19,00</span>
-    <button onclick="addProduto('Saco de Lixo de Banheiro ',19)">Adicionar</button>
-  </div>
-</div>
-</div>
-
-<div class="produto">
-<img src="img/kit-pano-de-banheiro-branco.jpg">
-<h3>Kit Pano de Banheiro Branco</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span>R$ 60,00</span>
-    <button onclick="addProduto('Kit Pano de Banheiro Branco ',60)">Adicionar</button>
-  </div>
-</div>
-</div>
-
-<div class="produto">
-<img src="img/kit-pano-de-banheiro-preto.jpg">
-<h3>Kit Pano de Banheiro Preto</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span>R$ 60,00</span>
-    <button onclick="addProduto('Kit Pano de Banheiro Preto ',60)">Adicionar</button>
-  </div>
-</div>
-</div>
- 
-</div>
-</div>
-
-<!-- PRODUTOS DE LIMPEZA -->
-<div id="limpeza" class="categoria">
+  
+<div id="limpeza" class="categoria ativa">
 <h2>Produtos de Limpeza</h2>
 <div class="produtos">
- 
+  
 <!-- produtos limpeza -->
  <div class="produto">
 <img src="img/sabonete-liquido-dove.jpg">
@@ -221,6 +301,21 @@ h2{text-align:center;color:#0a7cff}
   </div>
 </div>
 </div>
+
+<div class="produto">
+<img src="img/candida.jpg">
+<h3>Cândida</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span>2L — R$ 6,00</span>
+    <button onclick="addProduto('Cândida 2L',6)">Adicionar</button>
+  </div>
+  <div class="linha">
+    <span>5L — R$ 13,00</span>
+    <button onclick="addProduto('Cândida 5L',13)">Adicionar</button>
+  </div>
+</div>
+</div>
  
  <div class="produto">
 <img src="img/sabao-liquido-bonrruque.jpg">
@@ -239,7 +334,7 @@ h2{text-align:center;color:#0a7cff}
 
  <div class="produto">
 <img src="img/sabao-liquido-clineza.jpg">
-<h3>Sabao Liquido Clineza</h3>
+<h3>Sabão Liquido Clineza</h3>
 <div class="variacoes">
   <div class="linha">
     <span>2L — R$ 13,00</span>
@@ -247,7 +342,7 @@ h2{text-align:center;color:#0a7cff}
   </div>
   <div class="linha">
     <span>5L — R$ 27,00</span>
-    <button onclick="addProduto('Sabao Liquido Clineza 5L',35)">Adicionar</button>
+    <button onclick="addProduto('Sabao Liquido Clineza 5L',27)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -343,21 +438,6 @@ h2{text-align:center;color:#0a7cff}
 </div>
  
 <div class="produto">
-<img src="img/candida.jpg">
-<h3>Cândida</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span>2L — R$ 6,00</span>
-    <button onclick="addProduto('Cândida 2L',6)">Adicionar</button>
-  </div>
-  <div class="linha">
-    <span>5L — R$ 12,00</span>
-    <button onclick="addProduto('Cândida 5L',12)">Adicionar</button>
-  </div>
-</div>
-</div>
- 
-<div class="produto">
   <img src="img/cloro-em-gel.jpg">
   <h3>Cloro em Gel</h3>
 
@@ -386,6 +466,46 @@ h2{text-align:center;color:#0a7cff}
   </div>
 </div>
 
+  <div class="produto">
+  <img src="img/desengordurante.jpg">
+  <h3>Desengordurante</h3>
+
+  <div class="variacoes">
+    <div class="linha">
+      <span>1L — R$ 12,00</span>
+      <button onclick="addProduto('Desengordurante 1L',12)">Adicionar</button>
+    </div>
+    <div class="linha">
+      <span>2L — R$ 22,00</span>
+      <button onclick="addProduto('Desengordurante 2L',22)">Adicionar</button>
+    </div>
+    <div class="linha">
+      <span>5L — R$ 40,00</span>
+      <button onclick="addProduto('Desengordurante 5L',40)">Adicionar</button>
+    </div>
+  </div>
+</div>
+ 
+  <div class="produto">
+  <img src="img/alcool-perfumado.jpg">
+  <h3>Álcool Perfumado</h3>
+
+  <div class="variacoes">
+    <div class="linha">
+      <span>Álcool Perf. Transparente 2L R$ 10,00</span>
+      <button onclick="addProduto('Álcool perfm Transparente 2L',10)">Adicionar</button>
+    </div>
+    <div class="linha">
+      <span>2L — R$ 10,00</span>
+      <button onclick="addProduto('Álcool Perfumado 2L',10)">Adicionar</button>
+    </div>
+    <div class="linha">
+      <span>5L — R$ 23,00</span>
+      <button onclick="addProduto('Álcool Perfumado 5L',23)">Adicionar</button>
+    </div>
+  </div>
+</div>
+ 
 <div class="produto">
 <img src="img/percabonato.jpg">
 <h3>Percabonato</h3>
@@ -439,6 +559,21 @@ h2{text-align:center;color:#0a7cff}
 <div class="produtos">
  
 <!-- produtos casa -->
+<div class="produto">
+<img src="img/sabao-em-po.jpg">
+<h3>Sabão em Pó</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span> Omo R$ 16,00</span>
+    <button onclick="addProduto('Sabão Omo',16)">Adicionar</button>
+  </div>
+  <div class="linha">
+    <span> Brilhante R$ 13,00</span>
+    <button onclick="addProduto('Sabão Brilhante',13)">Adicionar</button>
+  </div>
+</div>
+</div>
+ 
 <div class="produto">
 <img src="img/papel-toalha.jpg">
 <h3>Papel Toalha</h3>
@@ -548,8 +683,8 @@ h2{text-align:center;color:#0a7cff}
     <button onclick="addProduto('Porta Tempeiro 9 Peças ',50)">Adicionar</button>
   </div>
 </div>
-</div>
-
+</div> 
+ 
 <div class="produto">
 <img src="img/chaleira.jpg">
 <h3>Chaleira</h3>
@@ -610,8 +745,8 @@ h2{text-align:center;color:#0a7cff}
 <h3>Carrinho Multiuso</h3>
 <div class="variacoes">
   <div class="linha">
-    <span> R$ 80,00</span>
-    <button onclick="addProduto('Carrinho Multiuso',80)">Adicionar</button>
+    <span> R$ 90,00</span>
+    <button onclick="addProduto('Carrinho Multiuso',90)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -665,8 +800,8 @@ h2{text-align:center;color:#0a7cff}
 <h3>lixeira com Suporte para Pendurar</h3>
 <div class="variacoes">
   <div class="linha">
-    <span> R$ 50,00</span>
-    <button onclick="addProduto('Lixeira com Suporte para Pendurar',50)">Adicionar</button>
+    <span> R$ 40,00</span>
+    <button onclick="addProduto('Lixeira com Suporte para Pendurar',40)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -685,6 +820,119 @@ h2{text-align:center;color:#0a7cff}
 </div>
 </div>
 
+  <!-- BANHEIRO -->
+<div id="banheiro" class="categoria">
+<h2>Banheiro</h2>
+<div class="produtos">
+  
+<!-- produtos banheiro -->
+  <div class="produto">
+<img src="img/papel-higienico.jpg">
+<h3>Papel Higiênico</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span> R$ 30,00</span>
+    <button onclick="addProduto('Papel Higiênico',30)">Adicionar</button>
+  </div>
+</div>
+</div>
+
+<div class="produto">
+<img src="img/pedra-sanitaria.jpg">
+<h3>Pedra Sanitária</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span> R$ 3,00</span>
+    <button onclick="addProduto('Pedra Sanitária',3)">Adicionar</button>
+  </div>
+</div>
+</div>
+ 
+<div class="produto">
+<img src="img/vassoura-de-vaso.jpg">
+<h3>Vassoura de Vaso</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span>R$ 12,00</span>
+    <button onclick="addProduto('Vassoura de Vaso ',12)">Adicionar</button>
+  </div>
+</div>
+</div>
+
+<div class="produto">
+<img src="img/saco-de-lixo-banheiro.jpg">
+<h3>Saco de Lixo de Banheiro</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span>R$ 19,00</span>
+    <button onclick="addProduto('Saco de Lixo de Banheiro ',19)">Adicionar</button>
+  </div>
+</div>
+</div>
+
+<div class="produto">
+<img src="img/kit-pano-de-banheiro-branco.jpg">
+<h3>Kit Pano de Banheiro Branco</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span>R$ 60,00</span>
+    <button onclick="addProduto('Kit Pano de Banheiro Branco ',60)">Adicionar</button>
+  </div>
+</div>
+</div>
+
+<div class="produto">
+<img src="img/kit-pano-de-banheiro-preto.jpg">
+<h3>Kit Pano de Banheiro Preto</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span>R$ 60,00</span>
+    <button onclick="addProduto('Kit Pano de Banheiro Preto ',60)">Adicionar</button>
+  </div>
+</div>
+</div>
+ 
+</div>
+</div>
+  
+<div class="categoria" id="essencias">
+  <h2>Essências</h2>
+
+  <div class="produtos">
+
+    <div class="produto">
+      <img src="img/essencia-lavanda.jpg">
+      <h3>Essência Lavanda</h3>
+      <div class="variacoes">
+        <div class="linha">
+          <span>Senalândia — R$ 15,00</span>
+          <button onclick="addProduto('Essência Lavanda Senalândia',15)">Adicionar</button>
+        </div>
+        <div class="linha">
+          <span>Senamax — R$ 18,00</span>
+          <button onclick="addProduto('Essência Lavanda Senamax',18)">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="produto">
+      <img src="img/essencia-eucalipto.jpg">
+      <h3>Essência Eucalipto</h3>
+      <div class="variacoes">
+        <div class="linha">
+          <span>Senalândia — R$ 15,00</span>
+          <button onclick="addProduto('Essência Eucalipto Senalândia',15)">Adicionar</button>
+        </div>
+        <div class="linha">
+          <span>Senamax — R$ 18,00</span>
+          <button onclick="addProduto('Essência Eucalipto Senamax',18)">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+ 
  <div id="automotivo" class="categoria">
 <h2>Automotivo</h2>
 <div class="produtos">
@@ -718,7 +966,7 @@ h2{text-align:center;color:#0a7cff}
 <div class="produto">
   <img src="img/solupan.jpg">
   <h3>Solupan</h3>
-  <div class="variacoes">
+ <div class="variacoes">
     <div class="linha">
       <span>1L — R$ 13,00</span>
       <button onclick="addProduto('Solupan 1L',13)">Adicionar</button>
@@ -744,89 +992,190 @@ h2{text-align:center;color:#0a7cff}
 </div>
 </div>
 
- 
-</div>
 <div id="carrinho">
 <h3>🛒 Seu Carrinho</h3>
+<div id="cardCliente" class="card-cliente">
+  <span id="nomeClienteExibido">👤 Cliente: não informado</span>
+</div>
+
 <ul id="lista"></ul>
 <p><strong>Total: R$ <span id="total">0.00</span></strong></p>
-<button class="finalizar" onclick="finalizar()">Finalizar no WhatsApp</button>
+
+<button id="btnWhatsapp" class="btn-whatsapp" onclick="enviarWhatsApp()">
+  Enviar pelo WhatsApp
+</button>
+
+<button class="btn-trocar-nome" onclick="trocarNome()">
+  Trocar nome da cliente
+</button>
+
 <button class="continuar" onclick="toggleCarrinho()">Continuar comprando</button>
 </div>
 
 <script>
-let carrinho=[];
+let carrinho = [];
+let totalGeral = 0;
 
-function addProduto(nome,preco){
- let item=carrinho.find(p=>p.nome===nome);
- if(item) item.qtd++;
- else carrinho.push({nome,preco,qtd:1});
+// FUNÇÃO PARA ADICIONAR PRODUTO
+function addProduto(nome, preco) {
+  let item = carrinho.find(p => p.nome === nome);
+  if(item) item.qtd++;
+  else carrinho.push({nome, preco, qtd:1});
 
- let som=document.getElementById("somAdd");
- som.currentTime=0;
- som.play().catch(()=>{});
+  const som = document.getElementById("somAdd");
+  som.currentTime = 0;
+  som.play().catch(()=>{});
 
- let btn=document.getElementById("btnCarrinho");
- btn.classList.add("animar");
- setTimeout(()=>btn.classList.remove("animar"),200);
+  const btn = document.getElementById("btnCarrinho");
+  btn.classList.add("animar");
+  setTimeout(()=>btn.classList.remove("animar"),200);
 
- atualizar();
+  atualizar();
 }
 
-function atualizar(){
- let lista=document.getElementById("lista");
- let totalEl=document.getElementById("total");
- let contador=document.getElementById("contador");
- lista.innerHTML="";
- let total=0,itens=0;
+// FUNÇÃO PARA ATUALIZAR CARRINHO
+function atualizar() {
+  const lista = document.getElementById("lista");
+  const totalEl = document.getElementById("total");
+  const contador = document.getElementById("contador");
+  const btnWhatsapp = document.getElementById("btnWhatsapp");
 
- carrinho.forEach((p,i)=>{
-  total+=p.preco*p.qtd;itens+=p.qtd;
-  lista.innerHTML+=`
-  <li class="item-carrinho">
-   <div><strong>${p.nome}</strong><br>R$ ${(p.preco*p.qtd).toFixed(2)}</div>
-   <div>
-    <button onclick="alterarQtd(${i},-1)">➖</button>
-    <button onclick="alterarQtd(${i},1)">➕</button>
-    <button class="lixeira" onclick="remover(${i})">🗑️</button>
-   </div>
-  </li>`;
- });
+  lista.innerHTML = "";
+  totalGeral = 0;
+  let itens = 0;
 
- totalEl.innerText=total.toFixed(2);
- contador.innerText=itens;
+  carrinho.forEach((p,i)=>{
+    totalGeral += p.preco * p.qtd;
+    itens += p.qtd;
+
+    lista.innerHTML += `
+      <li class="item-carrinho">
+        <div>
+          <strong>${p.nome}</strong><br>
+          R$ ${(p.preco * p.qtd).toFixed(2)}
+        </div>
+        <div>
+          <button onclick="alterarQtd(${i},-1)">➖</button>
+          <button onclick="alterarQtd(${i},1)">➕</button>
+          <button class="lixeira" onclick="remover(${i})">🗑️</button>
+        </div>
+      </li>
+    `;
+  });
+
+  totalEl.innerText = totalGeral.toFixed(2);
+  contador.innerText = itens;
+
+  const nome = localStorage.getItem("nomeCliente") || "não informado";
+  document.getElementById("nomeClienteTopo").innerText = nome;
+  document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
+
+  btnWhatsapp.disabled = carrinho.length === 0 || !localStorage.getItem("nomeCliente");
+  if(!btnWhatsapp.disabled) {
+    btnWhatsapp.classList.add("liberado");
+    setTimeout(()=>btnWhatsapp.classList.remove("liberado"),400);
+  }
+}
+  
+function enviarWhatsApp() {
+  if(carrinho.length===0) return alert("🛒 Seu carrinho está vazio.");
+
+  let nomeCliente = localStorage.getItem("nomeCliente");
+  if(!nomeCliente || nomeCliente.trim()==="") {
+    const novoNome = prompt("Digite o nome da cliente:");
+    if(!novoNome || novoNome.trim()==="") return alert("Pedido cancelado. Nome obrigatório.");
+    localStorage.setItem("nomeCliente", novoNome);
+    atualizar();
+    nomeCliente = novoNome;
+  }
+
+  const numeroPedido = gerarNumeroPedido();
+
+  let msg = "🧾 *Pedido Nº " + numeroPedido + " – 🌪️🛒Furacão da Limpeza*%0A%0A";
+  msg += `👤 *Cliente:* ${nomeCliente}%0A`;
+  msg += "🛒 *Itens do pedido:*%0A";
+
+  carrinho.forEach(p => {
+    msg += `• ${p.nome} — ${p.qtd}x%0A`;
+  });
+
+  msg += `%0A💰 *Total:* R$ ${totalGeral.toFixed(2)}%0A%0A`;
+  msg += "📍 Assim que confirmar, preparamos tudo com carinho para você 🙏🏼✨";
+
+
+  const telefone = "5515996585967";
+  window.open(`https://wa.me/${telefone}?text=${msg}`,"_blank");
+
+  // Limpa carrinho após envio
+  carrinho = [];
+  atualizar();
 }
 
-function alterarQtd(i,v){
- carrinho[i].qtd+=v;
- if(carrinho[i].qtd<=0) carrinho.splice(i,1);
- atualizar();
+// TROCAR NOME
+function trocarNome() {
+  const novoNome = prompt("Digite o novo nome da cliente:");
+  if(!novoNome || novoNome.trim()==="") return alert("Nome não alterado.");
+  localStorage.setItem("nomeCliente", novoNome);
+  alert("Nome da cliente atualizado com sucesso!");
+  atualizar();
+}
+// GERAR NÚMERO DO PEDIDO
+function gerarNumeroPedido() {
+  let ultimoPedido = localStorage.getItem("numeroPedido");
+
+  if (!ultimoPedido) {
+    ultimoPedido = 1;
+  } else {
+    ultimoPedido = parseInt(ultimoPedido) + 1;
+  }
+
+  localStorage.setItem("numeroPedido", ultimoPedido);
+
+  // Formata tipo 001, 002, 003
+  return ultimoPedido.toString().padStart(3, "0");
 }
 
-function remover(i){
- carrinho.splice(i,1);
- atualizar();
-}
-
-function toggleCarrinho(){
- document.getElementById("carrinho").classList.toggle("aberto");
-}
-
-function finalizar(){
- let msg="Ola! Gostaria de encomendar:%0A";
- carrinho.forEach(p=>msg+=`- ${p.nome} (${p.qtd}x)%0A`);
- msg+=`Total: R$ ${document.getElementById("total").innerText}`;
- window.open("https://wa.me/5515996585967?text="+msg);
-}
-
+// ABAS
 function mostrarCategoria(id,btn){
- document.querySelectorAll(".categoria").forEach(c=>c.classList.remove("ativa"));
- document.querySelectorAll(".abas button").forEach(b=>b.classList.remove("ativa"));
- document.getElementById(id).classList.add("ativa");
- btn.classList.add("ativa");
- document.getElementById("carrinho").classList.remove("aberto");
+  document.querySelectorAll(".categoria").forEach(c=>c.classList.remove("ativa"));
+  document.querySelectorAll(".abas button").forEach(b=>b.classList.remove("ativa"));
+  document.getElementById(id).classList.add("ativa");
+  btn.classList.add("ativa");
+  document.getElementById("carrinho").classList.remove("aberto");
 }
-</script>
 
+window.onload = () => {
+  if(!localStorage.getItem("nomeCliente")) {
+    const novoNome = prompt("Digite o nome da cliente:");
+    if(novoNome && novoNome.trim() !== "") {
+      localStorage.setItem("nomeCliente", novoNome);
+    }
+  }
+  atualizar();
+};
+
+  // ABRIR / FECHAR CARRINHO
+function toggleCarrinho() {
+  document.getElementById("carrinho").classList.toggle("aberto");
+}
+
+// ALTERAR QUANTIDADE
+function alterarQtd(index, valor) {
+  carrinho[index].qtd += valor;
+
+  if (carrinho[index].qtd <= 0) {
+    carrinho.splice(index, 1);
+  }
+
+  atualizar();
+}
+
+// REMOVER ITEM
+function remover(index) {
+  carrinho.splice(index, 1);
+  atualizar();
+}
+
+</script>
 </body>
 </html>
