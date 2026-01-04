@@ -12,8 +12,39 @@ body {
   background: #e9f3ff;
 }
 header {
-  background: url("img/fundo-limpeza.jpg") center/cover;
-  height: 220px;
+  background-image:
+    linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)),
+    url("img/fundo-limpeza.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* EFEITO DE ESTRADA */
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  
+  box-shadow: inset 0 -60px 80px rgba(0,0,0,.4);
+  
+}
+
+  .header-conteudo {
+  backdrop-filter: blur(2px);
+  padding: 20px 30px;
+  border-radius: 14px;
+}
+
+.header-conteudo h1 {
+  font-size: 36px;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.header-conteudo p {
+  font-size: 17px;
+  margin-top: 10px;
+  opacity: 0.95;
 }
 
 /* BOTÃO CARRINHO */
@@ -234,7 +265,221 @@ h2 { text-align: center; color: #0a7cff; }
   gap: 10px;
   margin-bottom: 10px; /* espaço entre as linhas */
   }
+
+  .modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  background: #fff;
+  width: 90%;
+  max-width: 380px;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.4);
+  animation: subir .3s ease;
+}
+
+@keyframes subir {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-box h3 {
+  text-align: center;
+  color: #0a7cff;
+  margin-bottom: 15px;
+}
+
+.modal-box input,
+.modal-box select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.btn-confirmar {
+  background: #25d366;
+  color: #fff;
+  border: none;
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background: #eee;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+  /* EFEITO PROFISSIONAL */
+.produto img {
+  transition: transform .3s;
+}
+
+.produto:hover img {
+  transform: scale(1.05);
+}
+
+.produto {
+  transition: transform .2s, box-shadow .2s;
+}
+
+.produto:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.25);
+}
   
+.modal-box {
+  background: linear-gradient(180deg, #ffffff, #f4f8ff);
+}
+
+.modal-box input:focus,
+.modal-box select:focus {
+  outline: none;
+  border-color: #0a7cff;
+  box-shadow: 0 0 0 2px rgba(10,124,255,.2);
+}
+
+.btn-confirmar:hover {
+  transform: scale(1.03);
+}
+
+.btn-cancelar:hover {
+  background: #ddd;
+}
+
+  /* TELA DE SUCESSO */
+.tela-sucesso {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+}
+
+.sucesso-box {
+  background: #fff;
+  padding: 30px;
+  width: 90%;
+  max-width: 360px;
+  text-align: center;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.4);
+  animation: subir .4s ease;
+}
+
+.sucesso-box .check {
+  font-size: 60px;
+  color: #25d366;
+}
+
+.sucesso-box h2 {
+  color: #0a7cff;
+  margin: 10px 0;
+}
+
+.sucesso-box p {
+  color: #555;
+  font-size: 15px;
+}
+
+.sucesso-box button {
+  margin-top: 20px;
+  background: #0a7cff;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  width: 100%;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+  /* ===== MELHORIAS VISUAIS PREMIUM ===== */
+
+/* DEIXA O SITE MAIS SUAVE */
+body {
+  background: linear-gradient(180deg, #e9f3ff, #ffffff);
+}
+
+/* TOPO MAIS LUXO */
+header {
+  position: relative;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: linear-gradient(to top, rgba(0,0,0,.35), transparent);
+}
+
+/* PRODUTOS MAIS BONITOS */
+.produto {
+  border: 1px solid #eef2ff;
+}
+
+.produto h3 {
+  color: #0a7cff;
+}
+
+/* BOTÕES MAIS MODERNOS */
+.linha button {
+  transition: transform .2s, box-shadow .2s;
+}
+
+.linha button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 12px rgba(0,0,0,.2);
+}
+
+/* CARRINHO MAIS ELEGANTE */
+#carrinho h3 {
+  text-align: center;
+  color: #0a7cff;
+  border-bottom: 2px solid #eef2ff;
+  padding-bottom: 8px;
+}
+
+/* TELA DE SUCESSO MAIS IMPACTANTE */
+.sucesso-box {
+  background: linear-gradient(180deg, #ffffff, #f1f7ff);
+}
+
+.sucesso-box .check {
+  animation: sucessoPulse 1.2s infinite;
+}
+
+@keyframes sucessoPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
 </style>
 </head>
 
@@ -242,7 +487,12 @@ h2 { text-align: center; color: #0a7cff; }
 
 <audio id="somAdd" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
 
-<header></header>
+<header id="topo">
+  <div class="header-conteudo">
+    <h1>🌪️ Furacão da Limpeza 🛒</h1>
+    <p>Tudo para sua casa, do jeito que você gosta</p>
+  </div>
+</header>
 
 <div id="cardClienteTopo" class="card-cliente">
   👤 Cliente: <span id="nomeClienteTopo">não informado</span>
@@ -1001,7 +1251,7 @@ h2 { text-align: center; color: #0a7cff; }
 <ul id="lista"></ul>
 <p><strong>Total: R$ <span id="total">0.00</span></strong></p>
 
-<button id="btnWhatsapp" class="btn-whatsapp" onclick="enviarWhatsApp()">
+<button id="btnWhatsapp" class="btn-whatsapp" onclick="abrirModal()">
   Enviar pelo WhatsApp
 </button>
 
@@ -1012,6 +1262,36 @@ h2 { text-align: center; color: #0a7cff; }
 <button class="continuar" onclick="toggleCarrinho()">Continuar comprando</button>
 </div>
 
+<!-- MODAL DADOS DO CLIENTE -->
+<div id="modalCliente" class="modal">
+  <div class="modal-box">
+
+    <h3>Finalizar Pedido</h3>
+
+    <input id="cliNome" type="text" placeholder="👤 Nome completo">
+    <input id="cliTel" type="tel" placeholder="📞 Telefone / WhatsApp">
+    <input id="cliEnd" type="text" placeholder="📍 Endereço completo">
+
+    <select id="cliPag">
+      <option value="">💳 Forma de pagamento</option>
+      <option value="Pix">Pix</option>
+      <option value="Pix na Entrega">Pix na Entrega</option>
+      <option value="Dinheiro">Dinheiro</option>
+      <option value="Cartão de Débito">Cartão de Débito</option>
+      <option value="Cartão de Crédito">Cartão de Crédito</option>
+    </select>
+
+    <button class="btn-confirmar" onclick="confirmarPedido()">
+      Enviar Pedido no WhatsApp
+    </button>
+
+    <button class="btn-cancelar" onclick="fecharModal()">
+      Cancelar
+    </button>
+
+  </div>
+</div>
+  
 <script>
 let carrinho = [];
 let totalGeral = 0;
@@ -1070,51 +1350,11 @@ function atualizar() {
   document.getElementById("nomeClienteTopo").innerText = nome;
   document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
 
-  btnWhatsapp.disabled = carrinho.length === 0 || !localStorage.getItem("nomeCliente");
+  btnWhatsapp.disabled = carrinho.length === 0;
   if(!btnWhatsapp.disabled) {
     btnWhatsapp.classList.add("liberado");
     setTimeout(()=>btnWhatsapp.classList.remove("liberado"),400);
   }
-}
-
-function enviarWhatsApp() {
-  if (carrinho.length === 0) {
-    alert("🛒 Seu carrinho está vazio.");
-    return;
-  }
-
-  // DADOS DO CLIENTE
-  let nome = prompt("👤 Digite seu nome:");
-  if (!nome) return alert("Nome é obrigatório!");
-
-  let telefoneCliente = prompt("📞 Digite seu telefone:");
-  if (!telefoneCliente) return alert("Telefone é obrigatório!");
-
-  let endereco = prompt("📍 Digite seu endereço:");
-  if (!endereco) return alert("Endereço é obrigatório!");
-
-  const numeroPedido = gerarNumeroPedido();
-
-  let msg = "";
-  msg += "🧾 *Pedido Nº " + numeroPedido + " – Furacão da Limpeza*%0A%0A";
-  msg += "👤 *Cliente:* " + nome + "%0A";
-  msg += "📞 *Telefone:* " + telefoneCliente + "%0A";
-  msg += "📍 *Endereço:* " + endereco + "%0A%0A";
-  msg += "🛒 *Itens do pedido:*%0A";
-
-  carrinho.forEach(p => {
-    msg += `• ${p.nome} — ${p.qtd}x%0A`;
-  });
-
-  msg += `%0A💰 *Total:* R$ ${totalGeral.toFixed(2)}%0A%0A`;
-  msg += "🙏🏼 Aguardando confirmação do pedido.";
-
-  const telefoneLoja = "5515996585967";
-  window.open(`https://wa.me/${telefoneLoja}?text=${msg}`, "_blank");
-
-  // Limpa carrinho
-  carrinho = [];
-  atualizar();
 }
 
 // TROCAR NOME
@@ -1182,6 +1422,80 @@ function remover(index) {
   atualizar();
 }
 
+function abrirModal() {
+  if (carrinho.length === 0) {
+    alert("🛒 Seu carrinho está vazio.");
+    return;
+  }
+  document.getElementById("modalCliente").style.display = "flex";
+}
+
+function fecharModal() {
+  document.getElementById("modalCliente").style.display = "none";
+}
+
+function confirmarPedido() {
+  const nome = cliNome.value.trim();
+  const tel = cliTel.value.trim();
+  const end = cliEnd.value.trim();
+  const pag = cliPag.value;
+
+  if (!nome || !tel || !end || !pag) {
+    alert("Preencha todos os campos!");
+    return;
+  }
+
+  const numeroPedido = gerarNumeroPedido();
+
+  let msg = "";
+  msg += "🧾 *Pedido Nº " + numeroPedido + " – Furacão da Limpeza*%0A%0A";
+  msg += "👤 *Cliente:* " + nome + "%0A";
+  msg += "📞 *Telefone:* " + tel + "%0A";
+  msg += "📍 *Endereço:* " + end + "%0A";
+  msg += "💳 *Pagamento:* " + pag + "%0A%0A";
+  msg += "🛒 *Itens do pedido:*%0A";
+
+  carrinho.forEach(p => {
+    msg += `• ${p.nome} — ${p.qtd}x%0A`;
+  });
+
+  msg += `%0A💰 *Total:* R$ ${totalGeral.toFixed(2)}%0A%0A`;
+  msg += "🙏🏼 Aguardando confirmação.";
+
+  window.open(
+    "https://wa.me/5515996585967?text=" + msg,
+    "_blank"
+  );
+
+    carrinho = [];
+  atualizar();
+  fecharModal();
+
+  document.getElementById("telaSucesso").style.display = "flex";
+
+}
+
+  function voltarComprar() {
+  document.getElementById("telaSucesso").style.display = "none";
+  document.getElementById("carrinho").classList.remove("aberto");
+  mostrarCategoria("limpeza", document.querySelector(".abas button"));
+}
+
 </script>
+
+  <!-- TELA DE SUCESSO -->
+<div id="telaSucesso" class="tela-sucesso">
+  <div class="sucesso-box">
+    <div class="check">✔️</div>
+    <h2>Pedido enviado com sucesso!</h2>
+    <p>
+      Recebemos seu pedido 💙<br>
+      Em breve entraremos em contato para confirmar.
+    </p>
+
+    <button onclick="voltarComprar()">Voltar às compras</button>
+  </div>
+</div>
+  
 </body>
 </html>
