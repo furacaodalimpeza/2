@@ -2025,7 +2025,8 @@ function restaurarBusca() {
   document.getElementById("limparBusca").style.display = "none";
 }
 
-  <!-- ================= MODAL CLIENTE COMPLETO ================= -->
+ 
+<!-- ================= MODAL CLIENTE ================= -->
 <div id="modalCliente" class="modal">
   <div class="modal-box">
     <h3>👤 Dados do Cliente</h3>
@@ -2035,23 +2036,30 @@ function restaurarBusca() {
     <input id="cliEndereco" type="text" placeholder="Endereço">
     <input id="cliComplemento" type="text" placeholder="Complemento (opcional)">
 
-    <button class="btn-confirmar" onclick="salvarCliente()">
-      Salvar Dados
-    </button>
-
-    <button class="btn-cancelar" onclick="fecharModalCliente()">
-      Cancelar
-    </button>
+    <button class="btn-confirmar" onclick="salvarCliente()">Salvar Dados</button>
+    <button class="btn-cancelar" onclick="fecharModalCliente()">Cancelar</button>
   </div>
 </div>
 
-  <script>
+<script>
 let cliente = JSON.parse(localStorage.getItem("cliente")) || {
   nome: "",
   telefone: "",
   endereco: "",
   complemento: ""
 };
+
+function abrirModalCliente() {
+  document.getElementById("modalCliente").style.display = "flex";
+  document.getElementById("cliNome").value = cliente.nome;
+  document.getElementById("cliTelefone").value = cliente.telefone;
+  document.getElementById("cliEndereco").value = cliente.endereco;
+  document.getElementById("cliComplemento").value = cliente.complemento;
+}
+
+function fecharModalCliente() {
+  document.getElementById("modalCliente").style.display = "none";
+}
 
 function salvarCliente() {
   cliente.nome = document.getElementById("cliNome").value.trim();
@@ -2070,39 +2078,23 @@ function salvarCliente() {
 }
 
 function atualizarClienteTela() {
-  if (document.getElementById("nomeClienteTopo")) {
-    document.getElementById("nomeClienteTopo").textContent = cliente.nome;
-  }
+  const topo = document.getElementById("nomeClienteTopo");
+  const exibido = document.getElementById("nomeClienteExibido");
 
-  if (document.getElementById("nomeClienteExibido")) {
-    document.getElementById("nomeClienteExibido").textContent =
-      "👤 " + cliente.nome + " | 📞 " + cliente.telefone;
-  }
-}
-
-function abrirModalCliente() {
-  document.getElementById("modalCliente").style.display = "flex";
-
-  document.getElementById("cliNome").value = cliente.nome;
-  document.getElementById("cliTelefone").value = cliente.telefone;
-  document.getElementById("cliEndereco").value = cliente.endereco;
-  document.getElementById("cliComplemento").value = cliente.complemento;
-}
-
-function fecharModalCliente() {
-  document.getElementById("modalCliente").style.display = "none";
+  if (topo) topo.textContent = cliente.nome;
+  if (exibido) exibido.textContent =
+    "👤 " + cliente.nome + " | 📞 " + cliente.telefone;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   atualizarClienteTela();
-
   if (!cliente.nome) {
     setTimeout(abrirModalCliente, 600);
   }
 });
 </script>
-  
-  <!-- TELA DE SUCESSO -->
+
+<!-- TELA DE SUCESSO -->
 <div id="telaSucesso" class="tela-sucesso">
   <div class="sucesso-box">
     <div class="check">✔️</div>
@@ -2110,13 +2102,11 @@ document.addEventListener("DOMContentLoaded", () => {
     <p>
       Seu pedido foi registrado com sucesso 💙<br>
       Finalize o envio no WhatsApp para concluir.
-   </p>
-    
-<br>
-
+    </p>
+    <br>
     <button onclick="voltarComprar()">Voltar às compras</button>
   </div>
 </div>
-  
+
 </body>
 </html>
