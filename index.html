@@ -1846,7 +1846,8 @@ function atualizar() {
 
   const dados = JSON.parse(localStorage.getItem("cliente")) || {};
 const nome = dados.nome || "não informado";
-  document.getElementById("nomeClienteTopo").innerText = nome;
+  document.getElementById("nomeClienteExibido").innerText =
+  "👤 Cliente: " + nome;
   document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
 
   btnWhatsapp.disabled = carrinho.length === 0;
@@ -2180,6 +2181,27 @@ function voltarComprar() {
   document.getElementById("telaSucesso").style.display = "none";
   document.getElementById("carrinho").classList.remove("aberto");
 }
+
+function abrirModalCliente() {
+  document.getElementById("modalCliente").style.display = "flex";
+}
+
+function fecharModalCliente() {
+  document.getElementById("modalCliente").style.display = "none";
+}
+
+function salvarCliente() {
+  const nome = document.getElementById("nomeClienteInput").value.trim();
+
+  if (nome === "") {
+    alert("Digite seu nome");
+    return;
+  }
+
+  document.getElementById("nomeClienteTopo").innerText = nome;
+  fecharModalCliente();
+}
+
 </script>
 
 </body>
