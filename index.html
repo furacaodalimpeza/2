@@ -589,6 +589,7 @@ mark {
 
 <div id="cardClienteTopo" class="card-cliente">
   👤 Cliente: <span id="nomeClienteTopo">não informado</span>
+  <button onclick="abrirModalCliente()">✏️ Editar dados</button>
 </div>
 
 <div id="btnCarrinho" class="carrinho-btn" onclick="toggleCarrinho()">
@@ -2024,52 +2025,83 @@ function restaurarBusca() {
   document.getElementById("limparBusca").style.display = "none";
 }
 
-</script>
+  <!-- ================= MODAL CLIENTE COMPLETO ================= -->
+<div id="modalCliente" class="modal">
+  <div class="modal-box">
+    <h3>👤 Dados do Cliente</h3>
+
+    <input id="cliNome" type="text" placeholder="Nome completo">
+    <input id="cliTelefone" type="tel" placeholder="Telefone / WhatsApp">
+    <input id="cliEndereco" type="text" placeholder="Endereço">
+    <input id="cliComplemento" type="text" placeholder="Complemento (opcional)">
+
+    <button class="btn-confirmar" onclick="salvarCliente()">
+      Salvar Dados
+    </button>
+
+    <button class="btn-cancelar" onclick="fecharModalCliente()">
+      Cancelar
+    </button>
+  </div>
+</div>
 
   <script>
-/* ===== SALVAR DADOS DO CLIENTE ===== */
+let cliente = JSON.parse(localStorage.getItem("cliente")) || {
+  nome: "",
+  telefone: "",
+  endereco: "",
+  complemento: ""
+};
 
-// salva automaticamente quando a pessoa digitar
-function salvarDadosCliente() {
-  const dados = {
-    nome: document.getElementById('nomeCliente')?.value || '',
-    endereco: document.getElementById('enderecoCliente')?.value || '',
-    numero: document.getElementById('numeroCliente')?.value || '',
-    complemento: document.getElementById('complementoCliente')?.value || ''
-  };
+function salvarCliente() {
+  cliente.nome = document.getElementById("cliNome").value.trim();
+  cliente.telefone = document.getElementById("cliTelefone").value.trim();
+  cliente.endereco = document.getElementById("cliEndereco").value.trim();
+  cliente.complemento = document.getElementById("cliComplemento").value.trim();
 
-  localStorage.setItem('dadosCliente', JSON.stringify(dados));
+  if (!cliente.nome || !cliente.telefone || !cliente.endereco) {
+    alert("Preencha nome, telefone e endereço");
+    return;
+  }
+
+  localStorage.setItem("cliente", JSON.stringify(cliente));
+  atualizarClienteTela();
+  fecharModalCliente();
 }
 
-// carrega os dados quando o site abre
-function carregarDadosCliente() {
-  const dadosSalvos = localStorage.getItem('dadosCliente');
-  if (!dadosSalvos) return;
+function atualizarClienteTela() {
+  if (document.getElementById("nomeClienteTopo")) {
+    document.getElementById("nomeClienteTopo").textContent = cliente.nome;
+  }
 
-  const dados = JSON.parse(dadosSalvos);
-
-  if (document.getElementById('nomeCliente'))
-    document.getElementById('nomeCliente').value = dados.nome || '';
-
-  if (document.getElementById('enderecoCliente'))
-    document.getElementById('enderecoCliente').value = dados.endereco || '';
-
-  if (document.getElementById('numeroCliente'))
-    document.getElementById('numeroCliente').value = dados.numero || '';
-
-  if (document.getElementById('complementoCliente'))
-    document.getElementById('complementoCliente').value = dados.complemento || '';
-
-  // atualiza nome no topo, se existir
-  if (dados.nome && document.getElementById('nomeClienteTopo')) {
-    document.getElementById('nomeClienteTopo').innerText = dados.nome;
+  if (document.getElementById("nomeClienteExibido")) {
+    document.getElementById("nomeClienteExibido").textContent =
+      "👤 " + cliente.nome + " | 📞 " + cliente.telefone;
   }
 }
 
-// chama automaticamente ao abrir o site
-document.addEventListener('DOMContentLoaded', carregarDadosCliente);
-</script>
+function abrirModalCliente() {
+  document.getElementById("modalCliente").style.display = "flex";
 
+  document.getElementById("cliNome").value = cliente.nome;
+  document.getElementById("cliTelefone").value = cliente.telefone;
+  document.getElementById("cliEndereco").value = cliente.endereco;
+  document.getElementById("cliComplemento").value = cliente.complemento;
+}
+
+function fecharModalCliente() {
+  document.getElementById("modalCliente").style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  atualizarClienteTela();
+
+  if (!cliente.nome) {
+    setTimeout(abrirModalCliente, 600);
+  }
+});
+</script>
+  
   <!-- TELA DE SUCESSO -->
 <div id="telaSucesso" class="tela-sucesso">
   <div class="sucesso-box">
