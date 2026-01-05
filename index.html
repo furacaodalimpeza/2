@@ -1789,30 +1789,30 @@ mark {
 
 <button class="continuar" onclick="toggleCarrinho()">Continuar comprando</button>
 </div>
-  
-<script>
+  <script>
 let carrinho = [];
 let totalGeral = 0;
-let ultimoTotal = 0;
-  
-// FUNÇÃO PARA ADICIONAR PRODUTO
+
+// ADICIONAR PRODUTO
 function addProduto(nome, preco) {
   let item = carrinho.find(p => p.nome === nome);
-  if(item) item.qtd++;
-  else carrinho.push({nome, preco, qtd:1});
+  if (item) item.qtd++;
+  else carrinho.push({ nome, preco, qtd: 1 });
 
   const som = document.getElementById("somAdd");
-  som.currentTime = 0;
-  som.play().catch(()=>{});
+  if (som) {
+    som.currentTime = 0;
+    som.play().catch(()=>{});
+  }
 
   const btn = document.getElementById("btnCarrinho");
   btn.classList.add("animar");
-  setTimeout(()=>btn.classList.remove("animar"),200);
+  setTimeout(() => btn.classList.remove("animar"), 200);
 
   atualizar();
 }
 
-// FUNÇÃO PARA ATUALIZAR CARRINHO
+// ATUALIZAR CARRINHO
 function atualizar() {
   const lista = document.getElementById("lista");
   const totalEl = document.getElementById("total");
@@ -1856,19 +1856,24 @@ function atualizar() {
   }
 }
 
-  function removerItem(i) {
+// REMOVER 1 UNIDADE
+function removerItem(i) {
   if (carrinho[i].qtd > 1) carrinho[i].qtd--;
   else carrinho.splice(i, 1);
   atualizar();
 }
 
+// EXCLUIR ITEM
 function excluirItem(i) {
   carrinho.splice(i, 1);
   atualizar();
 }
+
+// ABRIR / FECHAR CARRINHO
+function toggleCarrinho() {
+  document.getElementById("carrinho").classList.toggle("aberto");
+}
   
-
-
   totalEl.innerText = totalGeral.toFixed(2);
   contador.innerText = itens;
 
