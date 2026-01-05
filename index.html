@@ -1,629 +1,191 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Furacão da Limpeza</title>
-
-<style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #e9f3ff;
-}
-header {
-  background: none;
-  padding: 0;
-}
-
-  .header-conteudo {
-  padding: 20px 30px;
-  border-radius: 14px;
-}
-
-.header-conteudo h1 {
-  font-size: 36px;
-  margin: 0;
-  letter-spacing: 1px;
-}
-
-.header-conteudo p {
-  font-size: 17px;
-  margin-top: 10px;
-  opacity: 0.95;
-}
-
-/* BOTÃO CARRINHO */
-.carrinho-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #0a7cff;
-  color: #fff;
-  padding: 12px 18px;
-  border-radius: 50px;
-  display: flex;
-  gap: 8px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,.3);
-  z-index: 3000;
-  transition: .2s;
-}
-.carrinho-btn.animar { transform: scale(1.15); }
-.carrinho-btn span {
-  background: #ff3d00;
-  border-radius: 50%;
-  padding: 4px 8px;
-  font-size: 12px;
-}
-
-.abas {
-  display: flex;
-  flex-direction: column; /* organiza em colunas, 1 linha em cima e 1 embaixo */
-  align-items: center;    /* centraliza horizontalmente */
-  gap: 10px;              /* espaço entre as linhas */
-  margin: 20px 0;
-}
-
-.linha-abas {
-  display: flex;
-  justify-content: center; /* centraliza os botões da linha */
-  gap: 15px;               /* espaço entre os botões */
-  flex-wrap: wrap;         /* permite que os botões quebrem linha se a tela for pequena */
-}
-
-.abas button {
-  background: #fff;
-  color: #0a7cff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.abas button.ativa {
-  background: #0a7cff;
-  color: #fff;
-}
-
-.categoria { display: none; }
-.categoria.ativa { display: block; }
-
-.container { max-width: 1100px; margin: auto; padding: 15px; }
-h2 { text-align: center; color: #0a7cff; }
-
-/* PRODUTOS */
-.produtos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-  gap: 20px;
-}
-.produto {
-  background: #fff;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.2);
-  text-align: center;
-}
-.produto img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  border-radius: 8px;
-  display: block;
-}
-
-.linha {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.linha button {
-  background: #25d366;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* CARRINHO */
-#carrinho {
-  position: fixed;
-  top: 0;
-  right: -360px;
-  width: 320px;
-  height: 100%;
-  background: #fff;
-  padding: 15px;
-  box-shadow: -4px 0 15px rgba(0,0,0,.3);
-  transition: .3s;
-  z-index: 2500;
-  overflow-y: auto;
-}
-#carrinho.aberto { right: 0; }
-
-.item-carrinho {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-.item-carrinho button {
-  background: #0a7cff;
-  color: #fff;
-  border: none;
-  padding: 6px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.item-carrinho .lixeira { background: #ff3d00; }
-
-.finalizar {
-  background: #0a7cff;
-  color: #fff;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-.continuar {
-  background: #25d366;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  border-radius: 8px;
-  margin-top: 6px;
-  font-weight: bold;
-}
-
-/* BOTÃO WHATSAPP ANIMADO */
-.btn-whatsapp {
-  background: #25D366;
-  color: white;
-  border: none;
-  padding: 14px;
-  width: 100%;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  animation: pulse 1.5s infinite;
-  margin-top: 10px;
-}
-@keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-  70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-}
-.btn-whatsapp.liberado { animation: liberar 0.4s ease; }
-@keyframes liberar {
-  0% { transform: scale(0.9); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-.btn-whatsapp:disabled {
-  background: #bdbdbd;
-  cursor: not-allowed;
-  animation: none;
-  box-shadow: none;
-  opacity: 0.7;
-}
-
-/* BOTÃO TROCAR NOME */
-.btn-trocar-nome {
-  background: #f1f1f1;
-  color: #333;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  border-radius: 10px;
-  font-size: 14px;
-  margin-top: 8px;
-  cursor: pointer;
-}
-
-/* CARD DO CLIENTE */
-.card-cliente {
-  background: #f0f6ff;
-  border-left: 5px solid #0a7cff;
-  padding: 12px;
-  border-radius: 8px;
-  margin: 10px 0;
-  font-weight: bold;
-  color: #0a7cff;
-  text-align: center;
-}
-#cardClienteTopo {
-  max-width: 1100px;
-  margin: 15px auto 5px auto;
-}
-  .linha-abas {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 10px; /* espaço entre as linhas */
-  }
-
-  .modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.6);
-  z-index: 9999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-box {
-  background: #fff;
-  width: 90%;
-  max-width: 380px;
-  padding: 20px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.4);
-  animation: subir .3s ease;
-}
-
-@keyframes subir {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.modal-box h3 {
-  text-align: center;
-  color: #0a7cff;
-  margin-bottom: 15px;
-}
-
-.modal-box input,
-.modal-box select {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-}
-
-.btn-confirmar {
-  background: #25d366;
-  color: #fff;
-  border: none;
-  width: 100%;
-  padding: 14px;
-  font-size: 16px;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-cancelar {
-  background: #eee;
-  border: none;
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 12px;
-  cursor: pointer;
-}
-
-  /* EFEITO PROFISSIONAL */
-.produto img {
-  transition: transform .3s;
-}
-
-.produto:hover img {
-  transform: scale(1.05);
-}
-
-.produto {
-  transition: transform .2s, box-shadow .2s;
-}
-
-.produto:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(0,0,0,.25);
-}
-  
-.modal-box {
-  background: linear-gradient(180deg, #ffffff, #f4f8ff);
-}
-
-.modal-box input:focus,
-.modal-box select:focus {
-  outline: none;
-  border-color: #0a7cff;
-  box-shadow: 0 0 0 2px rgba(10,124,255,.2);
-}
-
-.btn-confirmar:hover {
-  transform: scale(1.03);
-}
-
-.btn-cancelar:hover {
-  background: #ddd;
-}
-
-  /* TELA DE SUCESSO */
-.tela-sucesso {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.6);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-}
-
-.sucesso-box {
-  background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 360px;
-  text-align: center;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.4);
-  animation: subir .4s ease;
-}
-
-.sucesso-box .check {
-  font-size: 60px;
-  color: #25d366;
-}
-
-.sucesso-box h2 {
-  color: #0a7cff;
-  margin: 10px 0;
-}
-
-.sucesso-box p {
-  color: #555;
-  font-size: 15px;
-}
-
-.sucesso-box button {
-  margin-top: 20px;
-  background: #0a7cff;
-  color: #fff;
-  border: none;
-  padding: 14px;
-  width: 100%;
-  border-radius: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-  /* ===== MELHORIAS VISUAIS PREMIUM ===== */
-
-/* DEIXA O SITE MAIS SUAVE */
-body {
-  background: linear-gradient(180deg, #e9f3ff, #ffffff);
-}
-
-/* PRODUTOS MAIS BONITOS */
-.produto {
-  border: 1px solid #eef2ff;
-}
-
-.produto h3 {
-  color: #0a7cff;
-}
-
-/* BOTÕES MAIS MODERNOS */
-.linha button {
-  transition: transform .2s, box-shadow .2s;
-}
-
-.linha button:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 12px rgba(0,0,0,.2);
-}
-
-/* CARRINHO MAIS ELEGANTE */
-#carrinho h3 {
-  text-align: center;
-  color: #0a7cff;
-  border-bottom: 2px solid #eef2ff;
-  padding-bottom: 8px;
-}
-
-/* TELA DE SUCESSO MAIS IMPACTANTE */
-.sucesso-box {
-  background: linear-gradient(180deg, #ffffff, #f1f7ff);
-}
-
-.sucesso-box .check {
-  animation: sucessoPulse 1.2s infinite;
-}
-
-@keyframes sucessoPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-
-  /* IMAGEM DO TOPO SEM CORTAR */
-.topo-imagem {
-  width: 100%;
-}
-
-.topo-imagem img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* TEXTO DO TOPO FORA DA IMAGEM */
-.header-conteudo {
-  background: linear-gradient(180deg, #ffffff, #f4f8ff);
-  text-align: center;
-  padding: 24px;
-  margin-top: -25px;
-  border-radius: 18px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.15);
-}
-
-.header-conteudo h1 {
-  color: #0a7cff;
-}
-
-.header-conteudo p {
-  color: #555;
-}
-
-  .topo-imagem img {
-  max-height: 280px;
-  object-fit: cover;
-}
-
-  .linha button {
-  background: linear-gradient(180deg, #25d366, #1ebe5d);
-}
-
-.linha button:active {
-  transform: scale(0.95);
-}
-
-  #totalFlutuante {
-  position: fixed;
-  top: 70px;          /* fica abaixo do botão carrinho */
-  right: 20px;
-  background: linear-gradient(180deg, #25d366, #1ebe5d);
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 14px;
-  display: none;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 6px 16px rgba(0,0,0,.3);
-  z-index: 3000;
-}
-
-
-  /* ANIMAÇÃO DO TOTAL QUANDO MUDA */
-#totalFlutuante.animar {
-  animation: totalPulse 0.4s ease;
-}
-
-@keyframes totalPulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-  @media (max-width: 600px) {
-  #totalFlutuante {
-    top: 75px;
-    right: 14px;
-  }
-}
-
-  .barra-pesquisa {
-  max-width: 1100px;
-  margin: 10px auto 20px auto;
-  padding: 0 15px;
-}
-
-.barra-pesquisa input {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 30px;
-  border: 2px solid #0a7cff;
-  font-size: 16px;
-}
-
-  #limparBusca {
-  position: absolute;
-  right: 25px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 18px;
-  color: #0a7cff;
-  display: none;
-}
-
-mark {
-  background: #ffeb3b;
-  padding: 0 4px;
-  border-radius: 4px;
-}
-
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Furacão da Limpeza</title>
+
+  <!-- ===== ESTILO GLOBAL ===== -->
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #e9f3ff;
+    }
+
+    /* ===== CABEÇALHO ===== */
+    header {
+      background: #0b5ed7;
+      color: #fff;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .cliente {
+      font-size: 14px;
+    }
+
+    /* ===== ABAS ===== */
+    .abas {
+      display: flex;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .abas button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .abas button.ativa {
+      background: #0b5ed7;
+      color: #fff;
+    }
+
+    /* ===== PESQUISA ===== */
+    .pesquisa {
+      padding: 10px;
+      background: #fff;
+      display: flex;
+      gap: 5px;
+    }
+
+    .pesquisa input {
+      flex: 1;
+      padding: 8px;
+    }
+
+    .pesquisa button {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    /* ===== CATEGORIAS ===== */
+    .categoria {
+      display: none;
+      padding: 15px;
+    }
+
+    .categoria.ativa {
+      display: block;
+    }
+
+    .produtos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 15px;
+    }
+
+    .produto {
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .produto img {
+      width: 100%;
+      height: 120px;
+      object-fit: contain;
+    }
+
+    .produto h3 {
+      font-size: 14px;
+      margin: 8px 0 4px;
+    }
+
+    .produto p {
+      margin: 0 0 8px;
+      font-weight: bold;
+    }
+
+    .produto button {
+      background: #198754;
+      color: #fff;
+      border: none;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    /* ===== TOTAL FLUTUANTE ===== */
+    #totalFlutuante {
+      position: fixed;
+      bottom: 15px;
+      right: 15px;
+      background: #198754;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 30px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    /* ===== MODAL CLIENTE ===== */
+    #modalCliente {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-conteudo {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+    }
+
+    .modal-conteudo input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    .modal-conteudo button {
+      width: 100%;
+      padding: 8px;
+      background: #0b5ed7;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
 
-<audio id="somAdd" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
+  <!-- ===== CABEÇALHO ===== -->
+  <header>
+    <h1>Furacão da Limpeza</h1>
+    <div class="cliente">Cliente: <span id="nomeClienteTopo">não informado</span></div>
+  </header>
 
-<!-- 🔽 COLE O MODAL AQUI 🔽 -->
-<div class="modal" id="modalCliente">
-  <div class="modal-box">
-    <h3>Dados do Cliente</h3>
-
-    <input type="text" id="nomeCliente" placeholder="Nome completo">
-    <input type="text" id="enderecoCliente" placeholder="Endereço">
-    <input type="text" id="numeroCliente" placeholder="Número da casa">
-
-    <select id="pagamentoCliente">
-      <option value="">Forma de pagamento</option>
-      <option>Pix</option>
-      <option>Dinheiro</option>
-      <option>Cartão</option>
-    </select>
-
-    <button class="btn-confirmar" onclick="salvarDadosCliente()">Confirmar</button>
-    <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
-  </div>
-</div>
-<!-- 🔼 FIM DO MODAL 🔼 -->
-
-
-<header id="topo">
-
-  <div class="topo-imagem">
-    <img src="img/fundo-limpeza.jpg" alt="Furacão da Limpeza">
-  </div>
-
-  <div class="header-conteudo">
-    <h1>🌪️ Furacão da Limpeza 🛒</h1>
-    <p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
-  </div>
-
-</header>
-
-<div id="cardClienteTopo" class="card-cliente">
-  👤 Cliente: <span id="nomeClienteTopo">não informado</span>
-</div>
-
-<div id="btnCarrinho" class="carrinho-btn" onclick="toggleCarrinho()">
-🛒 Carrinho <span id="contador">0</span>
-</div>
-
-  <div id="totalFlutuante" onclick="toggleCarrinho()">
-  <span>💰 Total</span>
-  <strong>R$ <span id="totalFlutuanteValor">0.00</span></strong>
-  </div>
-
-<div class="abas">
+  <!-- ===== ABAS ===== -->
+  <div class="abas">
   <div class="linha-abas">
     <button onclick="mostrarCategoria('limpeza',this)">Produtos de Limpeza</button>
     <button onclick="mostrarCategoria('casa',this)">Casa</button>
@@ -634,19 +196,13 @@ mark {
     <button onclick="mostrarCategoria('essencias',this)">Essências</button>
   </div>
 </div>
+  
+  <!-- ===== PESQUISA ===== -->
+  <div class="pesquisa">
+    <input type="text" id="pesquisaProduto" placeholder="Buscar produto..." onkeyup="filtrarProdutos()" />
+    <button onclick="limparBusca()">X</button>
+  </div>
 
-<div class="barra-pesquisa" style="position:relative;">
-  <input 
-    type="text" 
-    id="pesquisaProduto" 
-    placeholder="🔍 Pesquise um produto"
-    onkeyup="filtrarProdutos()"
-  >
-  <span id="limparBusca" onclick="limparBusca()">✖</span>
-</div>
-  
-<div class="container">
-  
 <div id="limpeza" class="categoria ativa">
 <h2>Produtos de Limpeza</h2>
 <div class="produtos">
@@ -1671,480 +1227,65 @@ mark {
 
 </div>
 </div>
-
-<div id="carrinho">
-<h3>🛒 Seu Carrinho</h3>
-<div id="cardCliente" class="card-cliente">
-  <span id="nomeClienteExibido">👤 Cliente: não informado</span>
-</div>
-
-<ul id="lista"></ul>
-<p><strong>Total: R$ <span id="total">0.00</span></strong></p>
-
-<button id="btnWhatsapp" class="btn-whatsapp" onclick="abrirModal()">
-  Enviar pelo WhatsApp
-</button>
-
-<button class="btn-trocar-nome" onclick="trocarNome()">
-  Trocar nome da cliente
-</button>
-
-<button class="continuar" onclick="toggleCarrinho()">Continuar comprando</button>
-</div>
-
-  <button class="btn-whatsapp" onclick="enviarWhatsApp()">
-  📲 Enviar pedido pelo WhatsApp
-  </button>
   
-<!-- MODAL DADOS DO CLIENTE -->
-<div id="modalCliente" class="modal">
-  <div class="modal-box">
-
-    <h3>Finalizar Pedido</h3>
-
-    <input id="cliNome" type="text" placeholder="👤 Nome completo">
-    <input id="cliTel" type="tel" placeholder="📞 Telefone / WhatsApp">
-    <input id="cliEnd" type="text" placeholder="📍 Endereço completo">
-
-    <select id="cliPag">
-      <option value="">💳 Forma de pagamento</option>
-      <option value="Pix">Pix</option>
-      <option value="Pix na Entrega">Pix na Entrega</option>
-      <option value="Dinheiro">Dinheiro</option>
-      <option value="Cartão de Débito">Cartão de Débito</option>
-      <option value="Cartão de Crédito">Cartão de Crédito</option>
-    </select>
-
-    <button class="btn-confirmar" onclick="confirmarPedido()">Confirmar Pedido</button>
-    <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
-
-  </div>
+  <!-- ===== TOTAL FLUTUANTE ===== -->
+  <div id="totalFlutuante" onclick="abrirModal()">
+    🛒 <span id="contador">0</span> | R$ <span id="totalFlutuanteValor">0.00</span>
   </div>
 
-    <button class="btn-confirmar" onclick="confirmarPedido()">
-      Enviar Pedido no WhatsApp
-    </button>
-
-    <button class="btn-cancelar" onclick="fecharModal()">
-      Cancelar
-    </button>
-
+  <!-- ===== MODAL CLIENTE ===== -->
+  <div id="modalCliente">
+    <div class="modal-conteudo">
+      <h3>Nome do cliente</h3>
+      <input type="text" id="nomeCliente" placeholder="Digite seu nome" />
+      <button onclick="salvarDadosCliente()">Salvar</button>
+    </div>
   </div>
-</div>
-  
-<script>
-let carrinho = [];
-let totalGeral = 0;
-let ultimoTotal = 0;
-  
-// FUNÇÃO PARA ADICIONAR PRODUTO
-function addProduto(nome, preco) {
-  let item = carrinho.find(p => p.nome === nome);
-  if(item) item.qtd++;
-  else carrinho.push({nome, preco, qtd:1});
 
-  const som = document.getElementById("somAdd");
-  som.currentTime = 0;
-  som.play().catch(()=>{});
+  <!-- ===== SCRIPT ===== -->
+  <script>
+    let carrinho = [];
+    let total = 0;
 
-  const btn = document.getElementById("btnCarrinho");
-  btn.classList.add("animar");
-  setTimeout(()=>btn.classList.remove("animar"),200);
+    function addProduto(nome, preco) {
+      carrinho.push({ nome, preco });
+      total += preco;
 
-  atualizar();
-}
-
-// FUNÇÃO PARA ATUALIZAR CARRINHO
-function atualizar() {
-  const lista = document.getElementById("lista");
-  const totalEl = document.getElementById("total");
-  const contador = document.getElementById("contador");
-  const btnWhatsapp = document.getElementById("btnWhatsapp");
-
-  lista.innerHTML = "";
-  totalGeral = 0;
-  let itens = 0;
-
-  carrinho.forEach((p,i)=>{
-    totalGeral += p.preco * p.qtd;
-    itens += p.qtd;
-
-    lista.innerHTML += `
-      <li class="item-carrinho">
-        <div>
-          <strong>${p.nome}</strong><br>
-          R$ ${(p.preco * p.qtd).toFixed(2)}
-        </div>
-        <div>
-          <button onclick="alterarQtd(${i},-1)">➖</button>
-          <button onclick="alterarQtd(${i},1)">➕</button>
-          <button class="lixeira" onclick="remover(${i})">🗑️</button>
-        </div>
-      </li>
-    `;
-  });
-
-  totalEl.innerText = totalGeral.toFixed(2);
-  contador.innerText = itens;
-
-  const nome = localStorage.getItem("nomeCliente") || "não informado";
-  document.getElementById("nomeClienteTopo").innerText = nome;
-  document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
-
-  btnWhatsapp.disabled = carrinho.length === 0;
-  if(!btnWhatsapp.disabled) {
-    btnWhatsapp.classList.add("liberado");
-    setTimeout(()=>btnWhatsapp.classList.remove("liberado"),400);
-
-    const totalFlutuante = document.getElementById("totalFlutuante");
-const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
-
-totalFlutuanteValor.innerText = totalGeral.toFixed(2);
-totalFlutuante.style.display = carrinho.length ? "flex" : "none";
-
-if (totalGeral !== ultimoTotal) {
-  totalFlutuante.classList.remove("animar");
-  void totalFlutuante.offsetWidth;
-  totalFlutuante.classList.add("animar");
-  ultimoTotal = totalGeral;
-}
-
-  }
-}
-
-// TROCAR NOME
-function trocarNome() {
-  const novoNome = prompt("Digite o nome da cliente:");
-  if (novoNome && novoNome.trim() !== "") {
-    localStorage.setItem("nomeCliente", novoNome);
-    atualizar();
-  }
-}
-
-// GERAR NÚMERO DO PEDIDO
-function gerarNumeroPedido() {
-  let ultimoPedido = localStorage.getItem("numeroPedido");
-
-  if (!ultimoPedido) {
-    ultimoPedido = 1;
-  } else {
-    ultimoPedido = parseInt(ultimoPedido) + 1;
-  }
-
-  localStorage.setItem("numeroPedido", ultimoPedido);
-
-  // Formata tipo 001, 002, 003
-  return ultimoPedido.toString().padStart(3, "0");
-}
-
-// ABAS
-function mostrarCategoria(id,btn){
-  document.querySelectorAll(".categoria").forEach(c=>c.classList.remove("ativa"));
-  document.querySelectorAll(".abas button").forEach(b=>b.classList.remove("ativa"));
-  document.getElementById(id).classList.add("ativa");
-  btn.classList.add("ativa");
-  document.getElementById("carrinho").classList.remove("aberto");
-}
-
-window.onload = () => {
-  if (!localStorage.getItem("nomeCliente")) {
-    const nome = prompt("Digite o nome da cliente:");
-    if (nome && nome.trim() !== "") {
-      localStorage.setItem("nomeCliente", nome);
-    }
-  }
-
-  const nome = localStorage.getItem("nomeCliente");
-  if (nome) {
-    document.getElementById("nomeClienteTopo").innerText = nome;
-    document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
-  }
-
-  atualizar();
-};
-
-function filtrarProdutos() {
-  const input = document.getElementById("pesquisaProduto");
-  const texto = input.value.toLowerCase().trim();
-  const produtos = document.querySelectorAll(".produto");
-
-  produtos.forEach(produto => {
-    const h3 = produto.querySelector("h3");
-    const nomeOriginal = h3.dataset.nome || h3.innerText;
-    h3.dataset.nome = nomeOriginal;
-
-    const nomeLower = nomeOriginal.toLowerCase();
-
-    if (texto === "") {
-      produto.style.display = "block";
-      h3.innerHTML = nomeOriginal;
-      return;
+      document.getElementById('contador').innerText = carrinho.length;
+      document.getElementById('totalFlutuanteValor').innerText = total.toFixed(2);
+      document.getElementById('totalFlutuante').style.display = 'flex';
     }
 
-    if (nomeLower.includes(texto)) {
-      produto.style.display = "block";
+    function mostrarCategoria(id, btn) {
+      document.querySelectorAll('.categoria').forEach(c => c.classList.remove('ativa'));
+      document.getElementById(id).classList.add('ativa');
 
-      // 🔹 DESTACAR TEXTO
-      const regex = new RegExp(`(${texto})`, "gi");
-      h3.innerHTML = nomeOriginal.replace(
-        regex,
-        `<span class="destaque">$1</span>`
-      );
-    } else {
-      produto.style.display = "none";
-      h3.innerHTML = nomeOriginal;
+      document.querySelectorAll('.abas button').forEach(b => b.classList.remove('ativa'));
+      btn.classList.add('ativa');
     }
-  });
-}
 
-  // ABRIR / FECHAR CARRINHO
-function toggleCarrinho() {
-  document.getElementById("carrinho").classList.toggle("aberto");
-}
-
-// ALTERAR QUANTIDADE
-function alterarQtd(index, valor) {
-  carrinho[index].qtd += valor;
-
-  if (carrinho[index].qtd <= 0) {
-    carrinho.splice(index, 1);
-  }
-
-  atualizar();
-}
-
-// REMOVER ITEM
-function remover(index) {
-  carrinho.splice(index, 1);
-  atualizar();
-}
-
-function abrirModal() {
-  if (carrinho.length === 0) {
-    alert("🛒 Seu carrinho está vazio.");
-    return;
-  }
-  document.getElementById("modalCliente").style.display = "flex";
-}
-
-function fecharModal() {
-  document.getElementById("modalCliente").style.display = "none";
-}
-
-function confirmarPedido() {
-  const nome = cliNome.value.trim();
-  const tel = cliTel.value.trim();
-  const end = cliEnd.value.trim();
-  const pag = cliPag.value;
-
-  if (!nome || !tel || !end || !pag) {
-    alert("Preencha todos os campos!");
-    return;
-  }
-
-  const numeroPedido = gerarNumeroPedido();
-
-  let msg = "";
-  msg += "🧾 *Pedido Nº " + numeroPedido + " – 🌪️🛒Furacão da Limpeza*%0A%0A";
-  msg += "👤 *Cliente:* " + nome + "%0A";
-  msg += "📞 *Telefone:* " + tel + "%0A";
-  msg += "📍 *Endereço:* " + end + "%0A";
-  msg += "💳 *Pagamento:* " + pag + "%0A%0A";
-  msg += "🛒 *Itens do pedido:*%0A";
-
-  carrinho.forEach(p => {
-    msg += `• ${p.nome} — ${p.qtd}x%0A`;
-  });
-
-  msg += `%0A💰 *Total:* R$ ${totalGeral.toFixed(2)}%0A%0A`;
-  msg += "Assim que confirmarmos, preparamos tudo com carinho para você 🙏🏼✨";
-
-    // ABRE WHATSAPP EM OUTRA ABA (SEM SAIR DO SITE)
-  window.open(
-    "https://wa.me/5515996585967?text=" + msg,
-    "_blank"
-  );
-
-  // MOSTRA TELA DE SUCESSO IMEDIATAMENTE
-  document.getElementById("telaSucesso").style.display = "flex";
-
-  // LIMPA CARRINHO DEPOIS
-  carrinho = [];
-  atualizar();
-  fecharModal();
-}
-
-  function voltarComprar() {
-  document.getElementById("telaSucesso").style.display = "none";
-  document.getElementById("carrinho").classList.remove("aberto");
-  mostrarCategoria("limpeza", document.querySelector(".abas button"));
-}
-
-window.onload = () => {
-  const nome = localStorage.getItem("nomeCliente");
-  if (nome) {
-    document.getElementById("nomeClienteTopo").innerText = nome;
-    document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
-  }
-};
-
-function filtrarProdutos() {
-  const termo = document.getElementById("pesquisaProduto").value.toLowerCase();
-  const produtos = document.querySelectorAll(".produto");
-  const limpar = document.getElementById("limparBusca");
-
-  let encontrou = false;
-
-  produtos.forEach(produto => {
-    const texto = produto.innerText.toLowerCase();
-
-    if (texto.includes(termo)) {
-      produto.style.display = "block";
-      encontrou = true;
-    } else {
-      produto.style.display = "none";
+    function filtrarProdutos() {
+      const termo = document.getElementById('pesquisaProduto').value.toLowerCase();
+      document.querySelectorAll('.produto').forEach(p => {
+        p.style.display = p.innerText.toLowerCase().includes(termo) ? 'block' : 'none';
+      });
     }
-  });
 
-  // mostra botão limpar
-  limpar.style.display = termo ? "block" : "none";
+    function limparBusca() {
+      document.getElementById('pesquisaProduto').value = '';
+      filtrarProdutos();
+    }
 
-  // mostra todas as abas quando pesquisa
-  document.querySelectorAll(".categoria").forEach(cat => {
-    cat.style.display = termo ? "block" : "";
-  });
-}
+    function abrirModal() {
+      document.getElementById('modalCliente').style.display = 'flex';
+    }
 
-function limparBusca() {
-  document.getElementById("pesquisaProduto").value = "";
-  document.getElementById("limparBusca").style.display = "none";
+    function salvarDadosCliente() {
+      const nome = document.getElementById('nomeCliente').value;
+      document.getElementById('nomeClienteTopo').innerText = nome || 'não informado';
+      document.getElementById('modalCliente').style.display = 'none';
+    }
+  </script>
 
-  document.querySelectorAll(".produto").forEach(p => {
-    p.style.display = "block";
-  });
-
-  // volta só para a aba ativa
-  document.querySelectorAll(".categoria").forEach(cat => {
-    cat.style.display = "none";
-    cat.classList.remove("ativa");
-  });
-
-  document.getElementById("limpeza").style.display = "block";
-  document.getElementById("limpeza").classList.add("ativa");
-}
-
-function limparBusca() {
-  document.getElementById("pesquisaProduto").value = "";
-  filtrarProdutos();
-}
-
-function restaurarBusca() {
-  document.querySelectorAll(".categoria").forEach((cat, index) => {
-    cat.style.display = index === 0 ? "block" : "none";
-    cat.classList.toggle("ativa", index === 0);
-  });
-
-  document.querySelectorAll(".produto").forEach(p => {
-    p.style.display = "block";
-  });
-
-  document.getElementById("limparBusca").style.display = "none";
-}
-
-function salvarDadosCliente() {
-  const nome = document.getElementById('nomeCliente').value;
-  const endereco = document.getElementById('enderecoCliente').value;
-  const numero = document.getElementById('numeroCliente').value;
-  const pagamento = document.getElementById('pagamentoCliente').value;
-
-  if (!nome || !endereco || !numero || !pagamento) {
-    alert("Preencha todos os dados");
-    return;
-  }
-
-  localStorage.setItem('clienteFuracao', JSON.stringify({
-    nome, endereco, numero, pagamento
-  }));
-
-  document.getElementById('nomeClienteTopo').innerText = nome;
-  document.getElementById('modalCliente').style.display = 'none';
-}
-
-function fecharModal() {
-  document.getElementById('modalCliente').style.display = 'none';
-}
-
-function abrirModalCliente() {
-  document.getElementById('modalCliente').style.display = 'flex';
-}
-
-window.onload = function () {
-  const dados = localStorage.getItem('clienteFuracao');
-  if (dados) {
-    const cliente = JSON.parse(dados);
-    document.getElementById('nomeClienteTopo').innerText = cliente.nome;
-  } else {
-    abrirModalCliente();
-  }
-};
-
-let carrinho = [];
-let total = 0;
-
-function addProduto(nome, preco) {
-  carrinho.push({ nome, preco });
-  total += preco;
-
-  document.getElementById("contador").innerText = carrinho.length;
-  document.getElementById("totalFlutuanteValor").innerText = total.toFixed(2);
-
-  document.getElementById("totalFlutuante").style.display = "flex";
-}
-
-function enviarWhatsApp() {
-  if (carrinho.length === 0) {
-    alert("Seu carrinho está vazio 😕");
-    return;
-  }
-
-  const nome = document.getElementById("nomeCliente").value || "Não informado";
-  const endereco = document.getElementById("enderecoCliente").value || "Não informado";
-  const numero = document.getElementById("numeroCliente").value || "Não informado";
-  const pagamento = document.getElementById("pagamentoCliente").value || "Não informado";
-
-  let mensagem = "🧾 *Pedido Furacão da Limpeza*%0A%0A";
-
-  carrinho.forEach(item => {
-    mensagem += `• ${item.nome} — R$ ${item.preco.toFixed(2)}%0A`;
-  });
-
-  mensagem += `%0A💰 *Total:* R$ ${total.toFixed(2)}`;
-  mensagem += `%0A👤 *Cliente:* ${nome}`;
-  mensagem += `%0A📍 *Endereço:* ${endereco}`;
-  mensagem += `%0A🏠 *Número:* ${numero}`;
-  mensagem += `%0A💳 *Pagamento:* ${pagamento}`;
-
-  const telefone = "5515996585967"; // 🔴 TROQUE PELO SEU NÚMERO
-  window.open(`https://wa.me/${telefone}?text=${mensagem}`, "_blank");
-}
-  
-</script>
-
-  <!-- TELA DE SUCESSO -->
-<div id="telaSucesso" class="tela-sucesso">
-  <div class="sucesso-box">
-    <div class="check">✔️</div>
-    <h2>Pedido enviado com sucesso!</h2>
-    <p>
-      Seu pedido foi registrado com sucesso 💙<br>
-      Finalize o envio no WhatsApp para concluir.
-   </p>
-    
-<br>
-
-    <button onclick="voltarComprar()">Voltar às compras</button>
-  </div>
-</div>
-  
 </body>
 </html>
