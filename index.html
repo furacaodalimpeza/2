@@ -1789,6 +1789,7 @@ mark {
 <button class="continuar" onclick="toggleCarrinho()">Continuar comprando</button>
 </div>
   <script>
+le<script>
 let carrinho = [];
 let totalGeral = 0;
 
@@ -1797,17 +1798,6 @@ function addProduto(nome, preco) {
   let item = carrinho.find(p => p.nome === nome);
   if (item) item.qtd++;
   else carrinho.push({ nome, preco, qtd: 1 });
-
-  const som = document.getElementById("somAdd");
-  if (som) {
-    som.currentTime = 0;
-    som.play().catch(()=>{});
-  }
-
-  const btn = document.getElementById("btnCarrinho");
-  btn.classList.add("animar");
-  setTimeout(() => btn.classList.remove("animar"), 200);
-
   atualizar();
 }
 
@@ -1841,6 +1831,54 @@ function atualizar() {
       </li>
     `;
   });
+
+  totalEl.innerText = totalGeral.toFixed(2);
+  contador.innerText = itens;
+  totalFlutuanteValor.innerText = totalGeral.toFixed(2);
+
+  if (itens > 0) {
+    btnWhatsapp.disabled = false;
+    totalFlutuante.style.display = "flex";
+  } else {
+    btnWhatsapp.disabled = true;
+    totalFlutuante.style.display = "none";
+  }
+}
+
+// REMOVER
+function removerItem(i) {
+  if (carrinho[i].qtd > 1) carrinho[i].qtd--;
+  else carrinho.splice(i, 1);
+  atualizar();
+}
+
+// EXCLUIR
+function excluirItem(i) {
+  carrinho.splice(i, 1);
+  atualizar();
+}
+
+// CARRINHO
+function toggleCarrinho() {
+  document.getElementById("carrinho").classList.toggle("aberto");
+}
+
+// ===== CLIENTE =====
+function trocarNome() {
+  const nome = prompt("Digite o nome do cliente:");
+  if (!nome) return;
+
+  localStorage.setItem("clienteNome", nome);
+  atualizarNomeCliente();
+}
+
+function atualizarNomeCliente() {
+  const nome = localStorage.getItem("clienteNome") || "não informado";
+  document.getElementById("nomeClienteTopo").innerText = nome;
+  document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
+}
+
+window.onload = atualizarNomeCliente;
 
   totalEl.innerText = totalGeral.toFixed(2);
   contador.innerText = itens;
