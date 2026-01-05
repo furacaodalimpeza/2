@@ -1692,6 +1692,10 @@ mark {
 <button class="continuar" onclick="toggleCarrinho()">Continuar comprando</button>
 </div>
 
+  <button class="btn-whatsapp" onclick="enviarWhatsApp()">
+  📲 Enviar pedido pelo WhatsApp
+  </button>
+  
 <!-- MODAL DADOS DO CLIENTE -->
 <div id="modalCliente" class="modal">
   <div class="modal-box">
@@ -2083,6 +2087,28 @@ window.onload = function () {
     abrirModalCliente();
   }
 };
+
+function enviarWhatsApp() {
+  if (carrinho.length === 0) {
+    alert("Seu carrinho está vazio 😕");
+    return;
+  }
+
+  let mensagem = "🧾 *Pedido Furacão da Limpeza*%0A%0A";
+
+  carrinho.forEach(item => {
+    mensagem += `• ${item.nome} — R$ ${item.preco.toFixed(2)}%0A`;
+  });
+
+  mensagem += `%0A💰 *Total:* R$ ${total.toFixed(2)}%0A`;
+  mensagem += `%0A👤 *Cliente:* ${nomeCliente || "Não informado"}`;
+  mensagem += `%0A📍 *Endereço:* ${enderecoCliente || "Não informado"}`;
+  mensagem += `%0A🏠 *Número:* ${numeroCliente || "Não informado"}`;
+  mensagem += `%0A💳 *Pagamento:* ${pagamentoCliente || "Não informado"}`;
+
+  const telefone = "5599999999999"; // 🔴 TROQUE PELO SEU NÚMERO
+  window.open(`https://wa.me/${telefone}?text=${mensagem}`, "_blank");
+}
 
 </script>
 
