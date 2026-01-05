@@ -574,6 +574,29 @@ mark {
 
 <audio id="somAdd" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
 
+<!-- 🔽 COLE O MODAL AQUI 🔽 -->
+<div class="modal" id="modalCliente">
+  <div class="modal-box">
+    <h3>Dados do Cliente</h3>
+
+    <input type="text" id="nomeCliente" placeholder="Nome completo">
+    <input type="text" id="enderecoCliente" placeholder="Endereço">
+    <input type="text" id="numeroCliente" placeholder="Número da casa">
+
+    <select id="pagamentoCliente">
+      <option value="">Forma de pagamento</option>
+      <option>Pix</option>
+      <option>Dinheiro</option>
+      <option>Cartão</option>
+    </select>
+
+    <button class="btn-confirmar" onclick="salvarDadosCliente()">Confirmar</button>
+    <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+  </div>
+</div>
+<!-- 🔼 FIM DO MODAL 🔼 -->
+
+
 <header id="topo">
 
   <div class="topo-imagem">
@@ -582,7 +605,7 @@ mark {
 
   <div class="header-conteudo">
     <h1>🌪️ Furacão da Limpeza 🛒</h1>
-    <p><p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
+    <p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
   </div>
 
 </header>
@@ -2023,6 +2046,43 @@ function restaurarBusca() {
 
   document.getElementById("limparBusca").style.display = "none";
 }
+
+function salvarDadosCliente() {
+  const nome = document.getElementById('nomeCliente').value;
+  const endereco = document.getElementById('enderecoCliente').value;
+  const numero = document.getElementById('numeroCliente').value;
+  const pagamento = document.getElementById('pagamentoCliente').value;
+
+  if (!nome || !endereco || !numero || !pagamento) {
+    alert("Preencha todos os dados");
+    return;
+  }
+
+  localStorage.setItem('clienteFuracao', JSON.stringify({
+    nome, endereco, numero, pagamento
+  }));
+
+  document.getElementById('nomeClienteTopo').innerText = nome;
+  document.getElementById('modalCliente').style.display = 'none';
+}
+
+function fecharModal() {
+  document.getElementById('modalCliente').style.display = 'none';
+}
+
+function abrirModalCliente() {
+  document.getElementById('modalCliente').style.display = 'flex';
+}
+
+window.onload = function () {
+  const dados = localStorage.getItem('clienteFuracao');
+  if (dados) {
+    const cliente = JSON.parse(dados);
+    document.getElementById('nomeClienteTopo').innerText = cliente.nome;
+  } else {
+    abrirModalCliente();
+  }
+};
 
 </script>
 
