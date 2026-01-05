@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1817,12 +1818,14 @@ function atualizar() {
   const totalEl = document.getElementById("total");
   const contador = document.getElementById("contador");
   const btnWhatsapp = document.getElementById("btnWhatsapp");
+  const totalFlutuante = document.getElementById("totalFlutuante");
+  const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
 
   lista.innerHTML = "";
   totalGeral = 0;
   let itens = 0;
 
-  carrinho.forEach((p,i)=>{
+  carrinho.forEach((p, i) => {
     totalGeral += p.preco * p.qtd;
     itens += p.qtd;
 
@@ -1830,16 +1833,41 @@ function atualizar() {
       <li class="item-carrinho">
         <div>
           <strong>${p.nome}</strong><br>
-          R$ ${(p.preco * p.qtd).toFixed(2)}
+          R$ ${p.preco.toFixed(2)} x ${p.qtd}
         </div>
         <div>
-          <button onclick="alterarQtd(${i},-1)">➖</button>
-          <button onclick="alterarQtd(${i},1)">➕</button>
-          <button class="lixeira" onclick="remover(${i})">🗑️</button>
+          <button onclick="removerItem(${i})">➖</button>
+          <button class="lixeira" onclick="excluirItem(${i})">🗑️</button>
         </div>
       </li>
     `;
   });
+
+  totalEl.innerText = totalGeral.toFixed(2);
+  contador.innerText = itens;
+  totalFlutuanteValor.innerText = totalGeral.toFixed(2);
+
+  if (itens > 0) {
+    btnWhatsapp.disabled = false;
+    totalFlutuante.style.display = "flex";
+  } else {
+    btnWhatsapp.disabled = true;
+    totalFlutuante.style.display = "none";
+  }
+}
+
+  function removerItem(i) {
+  if (carrinho[i].qtd > 1) carrinho[i].qtd--;
+  else carrinho.splice(i, 1);
+  atualizar();
+}
+
+function excluirItem(i) {
+  carrinho.splice(i, 1);
+  atualizar();
+}
+  
+
 
   totalEl.innerText = totalGeral.toFixed(2);
   contador.innerText = itens;
