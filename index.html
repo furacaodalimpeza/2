@@ -582,7 +582,7 @@ mark {
 
   <div class="header-conteudo">
     <h1>🌪️ Furacão da Limpeza 🛒</h1>
-    <p><p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
+    <p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
   </div>
 
 </header>
@@ -1695,17 +1695,6 @@ mark {
   </div>
   </div>
 
-    <button class="btn-confirmar" onclick="confirmarPedido()">
-      Enviar Pedido no WhatsApp
-    </button>
-
-    <button class="btn-cancelar" onclick="fecharModal()">
-      Cancelar
-    </button>
-
-  </div>
-</div>
-  
 <script>
 let carrinho = [];
 let totalGeral = 0;
@@ -1761,7 +1750,8 @@ function atualizar() {
   totalEl.innerText = totalGeral.toFixed(2);
   contador.innerText = itens;
 
-  const nome = localStorage.getItem("nomeCliente") || "não informado";
+  const dados = JSON.parse(localStorage.getItem("cliente")) || {};
+const nome = dados.nome || "não informado";
   document.getElementById("nomeClienteTopo").innerText = nome;
   document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
 
@@ -1773,16 +1763,21 @@ function atualizar() {
     const totalFlutuante = document.getElementById("totalFlutuante");
 const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
 
-totalFlutuanteValor.innerText = totalGeral.toFixed(2);
-totalFlutuante.style.display = carrinho.length ? "flex" : "none";
+   // TOTAL FLUTUANTE
+  const totalFlutuante = document.getElementById("totalFlutuante");
+  const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
 
-if (totalGeral !== ultimoTotal) {
-  totalFlutuante.classList.remove("animar");
-  void totalFlutuante.offsetWidth;
-  totalFlutuante.classList.add("animar");
-  ultimoTotal = totalGeral;
-}
+  if (totalGeral > 0) {
+    totalFlutuante.style.display = "flex";
+    totalFlutuanteValor.innerText = totalGeral.toFixed(2);
 
+    if (totalGeral !== ultimoTotal) {
+      totalFlutuante.classList.add("animar");
+      setTimeout(() => totalFlutuante.classList.remove("animar"), 300);
+      ultimoTotal = totalGeral;
+    }
+  } else {
+    totalFlutuante.style.display = "none";
   }
 }
 
@@ -2082,8 +2077,28 @@ function atualizarClienteTela() {
   const exibido = document.getElementById("nomeClienteExibido");
 
   if (topo) topo.textContent = cliente.nome;
-  if (exibido) exibido.textContent =
-    "👤 " + cliente.nome + " | 📞 " + cliente.telefone;
+  if (exibido) exibido.textContent = "👤 " + cliente.nome + " | 📞 " + cliente.telefone;
+}
+
+function enviarWhatsapp() {
+  if (!cliente.nome) {
+    abrirModalCliente();
+    return;
+  }
+
+  let mensagem = `🛒 *Pedido - Furacão da Limpeza*\n\n`;
+  mensagem += `👤 Cliente: ${cliente.nome}\n`;
+  mensagem += `📞 Telefone: ${cliente.telefone}\n`;
+  mensagem += `📍 Endereço: ${cliente.endereco}\n`;
+  if (cliente.complemento) {
+    mensagem += `📌 Complemento: ${cliente.complemento}\n`;
+  }
+
+  const telefoneLoja = "5515996585967";
+  window.open(
+    `https://wa.me/${telefoneLoja}?text=${encodeURIComponent(mensagem)}`,
+    "_blank"
+  );
 }
 
 document.addEventListener("DOMContentLoaded", () => {
