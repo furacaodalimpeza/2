@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -583,7 +582,7 @@ mark {
 
   <div class="header-conteudo">
     <h1>🌪️ Furacão da Limpeza 🛒</h1>
-    <p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
+    <p><p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
   </div>
 
 </header>
@@ -1538,7 +1537,9 @@ mark {
 </div>
 </div>
   
-<div class="categoria" id="essencias">
+
+ 
+ <div class="categoria" id="essencias">
   <h2>Essências</h2>
 
   <div class="produtos">
@@ -1649,7 +1650,7 @@ mark {
         </div>
       </div>
     </div>
-
+    
 <div class="produto">
       <img src="img/difusor-senalar.jpg">
       <h3>Difusor SenaLar 250ML</h3>
@@ -1693,18 +1694,8 @@ mark {
     </div>
     
   </div>
-</div>
- 
- <div id="automotivo" class="categoria">
-<h2>Automotivo</h2>
-<div class="produtos">
-
-<div class="produto">
-<img src="img/shampoo.jpg">
-<h3>Shampoo Automotivo</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span>1L — R$ 13,00</span>
+ </div>
+  
     <button onclick="addProduto('Shampoo Automotivo 1L',13)">Adicionar</button>
   </div>
   <div class="linha">
@@ -1788,33 +1779,77 @@ mark {
 
 <button class="continuar" onclick="toggleCarrinho()">Continuar comprando</button>
 </div>
-  <script>
-le<script>
+
+<!-- MODAL DADOS DO CLIENTE -->
+<div id="modalCliente" class="modal">
+  <div class="modal-box">
+
+    <h3>Finalizar Pedido</h3>
+
+    <input id="cliNome" type="text" placeholder="👤 Nome completo">
+    <input id="cliTel" type="tel" placeholder="📞 Telefone / WhatsApp">
+    <input id="cliEnd" type="text" placeholder="📍 Endereço completo">
+
+    <select id="cliPag">
+      <option value="">💳 Forma de pagamento</option>
+      <option value="Pix">Pix</option>
+      <option value="Pix na Entrega">Pix na Entrega</option>
+      <option value="Dinheiro">Dinheiro</option>
+      <option value="Cartão de Débito">Cartão de Débito</option>
+      <option value="Cartão de Crédito">Cartão de Crédito</option>
+    </select>
+
+    <button class="btn-confirmar" onclick="confirmarPedido()">Confirmar Pedido</button>
+    <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+
+  </div>
+  </div>
+
+    <button class="btn-confirmar" onclick="confirmarPedido()">
+      Enviar Pedido no WhatsApp
+    </button>
+
+    <button class="btn-cancelar" onclick="fecharModal()">
+      Cancelar
+    </button>
+
+  </div>
+</div>
+  
+<script>
 let carrinho = [];
 let totalGeral = 0;
-
-// ADICIONAR PRODUTO
+let ultimoTotal = 0;
+  
+// FUNÇÃO PARA ADICIONAR PRODUTO
 function addProduto(nome, preco) {
   let item = carrinho.find(p => p.nome === nome);
-  if (item) item.qtd++;
-  else carrinho.push({ nome, preco, qtd: 1 });
+  if(item) item.qtd++;
+  else carrinho.push({nome, preco, qtd:1});
+
+  const som = document.getElementById("somAdd");
+  som.currentTime = 0;
+  som.play().catch(()=>{});
+
+  const btn = document.getElementById("btnCarrinho");
+  btn.classList.add("animar");
+  setTimeout(()=>btn.classList.remove("animar"),200);
+
   atualizar();
 }
 
-// ATUALIZAR CARRINHO
+// FUNÇÃO PARA ATUALIZAR CARRINHO
 function atualizar() {
   const lista = document.getElementById("lista");
   const totalEl = document.getElementById("total");
   const contador = document.getElementById("contador");
   const btnWhatsapp = document.getElementById("btnWhatsapp");
-  const totalFlutuante = document.getElementById("totalFlutuante");
-  const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
 
   lista.innerHTML = "";
   totalGeral = 0;
   let itens = 0;
 
-  carrinho.forEach((p, i) => {
+  carrinho.forEach((p,i)=>{
     totalGeral += p.preco * p.qtd;
     itens += p.qtd;
 
@@ -1822,11 +1857,12 @@ function atualizar() {
       <li class="item-carrinho">
         <div>
           <strong>${p.nome}</strong><br>
-          R$ ${p.preco.toFixed(2)} x ${p.qtd}
+          R$ ${(p.preco * p.qtd).toFixed(2)}
         </div>
         <div>
-          <button onclick="removerItem(${i})">➖</button>
-          <button class="lixeira" onclick="excluirItem(${i})">🗑️</button>
+          <button onclick="alterarQtd(${i},-1)">➖</button>
+          <button onclick="alterarQtd(${i},1)">➕</button>
+          <button class="lixeira" onclick="remover(${i})">🗑️</button>
         </div>
       </li>
     `;
@@ -1834,90 +1870,9 @@ function atualizar() {
 
   totalEl.innerText = totalGeral.toFixed(2);
   contador.innerText = itens;
-  totalFlutuanteValor.innerText = totalGeral.toFixed(2);
 
-  if (itens > 0) {
-    btnWhatsapp.disabled = false;
-    totalFlutuante.style.display = "flex";
-  } else {
-    btnWhatsapp.disabled = true;
-    totalFlutuante.style.display = "none";
-  }
-}
-
-// REMOVER
-function removerItem(i) {
-  if (carrinho[i].qtd > 1) carrinho[i].qtd--;
-  else carrinho.splice(i, 1);
-  atualizar();
-}
-
-// EXCLUIR
-function excluirItem(i) {
-  carrinho.splice(i, 1);
-  atualizar();
-}
-
-// CARRINHO
-function toggleCarrinho() {
-  document.getElementById("carrinho").classList.toggle("aberto");
-}
-
-// ===== CLIENTE =====
-function trocarNome() {
-  const nome = prompt("Digite o nome do cliente:");
-  if (!nome) return;
-
-  localStorage.setItem("clienteNome", nome);
-  atualizarNomeCliente();
-}
-
-function atualizarNomeCliente() {
-  const nome = localStorage.getItem("clienteNome") || "não informado";
+  const nome = localStorage.getItem("nomeCliente") || "não informado";
   document.getElementById("nomeClienteTopo").innerText = nome;
-  document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
-}
-
-window.onload = atualizarNomeCliente;
-
-  totalEl.innerText = totalGeral.toFixed(2);
-  contador.innerText = itens;
-  totalFlutuanteValor.innerText = totalGeral.toFixed(2);
-
-  if (itens > 0) {
-    btnWhatsapp.disabled = false;
-    totalFlutuante.style.display = "flex";
-  } else {
-    btnWhatsapp.disabled = true;
-    totalFlutuante.style.display = "none";
-  }
-}
-
-// REMOVER 1 UNIDADE
-function removerItem(i) {
-  if (carrinho[i].qtd > 1) carrinho[i].qtd--;
-  else carrinho.splice(i, 1);
-  atualizar();
-}
-
-// EXCLUIR ITEM
-function excluirItem(i) {
-  carrinho.splice(i, 1);
-  atualizar();
-}
-
-// ABRIR / FECHAR CARRINHO
-function toggleCarrinho() {
-  document.getElementById("carrinho").classList.toggle("aberto");
-}
-  
-  totalEl.innerText = totalGeral.toFixed(2);
-  contador.innerText = itens;
-
-  const dados = JSON.parse(localStorage.getItem("cliente")) || {};
-const nome = dados.nome || "não informado";
-  document.getElementById("nomeClienteExibido").innerText =
-  "👤 Cliente: " + nome;
   document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
 
   btnWhatsapp.disabled = carrinho.length === 0;
@@ -1928,21 +1883,16 @@ const nome = dados.nome || "não informado";
     const totalFlutuante = document.getElementById("totalFlutuante");
 const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
 
-   // TOTAL FLUTUANTE
-  const totalFlutuante = document.getElementById("totalFlutuante");
-  const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
+totalFlutuanteValor.innerText = totalGeral.toFixed(2);
+totalFlutuante.style.display = carrinho.length ? "flex" : "none";
 
-  if (totalGeral > 0) {
-    totalFlutuante.style.display = "flex";
-    totalFlutuanteValor.innerText = totalGeral.toFixed(2);
+if (totalGeral !== ultimoTotal) {
+  totalFlutuante.classList.remove("animar");
+  void totalFlutuante.offsetWidth;
+  totalFlutuante.classList.add("animar");
+  ultimoTotal = totalGeral;
+}
 
-    if (totalGeral !== ultimoTotal) {
-      totalFlutuante.classList.add("animar");
-      setTimeout(() => totalFlutuante.classList.remove("animar"), 300);
-      ultimoTotal = totalGeral;
-    }
-  } else {
-    totalFlutuante.style.display = "none";
   }
 }
 
@@ -1979,6 +1929,23 @@ function mostrarCategoria(id,btn){
   btn.classList.add("ativa");
   document.getElementById("carrinho").classList.remove("aberto");
 }
+
+window.onload = () => {
+  if (!localStorage.getItem("nomeCliente")) {
+    const nome = prompt("Digite o nome da cliente:");
+    if (nome && nome.trim() !== "") {
+      localStorage.setItem("nomeCliente", nome);
+    }
+  }
+
+  const nome = localStorage.getItem("nomeCliente");
+  if (nome) {
+    document.getElementById("nomeClienteTopo").innerText = nome;
+    document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
+  }
+
+  atualizar();
+};
 
 function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
@@ -2097,6 +2064,14 @@ function confirmarPedido() {
   mostrarCategoria("limpeza", document.querySelector(".abas button"));
 }
 
+window.onload = () => {
+  const nome = localStorage.getItem("nomeCliente");
+  if (nome) {
+    document.getElementById("nomeClienteTopo").innerText = nome;
+    document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
+  }
+};
+
 function filtrarProdutos() {
   const termo = document.getElementById("pesquisaProduto").value.toLowerCase();
   const produtos = document.querySelectorAll(".produto");
@@ -2147,29 +2122,22 @@ function limparBusca() {
   filtrarProdutos();
 }
 
- <!-- MODAL FINALIZAR PEDIDO -->
-<div class="modal" id="modalPedido">
-  <div class="modal-box">
-    <h3>Finalizar Pedido</h3>
+function restaurarBusca() {
+  document.querySelectorAll(".categoria").forEach((cat, index) => {
+    cat.style.display = index === 0 ? "block" : "none";
+    cat.classList.toggle("ativa", index === 0);
+  });
 
-    <input id="cliNome" placeholder="👤 Nome completo">
-    <input id="cliTel" placeholder="📞 WhatsApp">
-    <input id="cliEnd" placeholder="📍 Endereço completo">
+  document.querySelectorAll(".produto").forEach(p => {
+    p.style.display = "block";
+  });
 
-    <select id="cliPag">
-      <option value="">💳 Forma de pagamento</option>
-      <option>Pix</option>
-      <option>Pix na Entrega</option>
-      <option>Dinheiro</option>
-      <option>Cartão</option>
-    </select>
+  document.getElementById("limparBusca").style.display = "none";
+}
 
-    <button class="btn-confirmar" onclick="confirmarPedido()">Confirmar Pedido</button>
-    <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
-  </div>
-</div>
+</script>
 
-<!-- TELA DE SUCESSO -->
+  <!-- TELA DE SUCESSO -->
 <div id="telaSucesso" class="tela-sucesso">
   <div class="sucesso-box">
     <div class="check">✔️</div>
@@ -2177,102 +2145,13 @@ function limparBusca() {
     <p>
       Seu pedido foi registrado com sucesso 💙<br>
       Finalize o envio no WhatsApp para concluir.
-    </p>
-    <br>
+   </p>
+    
+<br>
+
     <button onclick="voltarComprar()">Voltar às compras</button>
   </div>
 </div>
-
-<script>
-let cliente = JSON.parse(localStorage.getItem("cliente")) || {
-  nome: "",
-  telefone: "",
-  endereco: "",
-  pagamento: ""
-};
-
-function abrirModal() {
-  if (carrinho.length === 0) {
-    alert("🛒 Seu carrinho está vazio.");
-    return;
-  }
-  document.getElementById("modalPedido").style.display = "flex";
-}
-
-function fecharModal() {
-  document.getElementById("modalPedido").style.display = "none";
-}
-
-function confirmarPedido() {
-  cliente.nome = cliNome.value.trim();
-  cliente.telefone = cliTel.value.trim();
-  cliente.endereco = cliEnd.value.trim();
-  cliente.pagamento = cliPag.value;
-
-  if (!cliente.nome || !cliente.telefone || !cliente.endereco || !cliente.pagamento) {
-    alert("Preencha todos os campos!");
-    return;
-  }
-
-  localStorage.setItem("cliente", JSON.stringify(cliente));
-
-  document.getElementById("nomeClienteExibido").innerText =
-    "👤 Cliente: " + cliente.nome;
-
-  const numeroPedido = gerarNumeroPedido();
-
-  let msg = "";
-  msg += `🧾 *Pedido Nº ${numeroPedido} – 🌪️🛒 Furacão da Limpeza*%0A%0A`;
-  msg += `👤 *Cliente:* ${cliente.nome}%0A`;
-  msg += `📞 *Telefone:* ${cliente.telefone}%0A`;
-  msg += `📍 *Endereço:* ${cliente.endereco}%0A`;
-  msg += `💳 *Pagamento:* ${cliente.pagamento}%0A%0A`;
-  msg += `🛒 *Itens do pedido:*%0A`;
-
-  carrinho.forEach(p => {
-    msg += `• ${p.nome} — ${p.qtd}x%0A`;
-  });
-
-  msg += `%0A💰 *Total:* R$ ${totalGeral.toFixed(2)}%0A%0A`;
-  msg += `Obrigado pela preferência 💙`;
-
-  window.open(
-    "https://wa.me/5515996585967?text=" + msg,
-    "_blank"
-  );
-
-  carrinho = [];
-  atualizar();
-  fecharModal();
-  document.getElementById("telaSucesso").style.display = "flex";
-}
-
-function voltarComprar() {
-  document.getElementById("telaSucesso").style.display = "none";
-  document.getElementById("carrinho").classList.remove("aberto");
-}
-
-function abrirModalCliente() {
-  document.getElementById("modalCliente").style.display = "flex";
-}
-
-function fecharModalCliente() {
-  document.getElementById("modalCliente").style.display = "none";
-}
-
-function salvarCliente() {
-  const nome = document.getElementById("nomeClienteInput").value.trim();
-
-  if (nome === "") {
-    alert("Digite seu nome");
-    return;
-  }
-
-  document.getElementById("nomeClienteTopo").innerText = nome;
-  fecharModalCliente();
-}
-
-</script>
-
+  
 </body>
 </html>
