@@ -1051,15 +1051,15 @@ mark {
   
 <div class="produto">
 <img src="img/veja.jpg">
-<h3>Veja Bonrruque</h3>
+<h3>Veja MultiusocBonrruque</h3>
 <div class="variacoes">
   <div class="linha">
     <span>2L — R$ 13,00</span>
-    <button onclick="addProduto('Veja Bonrruque 2L',13)">Adicionar</button>
+    <button onclick="addProduto('Veja Multiuso Bonrruque 2L',13)">Adicionar</button>
   </div>
   <div class="linha">
     <span>5L — R$ 25,00</span>
-    <button onclick="addProduto('Veja Bonrruque 5L',25)">Adicionar</button>
+    <button onclick="addProduto('Veja Multiuso Bonrruque 5L',25)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -2217,6 +2217,7 @@ mark {
       <option value="Dinheiro">Dinheiro</option>
       <option value="Cartão de Débito">Cartão de Débito</option>
       <option value="Cartão de Crédito">Cartão de Crédito</option>
+      <option value="Pagar Depois">Pagar Depois</option>
     </select>
 
     <button class="btn-confirmar" onclick="confirmarPedido()">Confirmar Pedido</button>
@@ -2457,8 +2458,8 @@ function confirmarPedido() {
   msg += "🛒 *Itens do pedido:*%0A";
 
   carrinho.forEach(p => {
-    msg += `• ${p.nome} — ${p.qtd}x%0A`;
-  });
+  msg += `• ${p.nome} — ${p.qtd}x (R$ ${p.preco.toFixed(2)})%0A`;
+});
 
   msg += `%0A💰 *Total:* R$ ${totalGeral.toFixed(2)}%0A%0A`;
   msg += "Assim que confirmarmos, preparamos tudo com carinho para você 🙏🏼✨";
