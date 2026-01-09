@@ -567,6 +567,124 @@ mark {
   border-radius: 4px;
 }
 
+  /* BOTÃO VOLTAR AO TOPO – AJUSTADO */
+#voltarTopo {
+  position: fixed;
+  bottom: 100px; /* desce o botão */
+  right: 16px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(180deg, #25d366, #1ebe5d);
+  color: #fff;
+  padding: 10px 14px; /* menor */
+  border-radius: 28px;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+  cursor: pointer;
+  z-index: 3000;
+  animation: pulseTopo 2.2s infinite;
+}
+
+#voltarTopo button {
+  background: #fff;
+  color: #25d366;
+  border: none;
+  width: 34px;   /* menor */
+  height: 34px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#voltarTopo span {
+  font-weight: bold;
+  font-size: 13px; /* menor */
+}
+
+  @media (max-width: 600px) {
+  #voltarTopo {
+    bottom: 120px; /* evita conflito com botões */
+    right: 12px;
+  }
+}
+
+  /* BOTÃO VOLTAR AO TOPO */
+#btnTopo {
+  position: fixed;
+  bottom: 20px;   /* 👈 BEM MAIS BAIXO */
+  right: 15px;
+  background: linear-gradient(180deg, #25d366, #1ebe5d);
+  color: #fff;
+  border: none;
+  padding: 12px 14px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+  z-index: 2000;
+}
+
+@keyframes pulseTopo {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+  .rodape {
+  margin-top: 40px;
+  padding: 30px 15px 80px;
+  background: linear-gradient(180deg, #f4f8ff, #e9f3ff);
+  text-align: center;
+  border-top: 2px solid #eef2ff;
+}
+
+.rodape p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.rodape p:first-child {
+  font-weight: bold;
+  color: #0a7cff;
+  font-size: 16px;
+}
+
+.rodape .copy {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+  #btnTopo {
+  position: fixed;
+  bottom: 20px;          /* MAIS BAIXO */
+  right: 16px;
+  background: linear-gradient(180deg, #25d366, #1ebe5d);
+  color: #fff;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,.3);
+  z-index: 4000;
+  animation: topoPulse 1.6s infinite;
+}
+
+/* ANIMAÇÃO */
+@keyframes topoPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
 </style>
 </head>
 
@@ -1410,7 +1528,6 @@ mark {
 </div>
 </div>
 
-
 <div id="kits" class="categoria">
 
   <h2>🧼 Kits de Limpeza</h2>
@@ -1439,6 +1556,7 @@ mark {
   </div>
 
 </div>
+
   
 <!-- CASA -->
 <div id="casa" class="categoria">
@@ -1470,19 +1588,8 @@ mark {
     <button onclick="addProduto('Papel Toalha',18)">Adicionar</button>
   </div>
 </div>
-</div>
+</div> 
 
-<div class="produto">
-<img src="img/luvas-m.jpg">
-<h3>Luvas M</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span> R$ 9,00</span>
-    <button onclick="addProduto('Luvas M,',9)">Adicionar</button>
-  </div>
-</div>
-</div>
-  
 <div class="produto">
 <img src="img/bucha-louca.jpg">
 <h3>Buchina de Louça</h3>
@@ -1494,6 +1601,17 @@ mark {
   <div class="linha">
     <span>Alklin R$ 1,50</span>
     <button onclick="addProduto('Buchinha Alklin.,',1.5)">Adicionar</button>
+  </div>
+</div>
+</div>
+  
+<div class="produto">
+<img src="img/luvas-m.jpg">
+<h3>Luvas M</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span> R$ 9,00</span>
+    <button onclick="addProduto('Luvas M,',9)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -1975,6 +2093,8 @@ mark {
  
 </div>
 </div>
+  
+
  
  <div class="categoria" id="essencias">
   <h2>Essências</h2>
@@ -1986,23 +2106,23 @@ mark {
       <div class="variacoes">
         <div class="linha">
           <span>Essen. SenaMax Orquídea Negra — R$ 16,00</span>
-          <button onclick="addProduto('Essen. SenaMax Orquídea Negra',16)">Adicionar</button>
+          <button onclick="addProduto('Orquídea Negra',16)">Adicionar</button>
         </div>
         <div class="linha">
           <span>Essen. SenaMax Chá Branco — R$ 16,00</span>
-          <button onclick="addProduto('Essen. SenaMax Chá Branco',16)">Adicionar</button>
+          <button onclick="addProduto('Chá Branco',16)">Adicionar</button>
         </div>
          <div class="linha">
           <span>Essen. SenaMax Óleo de Eucalipto — R$ 16,00</span>
-          <button onclick="addProduto('Essen. SenaMax Lavanda',16)">Adicionar</button>
+          <button onclick="addProduto('Essência Lavanda Senamax',16)">Adicionar</button>
         </div>
          <div class="linha">
           <span>Essen. SenaMax Lavanda — R$ 16,00</span>
-          <button onclick="addProduto('Essen. SenaMax Lavanda',16)">Adicionar</button>
+          <button onclick="addProduto('Lavanda',16)">Adicionar</button>
         </div>
          <div class="linha">
           <span>Essen. SenaMax Flores de Algodão — R$ 16,00</span>
-          <button onclick="addProduto('Essen. SenaMax Flores de Algodão',16)">Adicionar</button>
+          <button onclick="addProduto('Flores de Algodão',16)">Adicionar</button>
         </div>
       </div>
     </div>
@@ -2015,51 +2135,51 @@ mark {
 
     <div class="linha">
       <span>Essen. Nogueira Cereja e Avelã — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Cereja e Avelã',10)">Adicionar</button>
+      <button onclick="addProduto('Cereja e Avelã',10)">Adicionar</button>
     </div>
 
     <div class="linha">
       <span>Essen. Nogueira Lavanda — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Lavanda',10)">Adicionar</button>
+      <button onclick="addProduto('Lavanda',10)">Adicionar</button>
     </div>
 
     <div class="linha">
       <span>Essen. Nogueira Óleo de Eucalipto — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Óleo de Eucalipto',10)">Adicionar</button>
+      <button onclick="addProduto('Óleo de Eucalipto',10)">Adicionar</button>
     </div>
 
     <div class="linha">
       <span>Essen. Nogueira Broto de Bambu — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Broto de Bambu',10)">Adicionar</button>
+      <button onclick="addProduto('Broto de Bambu',10)">Adicionar</button>
     </div>
 
     <div class="linha">
       <span>Essen. Nogueira Jasmin — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Jasmin',10)">Adicionar</button>
+      <button onclick="addProduto('Jasmin',10)">Adicionar</button>
     </div>
 
     <div class="linha">
       <span>Essen. Nogueira Aurora — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Aurora',10)">Adicionar</button>
+      <button onclick="addProduto('Aurora',10)">Adicionar</button>
     </div>
 
     <div class="linha">
       <span>Essen. Nogueira Citronela — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Citronela',10)">Adicionar</button>
+      <button onclick="addProduto('Citronela',10)">Adicionar</button>
     </div>
 
     <div class="linha">
       <span>Essen. Nogueira Alfazema — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Alfazema',10)">Adicionar</button>
+      <button onclick="addProduto('Alfazema',10)">Adicionar</button>
     </div>
 
     <div class="linha">
       <span>Essen. Nogueira Talco — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Talco',10)">Adicionar</button>
+      <button onclick="addProduto('Talco',10)">Adicionar</button>
     </div>
     <div class="linha">
       <span>Essen. Nogueira Orquídea Negra — R$ 10,00</span>
-      <button onclick="addProduto('Essen. Nogueira Orquídea Negra',10)">Adicionar</button>
+      <button onclick="addProduto('Orquídea Negra',10)">Adicionar</button>
     </div>
   </div>
 </div>
@@ -2070,23 +2190,23 @@ mark {
       <div class="variacoes">
         <div class="linha">
           <span>Difusor SenaMax Orquídea Negra — R$ 22,00</span>
-          <button onclick="addProduto('Difusor SenaMax Orquídea Negra',22)">Adicionar</button>
+          <button onclick="addProduto('Orquídea Negra',22)">Adicionar</button>
         </div>
         <div class="linha">
           <span>Difusor SenaMax Chá Branco — R$ 22,00</span>
-          <button onclick="addProduto('Difusor SenaMax Chá Branco',22)">Adicionar</button>
+          <button onclick="addProduto('Chá Branco',22)">Adicionar</button>
         </div>
          <div class="linha">
           <span>Difusor SenaMax Pitaya — R$ 22,00</span>
-          <button onclick="addProduto('Difusor SenaMax Pitaya',22)">Adicionar</button>
+          <button onclick="addProduto('Pitaya',22)">Adicionar</button>
         </div>
          <div class="linha">
           <span>Difusor SenaMax Pistache — R$ 22,00</span>
-          <button onclick="addProduto('Difusor SenaMax Pistache',22)">Adicionar</button>
+          <button onclick="addProduto('Pistache',22)">Adicionar</button>
         </div>
          <div class="linha">
           <span>Difusor SenaMax Lavanda — R$ 22,00</span>
-          <button onclick="addProduto('Difusor SenaMax Lavanda',22)">Adicionar</button>
+          <button onclick="addProduto('Lavanda',22)">Adicionar</button>
         </div>
       </div>
     </div>
@@ -2097,19 +2217,19 @@ mark {
       <div class="variacoes">
         <div class="linha">
           <span>Difusor SenaLar Orquídea — R$ 15,00</span>
-          <button onclick="addProduto('Difusor SenaLar Orquídea',15)">Adicionar</button>
+          <button onclick="addProduto('Orquídea',15)">Adicionar</button>
         </div>
         <div class="linha">
           <span>Difusor SenaLar Chá Branco — R$ 15,00</span>
-          <button onclick="addProduto('Difusor SenaLar Chá Branco',15)">Adicionar</button>
+          <button onclick="addProduto('Chá Branco',15)">Adicionar</button>
         </div>
          <div class="linha">
           <span>Disusor SenaLar Bambu — R$ 15,00</span>
-          <button onclick="addProduto('Difusor SenaLar Bambu',15)">Adicionar</button>
+          <button onclick="addProduto('Bambu',15)">Adicionar</button>
       </div>
          <div class="linha">
           <span>Difusor SenaLar Lavanda — R$ 15,00</span>
-          <button onclick="addProduto('Difusor SenaLar Lavanda',15)">Adicionar</button>
+          <button onclick="addProduto('Lavanda',15)">Adicionar</button>
         </div>
       </div>
     </div>
@@ -2120,15 +2240,15 @@ mark {
       <div class="variacoes">
         <div class="linha">
           <span>Água Tecidos Bambu — R$ 23,00</span>
-          <button onclick="addProduto('Água Tecido Bambu',23)">Adicionar</button>
+          <button onclick="addProduto('Bambu',23)">Adicionar</button>
         </div>
         <div class="linha">
           <span>Água Tecidos Chá Branco — R$ 23,00</span>
-          <button onclick="addProduto('Água Tecido Chá Branco',23)">Adicionar</button>
+          <button onclick="addProduto('Chá Branco',23)">Adicionar</button>
         </div>
         <div class="linha">
           <span>Água Tecidos Flores de Algodão — R$ 23,00</span>
-          <button onclick="addProduto('Ágia Tecido Flores de Algodão',23)">Adicionar</button>
+          <button onclick="addProduto('Flores de Algodão',23)">Adicionar</button>
         </div>
       </div>
     </div>
@@ -2268,18 +2388,7 @@ mark {
     <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
 
   </div>
-  </div>
-
-    <button class="btn-confirmar" onclick="confirmarPedido()">
-      Enviar Pedido no WhatsApp
-    </button>
-
-    <button class="btn-cancelar" onclick="fecharModal()">
-      Cancelar
-    </button>
-
-  </div>
-</div>
+  </div> 
   
 <script>
 let carrinho = [];
@@ -2306,7 +2415,7 @@ function addProduto(nome, preco) {
 // FUNÇÃO PARA ATUALIZAR CARRINHO
 function atualizar() {
   const lista = document.getElementById("lista");
-  const totalEl = document.getElementById("total");
+  const totalEl = documnt.getElementById("total");
   const contador = document.getElementById("contador");
   const btnWhatsapp = document.getElementById("btnWhatsapp");
 
@@ -2502,7 +2611,8 @@ function confirmarPedido() {
   msg += "🛒 *Itens do pedido:*%0A";
 
   carrinho.forEach(p => {
-  msg += `• ${p.nome} — ${p.qtd}x (R$ ${p.preco.toFixed(2)})%0A`;
+  const subtotal = p.preco * p.qtd;
+  msg += `• ${p.nome} — ${p.qtd}x (R$ ${subtotal.toFixed(2)})%0A`;
 });
 
   msg += `%0A💰 *Total:* R$ ${totalGeral.toFixed(2)}%0A%0A`;
@@ -2528,14 +2638,6 @@ function confirmarPedido() {
   document.getElementById("carrinho").classList.remove("aberto");
   mostrarCategoria("limpeza", document.querySelector(".abas button"));
 }
-
-window.onload = () => {
-  const nome = localStorage.getItem("nomeCliente");
-  if (nome) {
-    document.getElementById("nomeClienteTopo").innerText = nome;
-    document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
-  }
-};
 
 function filtrarProdutos() {
   const termo = document.getElementById("pesquisaProduto").value.toLowerCase();
@@ -2600,7 +2702,88 @@ function restaurarBusca() {
   document.getElementById("limparBusca").style.display = "none";
 }
 
+  // MOSTRAR / ESCONDER BOTÃO VOLTAR AO TOPO
+window.addEventListener("scroll", () => {
+  const btn = document.getElementById("btnTopo");
+  if (!btn) return;
+
+  if (window.scrollY > 400) {
+    btn.style.display = "block";
+  } else {
+    btn.style.display = "none";
+  }
+});
+
+// FUNÇÃO VOLTAR AO TOPO
+function voltarTopo() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+  function irTopo() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+window.addEventListener("scroll", () => {
+  const botao = document.getElementById("voltarTopo");
+  if (window.scrollY > 400) {
+    botao.style.display = "flex";
+  } else {
+    botao.style.display = "none";
+  }
+});
+
+  // FUNÇÃO VOLTAR AO TOPO
+function voltarTopo() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+// MOSTRA / ESCONDE BOTÃO AO ROLAR
+window.addEventListener("scroll", () => {
+  const btn = document.getElementById("btnTopo");
+  if (!btn) return;
+  btn.style.display = window.scrollY > 400 ? "flex" : "none";
+});
+
+  // MOSTRAR / ESCONDER BOTÃO TOPO
+window.addEventListener("scroll", () => {
+  const btn = document.getElementById("btnTopo");
+  btn.style.display = window.scrollY > 400 ? "flex" : "none";
+});
+
+function voltarTopo() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 </script>
+
+  <footer class="rodape">
+  <p><strong>🌪️🛒 Furacão da Limpeza</strong></p>
+
+  <p>
+    Fazemos entregas por <strong>todo Sorocaba</strong> 🚚💙<br>
+    Os pedidos podem ser feitos pelo nosso site ou pelo e-mail:
+  </p>
+
+  <p class="email">📧 furacaodalimpeza027@gmail.com</p>
+
+  <p class="copy">
+    © 2026 Furacão da Limpeza • Todos os direitos reservados
+  </p>
+</footer>
+
+  <!-- BOTÃO VOLTAR AO TOPO -->
+<button id="btnTopo" onclick="voltarTopo()">
+  ⬆️ <span>Voltar ao topo</span>
+</button>
 
   <!-- TELA DE SUCESSO -->
 <div id="telaSucesso" class="tela-sucesso">
