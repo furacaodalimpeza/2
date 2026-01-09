@@ -610,54 +610,6 @@ mark {
 }
 
   /* BOTÃO VOLTAR AO TOPO */
-#btnTopo {
-  position: fixed;
-  bottom: 20px;   /* 👈 BEM MAIS BAIXO */
-  right: 15px;
-  background: linear-gradient(180deg, #25d366, #1ebe5d);
-  color: #fff;
-  border: none;
-  padding: 12px 14px;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  box-shadow: 0 6px 16px rgba(0,0,0,.25);
-  z-index: 2000;
-}
-
-@keyframes pulseTopo {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.12); }
-  100% { transform: scale(1); }
-}
-
-  .rodape {
-  margin-top: 40px;
-  padding: 30px 15px 80px;
-  background: linear-gradient(180deg, #f4f8ff, #e9f3ff);
-  text-align: center;
-  border-top: 2px solid #eef2ff;
-}
-
-.rodape p {
-  margin: 6px 0;
-  color: #555;
-  font-size: 14px;
-}
-
-.rodape p:first-child {
-  font-weight: bold;
-  color: #0a7cff;
-  font-size: 16px;
-}
-
-.rodape .copy {
-  font-size: 12px;
-  opacity: 0.8;
-}
-
   #btnTopo {
   position: fixed;
   bottom: 20px;          /* MAIS BAIXO */
@@ -2381,7 +2333,6 @@ mark {
       <option value="Dinheiro">Dinheiro</option>
       <option value="Cartão de Débito">Cartão de Débito</option>
       <option value="Cartão de Crédito">Cartão de Crédito</option>
-      <option value="Pagar Depois">Pagar Depois</option>
     </select>
 
     <button class="btn-confirmar" onclick="confirmarPedido()">Confirmar Pedido</button>
@@ -2415,7 +2366,7 @@ function addProduto(nome, preco) {
 // FUNÇÃO PARA ATUALIZAR CARRINHO
 function atualizar() {
   const lista = document.getElementById("lista");
-  const totalEl = documnt.getElementById("total");
+  const totalEl = document.getElementById("total");
   const contador = document.getElementById("contador");
   const btnWhatsapp = document.getElementById("btnWhatsapp");
 
@@ -2644,35 +2595,19 @@ function filtrarProdutos() {
   const produtos = document.querySelectorAll(".produto");
   const limpar = document.getElementById("limparBusca");
 
-  let encontrou = false;
-
   produtos.forEach(produto => {
-    const texto = produto.innerText.toLowerCase();
-
-    if (texto.includes(termo)) {
-      produto.style.display = "block";
-      encontrou = true;
-    } else {
-      produto.style.display = "none";
-    }
+    produto.style.display = produto.innerText.toLowerCase().includes(termo)
+      ? "block"
+      : "none";
   });
 
-  // mostra botão limpar
   limpar.style.display = termo ? "block" : "none";
-
-  // mostra todas as abas quando pesquisa
-  document.querySelectorAll(".categoria").forEach(cat => {
-    cat.style.display = termo ? "block" : "";
-  });
 }
 
 function limparBusca() {
   document.getElementById("pesquisaProduto").value = "";
-  document.getElementById("limparBusca").style.display = "none";
-
-  document.querySelectorAll(".produto").forEach(p => {
-    p.style.display = "block";
-  });
+  filtrarProdutos();
+}
 
   // volta só para a aba ativa
   document.querySelectorAll(".categoria").forEach(cat => {
@@ -2702,49 +2637,18 @@ function restaurarBusca() {
   document.getElementById("limparBusca").style.display = "none";
 }
 
-  // MOSTRAR / ESCONDER BOTÃO VOLTAR AO TOPO
+// MOSTRAR / ESCONDER BOTÃO VOLTAR AO TOPO
 window.addEventListener("scroll", () => {
   const btn = document.getElementById("btnTopo");
   if (!btn) return;
-
-  if (window.scrollY > 400) {
-    btn.style.display = "block";
-  } else {
-    btn.style.display = "none";
-  }
+  btn.style.display = window.scrollY > 400 ? "flex" : "none";
 });
 
-// FUNÇÃO VOLTAR AO TOPO
+// VOLTAR AO TOPO
 function voltarTopo() {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-  function irTopo() {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
-
-window.addEventListener("scroll", () => {
-  const botao = document.getElementById("voltarTopo");
-  if (window.scrollY > 400) {
-    botao.style.display = "flex";
-  } else {
-    botao.style.display = "none";
-  }
-});
-
-  // FUNÇÃO VOLTAR AO TOPO
-function voltarTopo() {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
 
 // MOSTRA / ESCONDE BOTÃO AO ROLAR
 window.addEventListener("scroll", () => {
@@ -2752,16 +2656,6 @@ window.addEventListener("scroll", () => {
   if (!btn) return;
   btn.style.display = window.scrollY > 400 ? "flex" : "none";
 });
-
-  // MOSTRAR / ESCONDER BOTÃO TOPO
-window.addEventListener("scroll", () => {
-  const btn = document.getElementById("btnTopo");
-  btn.style.display = window.scrollY > 400 ? "flex" : "none";
-});
-
-function voltarTopo() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
 
 </script>
 
