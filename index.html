@@ -2914,18 +2914,26 @@ function enviarAvaliacao() {
     return;
   }
 
-  const comentario = document.getElementById("textoAvaliacao").value.trim();
+  const nome = document.getElementById("nomeCliente").value.trim();
+const comentario = document.getElementById("textoAvaliacao").value.trim();
+
+if (!nome) {
+  alert("Por favor, informe seu nome 😊");
+  return;
+}
 
   let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
 
-  avaliacoes.push({
-    nota: estrelaSelecionada,
-    comentario: comentario
-  });
+ avaliacoes.push({
+  nome: nome,
+  nota: estrelaSelecionada,
+  comentario: comentario
+});
 
   localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
 
   document.getElementById("textoAvaliacao").value = "";
+  document.getElementById("nomeCliente").value = "";
   estrelaSelecionada = 0;
 
   atualizarMedia();
@@ -2985,6 +2993,7 @@ function mostrarAvaliacoes() {
       <div class="avaliacao-card">
         <div class="estrelas">${"⭐".repeat(a.nota)}</div>
         <p>${a.comentario || "Sem comentário"}</p>
+        <strong>— ${a.nome || "Cliente"}</strong>
 
         <button class="btn-remover" onclick="removerAvaliacao(${realIndex})">
           ❌ Remover
@@ -3013,36 +3022,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-
-<section class="avaliacoes">
-  <h2>⭐ O que nossos clientes dizem</h2>
-
-  <div class="resumo-avaliacao">
-    ⭐ <span id="mediaAvaliacao">0.0</span>
-    (<span id="totalAvaliacoes">0</span> avaliações)
-  </div>
-
-</section>
-
-  <div class="avaliacoes-box">
-
-    <div class="avaliacao">
-      <p>“Entrega rápida e produtos de ótima qualidade.”</p>
-      <span>— Maria S.</span>
-    </div>
-
-    <div class="avaliacao">
-      <p>“Compro toda semana, sempre chega certinho.”</p>
-      <span>— João P.</span>
-    </div>
-
-    <div class="avaliacao">
-      <p>“Preço bom e atendimento excelente.”</p>
-      <span>— Ana L.</span>
-    </div>
-
-  </div>
-</section>
 
   <section class="avaliacoes-publicas">
   <h2>⭐ Avaliações dos clientes</h2>
@@ -3092,8 +3071,6 @@ document.addEventListener("DOMContentLoaded", () => {
 <br>
 
     <!-- AVALIAÇÃO DA LOJA -->
-<!-- AVALIAÇÃO DA LOJA -->
-<!-- AVALIAÇÃO DA LOJA -->
 <div class="avaliar-loja">
 
   <h3>⭐ Avalie nossa loja</h3>
@@ -3105,6 +3082,12 @@ document.addEventListener("DOMContentLoaded", () => {
     <span onclick="selecionarEstrela(4)">⭐</span>
     <span onclick="selecionarEstrela(5)">⭐</span>
   </div>
+
+  <input
+  type="text"
+  id="nomeCliente"
+  placeholder="Seu nome"
+>
 
   <textarea
     id="textoAvaliacao"
