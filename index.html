@@ -768,6 +768,39 @@ mark {
   font-weight: bold;
 }
 
+  .avaliar-loja textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 8px;
+}
+
+.avaliar-loja button {
+  margin-top: 8px;
+  background: #25d366;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.avaliacoes-publicas {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 15px;
+}
+
+.avaliacao-card {
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+
 </style>
 </head>
 
@@ -2764,36 +2797,81 @@ function voltarTopo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function avaliar(nota) {
-  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+let estrelaSelecionada = 0;
 
-  avaliacoes.push(nota);
-  localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
+// SELECIONA ESTRELA
+function selecionarEstrela(nota) {
+  estrelaSelecionada = nota;
 
-  atualizarMedia();
-
-  const estrelas = document.querySelectorAll(".avaliar-loja .estrelas span");
-  estrelas.forEach((e, i) => {
+  document.querySelectorAll(".estrelas span").forEach((e, i) => {
     e.style.opacity = i < nota ? "1" : "0.3";
   });
-
-  document.getElementById("msgAvaliacao").innerText =
-    "Obrigado pela sua avaliação 💙";
 }
 
+// ENVIA AVALIAÇÃO
+function enviarAvaliacao() {
+  if (estrelaSelecionada === 0) {
+    alert("Selecione uma quantidade de estrelas ⭐");
+    return;
+  }
+
+  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+
+  avaliacoes.push({
+    estrelas: estrelaSelecionada,
+    comentario: document.getElementById("comentario").value.trim()
+  });
+
+  localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
+
+  document.getElementById("comentario").value = "";
+  estrelaSelecionada = 0;
+
+  atualizarMedia();
+  mostrarAvaliacoes();
+}
+
+// CALCULA MÉDIA CORRETAMENTE
 function atualizarMedia() {
   let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
   if (avaliacoes.length === 0) return;
 
-  let soma = avaliacoes.reduce((a, b) => a + b, 0);
+  let soma = avaliacoes.reduce((total, a) => total + a.estrelas, 0);
   let media = soma / avaliacoes.length;
 
   document.getElementById("mediaAvaliacao").innerText = media.toFixed(1);
 }
 
-// CARREGA A MÉDIA QUANDO ABRIR A TELA
-document.addEventListener("DOMContentLoaded", atualizarMedia);
-  
+  function mostrarAvaliacoes() {
+  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+  const lista = document.getElementById("listaAvaliacoes");
+  if (!lista) return;
+
+  lista.innerHTML = "";
+
+  avaliacoes.slice().reverse().forEach(a => {
+    lista.innerHTML += `
+      <div class="avaliacao-card">
+        <div class="estrelas">
+          ${"⭐".repeat(a.estrelas)}
+        </div>
+        <p>${a.comentario || "Sem comentário"}</p>
+      </div>
+    `;
+  });
+}
+
+// CARREGA AO ABRIR O SITE
+document.addEventListener("DOMContentLoaded", () => {
+  atualizarMedia();
+  mostrarAvaliacoes();
+});
+
+  document.addEventListener("DOMContentLoaded", () => {
+  atualizarMedia();
+  mostrarAvaliacoes();
+});
+
 </script>
 
  <section class="avaliacoes">
@@ -2817,6 +2895,11 @@ document.addEventListener("DOMContentLoaded", atualizarMedia);
     </div>
 
   </div>
+</section>
+
+  <section class="avaliacoes-publicas">
+  <h2>⭐ Avaliações dos clientes</h2>
+  <div id="listaAvaliacoes"></div>
 </section>
 
   <footer class="rodape">
@@ -2863,22 +2946,29 @@ document.addEventListener("DOMContentLoaded", atualizarMedia);
 
     <!-- AVALIAÇÃO DA LOJA -->
 <!-- AVALIAÇÃO DA LOJA -->
+<!-- AVALIAÇÃO DA LOJA -->
 <div class="avaliar-loja">
-  <p><strong>⭐ Avaliação da loja</strong></p>
 
-  <p class="media">
-    Média: <span id="mediaAvaliacao">0.0</span> ⭐
-  </p>
+  <p><strong>⭐ Avalie nossa loja</strong></p>
 
   <div class="estrelas">
-    <span onclick="avaliar(1)">⭐</span>
-    <span onclick="avaliar(2)">⭐</span>
-    <span onclick="avaliar(3)">⭐</span>
-    <span onclick="avaliar(4)">⭐</span>
-    <span onclick="avaliar(5)">⭐</span>
+    <span onclick="selecionarEstrela(1)">⭐</span>
+    <span onclick="selecionarEstrela(2)">⭐</span>
+    <span onclick="selecionarEstrela(3)">⭐</span>
+    <span onclick="selecionarEstrela(4)">⭐</span>
+    <span onclick="selecionarEstrela(5)">⭐</span>
   </div>
 
-  <p id="msgAvaliacao" class="msg-avaliacao"></p>
+  <textarea id="comentario"
+    placeholder="Escreva o que achou da loja (opcional)"
+    rows="3"></textarea>
+
+  <button onclick="enviarAvaliacao()">Enviar avaliação</button>
+
+  <p class="media">
+    ⭐ Média: <span id="mediaAvaliacao">0.0</span>
+  </p>
+
 </div>
 
     <button onclick="voltarComprar()">Voltar às compras</button>
