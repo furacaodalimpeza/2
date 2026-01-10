@@ -900,6 +900,36 @@ mark {
   background: #d93636;
 }
 
+  .resumo-avaliacao {
+  margin: 10px 0 20px;
+  font-size: 18px;
+  font-weight: bold;
+  background: #f3f7ff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+/* ANIMAÇÃO DA MÉDIA */
+.animar-media {
+  animation: pulse 0.4s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    background-color: #f3f7ff;
+  }
+  50% {
+    transform: scale(1.08);
+    background-color: #dbe7ff;
+  }
+  100% {
+    transform: scale(1);
+    background-color: #f3f7ff;
+  }
+}
+
 </style>
 </head>
 
@@ -2949,27 +2979,25 @@ estrelas.forEach(e => e.style.opacity = "0.3");
 // CALCULAR MÉDIA
 function atualizarMedia() {
   const avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
-
   const total = avaliacoes.length;
 
   const mediaEl = document.getElementById("mediaAvaliacao");
   const totalEl = document.getElementById("totalAvaliacoes");
 
   if (total === 0) {
-    mediaEl.innerText = "0.0";
-    totalEl.innerText = "0";
+    if (mediaEl) mediaEl.innerText = "0.0";
+    if (totalEl) totalEl.innerText = "0";
     return;
   }
 
   let soma = 0;
-  avaliacoes.forEach(a => soma += a.nota);
+  avaliacoes.forEach(a => soma += Number(a.nota));
 
   const media = soma / total;
 
-  mediaEl.innerText = media.toFixed(1);
-  totalEl.innerText = total;
+  if (mediaEl) mediaEl.innerText = media.toFixed(1);
+  if (totalEl) totalEl.innerText = total;
 
-  // ✅ ANIMAÇÃO AQUI DENTRO
   const box = document.querySelector(".resumo-avaliacao");
   if (box) {
     box.classList.remove("animar-media");
@@ -3024,8 +3052,17 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
   <section class="avaliacoes-publicas">
+
   <h2>⭐ Avaliações dos clientes</h2>
+
+  <!-- RESUMO DA AVALIAÇÃO (OPÇÃO 2 AQUI) -->
+  <div class="resumo-avaliacao">
+    ⭐ <span id="mediaAvaliacao">0.0</span>
+    (<span id="totalAvaliacoes">0</span> avaliações)
+  </div>
+
   <div id="listaAvaliacoes"></div>
+
 </section>
 
   <footer class="rodape">
