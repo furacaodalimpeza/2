@@ -186,18 +186,29 @@ h2 { text-align: center; color: #0a7cff; }
 
 /* BOTÃO WHATSAPP ANIMADO */
 .btn-whatsapp {
-  background: #25D366;
-  color: white;
-  border: none;
+  background: #ccc;
+  color: #666;
   padding: 14px;
-  width: 100%;
   border-radius: 10px;
+  border: none;
+  width: 100%;
   font-size: 16px;
   font-weight: bold;
-  cursor: pointer;
-  animation: pulse 1.5s infinite;
-  margin-top: 10px;
+  cursor: not-allowed;
+  transition: 0.3s;
 }
+
+.btn-whatsapp.ativo {
+  background: #25D366;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-whatsapp.ativo:hover {
+  background: #1ebe5d;
+  transform: scale(1.03);
+}
+
 @keyframes pulse {
   0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
   70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
@@ -2629,7 +2640,12 @@ mark {
 <ul id="lista"></ul>
 <p><strong>Total: R$ <span id="total">0.00</span></strong></p>
 
-<button id="btnWhatsapp" class="btn-whatsapp" onclick="abrirModal()">
+<button
+  id="btnWhatsapp"
+  class="btn-whatsapp"
+  onclick="abrirModal()"
+  disabled
+>
   Enviar pelo WhatsApp
 </button>
 
@@ -2730,10 +2746,13 @@ function atualizar() {
 if (topo) topo.innerText = nome;
   document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
 
-  btnWhatsapp.disabled = carrinho.length === 0;
-  if(!btnWhatsapp.disabled) {
-    btnWhatsapp.classList.add("liberado");
-    setTimeout(()=>btnWhatsapp.classList.remove("liberado"),400);
+  if (carrinho.length > 0) {
+  btnWhatsapp.disabled = false;
+  btnWhatsapp.classList.add("ativo");
+} else {
+  btnWhatsapp.disabled = true;
+  btnWhatsapp.classList.remove("ativo");
+}
 
     const totalFlutuante = document.getElementById("totalFlutuante");
 const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
