@@ -804,14 +804,6 @@ mark {
   padding: 15px;
 }
 
-.avaliacao-card {
-  background: #fff;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.15);
-}
-
   /* ANIMAÇÃO DA MÉDIA */
 .resumo-avaliacao {
   font-weight: bold;
@@ -863,15 +855,6 @@ mark {
   0% { transform: scale(1); }
   50% { transform: scale(1.15); }
   100% { transform: scale(1); }
-}
-
-/* ANIMAÇÃO DAS AVALIAÇÕES */
-.avaliacao-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 12px;
-  margin-top: 10px;
-  animation: slideIn 0.4s ease;
 }
 
 @keyframes slideIn {
@@ -2757,16 +2740,15 @@ if (topo) topo.innerText = nome;
     const totalFlutuante = document.getElementById("totalFlutuante");
 const totalFlutuanteValor = document.getElementById("totalFlutuanteValor");
 
-totalFlutuanteValor.innerText = totalGeral.toFixed(2);
-totalFlutuante.style.display = carrinho.length ? "flex" : "none";
+if (totalFlutuante && totalFlutuanteValor) {
+  totalFlutuanteValor.innerText = totalGeral.toFixed(2);
+  totalFlutuante.style.display = carrinho.length ? "flex" : "none";
 
-if (totalGeral !== ultimoTotal) {
-  totalFlutuante.classList.remove("animar");
-  void totalFlutuante.offsetWidth;
-  totalFlutuante.classList.add("animar");
-  ultimoTotal = totalGeral;
-}
-
+  if (totalGeral !== ultimoTotal) {
+    totalFlutuante.classList.remove("animar");
+    void totalFlutuante.offsetWidth;
+    totalFlutuante.classList.add("animar");
+    ultimoTotal = totalGeral;
   }
 }
 
@@ -2846,7 +2828,7 @@ function filtrarProdutos() {
       const regex = new RegExp(`(${texto})`, "gi");
       h3.innerHTML = nomeOriginal.replace(
         regex,
-        `<span class="destaque">$1</span>`
+        `<mark>$1</mark>`
       );
     } else {
       produto.style.display = "none";
