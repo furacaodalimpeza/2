@@ -2874,15 +2874,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function atualizarMedia() {
   const avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+
   if (avaliacoes.length === 0) {
     document.getElementById("mediaAvaliacao").innerText = "0.0";
     return;
   }
 
-  const soma = avaliacoes.reduce((total, av) => total + av.nota, 0);
+  let soma = 0;
+
+  avaliacoes.forEach(av => {
+    if (typeof av.nota === "number") {
+      soma += av.nota;
+    }
+  });
+
   const media = soma / avaliacoes.length;
 
   document.getElementById("mediaAvaliacao").innerText = media.toFixed(1);
+}
+
+  function avaliar(nota) {
+  const comentario = document.getElementById("textoAvaliacao").value.trim();
+
+  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+
+  avaliacoes.push({
+    nota: Number(nota),   // ⚠️ ISSO É O MAIS IMPORTANTE
+    comentario: comentario
+  });
+
+  localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
+
+  atualizarMedia();
+  mostrarAvaliacoes();
+
+  document.getElementById("msgAvaliacao").innerText =
+    "Obrigado pela sua avaliação 💙";
 }
 
 </script>
