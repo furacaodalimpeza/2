@@ -652,7 +652,7 @@ mark {
 
   <div class="header-conteudo">
     <h1>🌪️ Furacão da Limpeza 🛒</h1>
-    <p><p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
+    <p>Sinta-se em casa 💙 Tudo para cuidar do seu lar com carinho</p>
   </div>
 
 </header>
@@ -736,11 +736,11 @@ mark {
 <div class="variacoes">
   <div class="linha">
     <span>2L — R$ 6,00</span>
-    <button onclick="addProduto('Desifetante Jorge Tadeu 2L',6)">Adicionar</button>
+    <button onclick="addProduto('Desinfetante Jorge Tadeu 2L',6)">Adicionar</button>
   </div>
   <div class="linha">
     <span>5L — R$ 15,00</span>
-    <button onclick="addProduto('Desifetante Jorge Tadeu 5L',15)">Adicionar</button>
+    <button onclick="addProduto('Desinfetante Jorge Tadeu 5L',15)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -991,7 +991,7 @@ mark {
 <div class="variacoes">
   <div class="linha">
     <span> Candura 500ML — R$ 3,50</span>
-    <button onclick="addProduto('Dtergente Candura 350ML',3,50)">Adicionar</button>
+    <button onclick="addProduto('Detergente Candura 350ML',3.5)">Adicionar</button>
   </div>
   <div class="linha">
     <span> Ypê 500ML — R$ 4,00</span>
@@ -1699,7 +1699,7 @@ mark {
 <h3>Varal Intimo</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>R$ 17,00</span>//
+    <span>R$ 17,00</span>
     <button onclick="addProduto('Varal Intimo ',17)">Adicionar</button>
   </div>
 </div>
@@ -1779,7 +1779,7 @@ mark {
 <div class="variacoes">
   <div class="linha">
     <span> Rodo Pequeno 30 CM R$ 13,00</span>
-    <button onclick="addProduto('Rodo Pequeno 30 CM,13)">Adicionar</button>
+   <button onclick="addProduto('Rodo Pequeno 30 CM',13)">Adicionar</button>
   </div>
   <div class="linha">
     <span> Rodo Médio 40 CM R$ 16,00</span>
@@ -2350,16 +2350,20 @@ let ultimoTotal = 0;
 // FUNÇÃO PARA ADICIONAR PRODUTO
 function addProduto(nome, preco) {
   let item = carrinho.find(p => p.nome === nome);
-  if(item) item.qtd++;
-  else carrinho.push({nome, preco, qtd:1});
+  if (item) item.qtd++;
+  else carrinho.push({ nome, preco, qtd: 1 });
 
   const som = document.getElementById("somAdd");
-  som.currentTime = 0;
-  som.play().catch(()=>{});
+  if (som) {
+    som.currentTime = 0;
+    som.play().catch(() => {});
+  }
 
   const btn = document.getElementById("btnCarrinho");
-  btn.classList.add("animar");
-  setTimeout(()=>btn.classList.remove("animar"),200);
+  if (btn) {
+    btn.classList.add("animar");
+    setTimeout(() => btn.classList.remove("animar"), 200);
+  }
 
   atualizar();
 }
@@ -2395,10 +2399,11 @@ function atualizar() {
   });
 
   totalEl.innerText = totalGeral.toFixed(2);
-  contador.innerText = itens;
+  if (contador) contador.innerText = itens;
 
   const nome = localStorage.getItem("nomeCliente") || "não informado";
-  document.getElementById("nomeClienteTopo").innerText = nome;
+  const topo = document.getElementById("nomeClienteTopo");
+if (topo) topo.innerText = nome;
   document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
 
   btnWhatsapp.disabled = carrinho.length === 0;
@@ -2591,35 +2596,6 @@ function confirmarPedido() {
   mostrarCategoria("limpeza", document.querySelector(".abas button"));
 }
 
-function filtrarProdutos() {
-  const termo = document.getElementById("pesquisaProduto").value.toLowerCase();
-  const produtos = document.querySelectorAll(".produto");
-  const limpar = document.getElementById("limparBusca");
-
-  produtos.forEach(produto => {
-    produto.style.display = produto.innerText.toLowerCase().includes(termo)
-      ? "block"
-      : "none";
-  });
-
-  limpar.style.display = termo ? "block" : "none";
-}
-
-function limparBusca() {
-  document.getElementById("pesquisaProduto").value = "";
-  filtrarProdutos();
-}
-
-  // volta só para a aba ativa
-  document.querySelectorAll(".categoria").forEach(cat => {
-    cat.style.display = "none";
-    cat.classList.remove("ativa");
-  });
-
-  document.getElementById("limpeza").style.display = "block";
-  document.getElementById("limpeza").classList.add("ativa");
-}
-
 function limparBusca() {
   document.getElementById("pesquisaProduto").value = "";
   filtrarProdutos();
@@ -2649,14 +2625,6 @@ window.addEventListener("scroll", () => {
 function voltarTopo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-
-// MOSTRA / ESCONDE BOTÃO AO ROLAR
-window.addEventListener("scroll", () => {
-  const btn = document.getElementById("btnTopo");
-  if (!btn) return;
-  btn.style.display = window.scrollY > 400 ? "flex" : "none";
-});
 
 </script>
 
