@@ -637,6 +637,56 @@ mark {
   100% { transform: scale(1); }
 }
 
+  .rodape {
+  background: linear-gradient(135deg, #0d47a1, #1976d2);
+  color: #fff;
+  padding: 40px 20px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.rodape-conteudo {
+  max-width: 900px;
+  margin: auto;
+}
+
+.rodape h3 {
+  font-size: 26px;
+  margin-bottom: 15px;
+}
+
+.rodape p {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.rodape .entrega {
+  font-size: 17px;
+}
+
+.rodape .contato a {
+  color: #ffeb3b;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.rodape .contato a:hover {
+  text-decoration: underline;
+}
+
+.divisor {
+  width: 80px;
+  height: 3px;
+  background: #ffeb3b;
+  margin: 20px auto;
+  border-radius: 5px;
+}
+
+.copy {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
 </style>
 </head>
 
@@ -2629,18 +2679,28 @@ function voltarTopo() {
 </script>
 
   <footer class="rodape">
-  <p><strong>🌪️🛒 Furacão da Limpeza</strong></p>
+  <div class="rodape-conteudo">
 
-  <p>
-    Fazemos entregas por <strong>todo Sorocaba</strong> 🚚💙<br>
-    Os pedidos podem ser feitos pelo nosso site ou pelo e-mail:
-  </p>
+    <h3>🛒 Furacão da Limpeza</h3>
 
-  <p class="email">📧 furacaodalimpeza027@gmail.com</p>
+    <p class="entrega">
+      🚚 Fazemos entregas por todo <strong>Sorocaba</strong>
+    </p>
 
-  <p class="copy">
-    © 2026 Furacão da Limpeza • Todos os direitos reservados
-  </p>
+    <p class="contato">
+      📧 Pedidos pelo site ou e-mail:<br>
+      <a href="mailto:furacaodalimpieza027@gmail.com">
+        furacaodalimpieza027@gmail.com
+      </a>
+    </p>
+
+    <div class="divisor"></div>
+
+    <p class="copy">
+      © 2026 Furacão da Limpeza • Todos os direitos reservados
+    </p>
+
+  </div>
 </footer>
 
   <!-- BOTÃO VOLTAR AO TOPO -->
