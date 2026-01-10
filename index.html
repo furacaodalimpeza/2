@@ -801,6 +801,90 @@ mark {
   box-shadow: 0 2px 8px rgba(0,0,0,.15);
 }
 
+  /* ANIMAÇÃO DA MÉDIA */
+.resumo-avaliacao {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.animar-media {
+  animation: pulseMedia 0.6s ease;
+}
+
+@keyframes pulseMedia {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* ANIMAÇÃO DAS AVALIAÇÕES */
+.avaliacao-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 10px;
+  animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ESTRELAS */
+/* ANIMAÇÃO DA MÉDIA */
+.resumo-avaliacao {
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.animar-media {
+  animation: pulseMedia 0.6s ease;
+}
+
+@keyframes pulseMedia {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* ANIMAÇÃO DAS AVALIAÇÕES */
+.avaliacao-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 10px;
+  animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ESTRELAS */
+.avaliar-loja .estrelas span {
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.avaliar-loja .estrelas span:hover {
+  transform: scale(1.2);
+}
+
 </style>
 </head>
 
@@ -2799,51 +2883,81 @@ function voltarTopo() {
 
 let estrelaSelecionada = 0;
 
-// SELECIONA ESTRELA
+// SELECIONAR ESTRELAS
 function selecionarEstrela(nota) {
   estrelaSelecionada = nota;
 
-  document.querySelectorAll(".estrelas span").forEach((e, i) => {
+  document.querySelectorAll(".avaliar-loja .estrelas span").forEach((e, i) => {
     e.style.opacity = i < nota ? "1" : "0.3";
   });
 }
 
-// ENVIA AVALIAÇÃO
+// ENVIAR AVALIAÇÃO
 function enviarAvaliacao() {
   if (estrelaSelecionada === 0) {
     alert("Selecione uma quantidade de estrelas ⭐");
     return;
   }
 
+  const comentario = document.getElementById("textoAvaliacao").value.trim();
+
   let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
 
   avaliacoes.push({
-    estrelas: estrelaSelecionada,
-    comentario: document.getElementById("comentario").value.trim()
+    nota: estrelaSelecionada,
+    comentario: comentario
   });
 
   localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
 
-  document.getElementById("comentario").value = "";
+  document.getElementById("textoAvaliacao").value = "";
   estrelaSelecionada = 0;
 
   atualizarMedia();
   mostrarAvaliacoes();
+
+  const estrelas = document.querySelectorAll(".avaliar-loja .estrelas span");
+estrelas.forEach(e => e.style.opacity = "0.3");
+
+  document.getElementById("msgAvaliacao").innerText =
+    "Obrigado pela sua avaliação 💙";
 }
 
-// CALCULA MÉDIA CORRETAMENTE
+// CALCULAR MÉDIA
 function atualizarMedia() {
-  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
-  if (avaliacoes.length === 0) return;
+  const avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
 
-  let soma = avaliacoes.reduce((total, a) => total + a.estrelas, 0);
-  let media = soma / avaliacoes.length;
+  const total = avaliacoes.length;
 
-  document.getElementById("mediaAvaliacao").innerText = media.toFixed(1);
+  const mediaEl = document.getElementById("mediaAvaliacao");
+  const totalEl = document.getElementById("totalAvaliacoes");
+
+  if (total === 0) {
+    mediaEl.innerText = "0.0";
+    totalEl.innerText = "0";
+    return;
+  }
+
+  let soma = 0;
+  avaliacoes.forEach(a => soma += a.nota);
+
+  const media = soma / total;
+
+  mediaEl.innerText = media.toFixed(1);
+  totalEl.innerText = total;
+
+  // ✅ ANIMAÇÃO AQUI DENTRO
+  const box = document.querySelector(".resumo-avaliacao");
+  if (box) {
+    box.classList.remove("animar-media");
+    void box.offsetWidth;
+    box.classList.add("animar-media");
+  }
 }
 
-  function mostrarAvaliacoes() {
-  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+// MOSTRAR AVALIAÇÕES
+function mostrarAvaliacoes() {
+  const avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
   const lista = document.getElementById("listaAvaliacoes");
   if (!lista) return;
 
@@ -2852,70 +2966,30 @@ function atualizarMedia() {
   avaliacoes.slice().reverse().forEach(a => {
     lista.innerHTML += `
       <div class="avaliacao-card">
-        <div class="estrelas">
-          ${"⭐".repeat(a.estrelas)}
-        </div>
+        <div class="estrelas">${"⭐".repeat(a.nota)}</div>
         <p>${a.comentario || "Sem comentário"}</p>
       </div>
     `;
   });
 }
 
-// CARREGA AO ABRIR O SITE
+// AO ABRIR O SITE
 document.addEventListener("DOMContentLoaded", () => {
   atualizarMedia();
   mostrarAvaliacoes();
 });
 
-  document.addEventListener("DOMContentLoaded", () => {
-  atualizarMedia();
-  mostrarAvaliacoes();
-});
-
-  function atualizarMedia() {
-  const avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
-
-  if (avaliacoes.length === 0) {
-    document.getElementById("mediaAvaliacao").innerText = "0.0";
-    return;
-  }
-
-  let soma = 0;
-
-  avaliacoes.forEach(av => {
-    if (typeof av.nota === "number") {
-      soma += av.nota;
-    }
-  });
-
-  const media = soma / avaliacoes.length;
-
-  document.getElementById("mediaAvaliacao").innerText = media.toFixed(1);
-}
-
-  function avaliar(nota) {
-  const comentario = document.getElementById("textoAvaliacao").value.trim();
-
-  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
-
-  avaliacoes.push({
-    nota: Number(nota),   // ⚠️ ISSO É O MAIS IMPORTANTE
-    comentario: comentario
-  });
-
-  localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
-
-  atualizarMedia();
-  mostrarAvaliacoes();
-
-  document.getElementById("msgAvaliacao").innerText =
-    "Obrigado pela sua avaliação 💙";
-}
-
 </script>
 
- <section class="avaliacoes">
+<section class="avaliacoes">
   <h2>⭐ O que nossos clientes dizem</h2>
+
+  <div class="resumo-avaliacao">
+    ⭐ <span id="mediaAvaliacao">0.0</span>
+    (<span id="totalAvaliacoes">0</span> avaliações)
+  </div>
+
+</section>
 
   <div class="avaliacoes-box">
 
@@ -2989,7 +3063,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <!-- AVALIAÇÃO DA LOJA -->
 <div class="avaliar-loja">
 
-  <p><strong>⭐ Avalie nossa loja</strong></p>
+  <h3>⭐ Avalie nossa loja</h3>
 
   <div class="estrelas">
     <span onclick="selecionarEstrela(1)">⭐</span>
@@ -2999,18 +3073,16 @@ document.addEventListener("DOMContentLoaded", () => {
     <span onclick="selecionarEstrela(5)">⭐</span>
   </div>
 
-  <textarea id="comentario"
-    placeholder="Escreva o que achou da loja (opcional)"
-    rows="3"></textarea>
+  <textarea
+    id="textoAvaliacao"
+    placeholder="Escreva sua avaliação (opcional)"
+  ></textarea>
 
   <button onclick="enviarAvaliacao()">Enviar avaliação</button>
 
-  <p class="media">
-    ⭐ Média: <span id="mediaAvaliacao">0.0</span>
-  </p>
-
+  <p id="msgAvaliacao"></p>
 </div>
-
+    
     <button onclick="voltarComprar()">Voltar às compras</button>
   </div>
 </div>
