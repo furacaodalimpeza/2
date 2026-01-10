@@ -741,6 +741,33 @@ mark {
   }
 }
 
+  .media {
+  margin: 5px 0 10px;
+  font-weight: bold;
+  color: #f5a623;
+}
+
+.avaliar-loja {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.estrelas span {
+  font-size: 26px;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.estrelas span:hover {
+  transform: scale(1.2);
+}
+
+.msg-avaliacao {
+  margin-top: 6px;
+  color: #1b7f3b;
+  font-weight: bold;
+}
+
 </style>
 </head>
 
@@ -2737,6 +2764,36 @@ function voltarTopo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function avaliar(nota) {
+  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+
+  avaliacoes.push(nota);
+  localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
+
+  atualizarMedia();
+
+  const estrelas = document.querySelectorAll(".avaliar-loja .estrelas span");
+  estrelas.forEach((e, i) => {
+    e.style.opacity = i < nota ? "1" : "0.3";
+  });
+
+  document.getElementById("msgAvaliacao").innerText =
+    "Obrigado pela sua avaliação 💙";
+}
+
+function atualizarMedia() {
+  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+  if (avaliacoes.length === 0) return;
+
+  let soma = avaliacoes.reduce((a, b) => a + b, 0);
+  let media = soma / avaliacoes.length;
+
+  document.getElementById("mediaAvaliacao").innerText = media.toFixed(1);
+}
+
+// CARREGA A MÉDIA QUANDO ABRIR A TELA
+document.addEventListener("DOMContentLoaded", atualizarMedia);
+  
 </script>
 
  <section class="avaliacoes">
@@ -2803,6 +2860,26 @@ function voltarTopo() {
    </p>
     
 <br>
+
+    <!-- AVALIAÇÃO DA LOJA -->
+<!-- AVALIAÇÃO DA LOJA -->
+<div class="avaliar-loja">
+  <p><strong>⭐ Avaliação da loja</strong></p>
+
+  <p class="media">
+    Média: <span id="mediaAvaliacao">0.0</span> ⭐
+  </p>
+
+  <div class="estrelas">
+    <span onclick="avaliar(1)">⭐</span>
+    <span onclick="avaliar(2)">⭐</span>
+    <span onclick="avaliar(3)">⭐</span>
+    <span onclick="avaliar(4)">⭐</span>
+    <span onclick="avaliar(5)">⭐</span>
+  </div>
+
+  <p id="msgAvaliacao" class="msg-avaliacao"></p>
+</div>
 
     <button onclick="voltarComprar()">Voltar às compras</button>
   </div>
