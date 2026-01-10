@@ -885,6 +885,21 @@ mark {
   transform: scale(1.2);
 }
 
+  .btn-remover {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.btn-remover:hover {
+  background: #d93636;
+}
+
 </style>
 </head>
 
@@ -2963,14 +2978,32 @@ function mostrarAvaliacoes() {
 
   lista.innerHTML = "";
 
-  avaliacoes.slice().reverse().forEach(a => {
+  avaliacoes.slice().reverse().forEach((a, index) => {
+    const realIndex = avaliacoes.length - 1 - index;
+
     lista.innerHTML += `
       <div class="avaliacao-card">
         <div class="estrelas">${"⭐".repeat(a.nota)}</div>
         <p>${a.comentario || "Sem comentário"}</p>
+
+        <button class="btn-remover" onclick="removerAvaliacao(${realIndex})">
+          ❌ Remover
+        </button>
       </div>
     `;
   });
+}
+
+function removerAvaliacao(index) {
+  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+
+  if (!confirm("Deseja remover esta avaliação?")) return;
+
+  avaliacoes.splice(index, 1);
+  localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
+
+  atualizarMedia();
+  mostrarAvaliacoes();
 }
 
 // AO ABRIR O SITE
