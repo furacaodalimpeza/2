@@ -2872,6 +2872,19 @@ document.addEventListener("DOMContentLoaded", () => {
   mostrarAvaliacoes();
 });
 
+  function atualizarMedia() {
+  const avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+  if (avaliacoes.length === 0) {
+    document.getElementById("mediaAvaliacao").innerText = "0.0";
+    return;
+  }
+
+  const soma = avaliacoes.reduce((total, av) => total + av.nota, 0);
+  const media = soma / avaliacoes.length;
+
+  document.getElementById("mediaAvaliacao").innerText = media.toFixed(1);
+}
+
 </script>
 
  <section class="avaliacoes">
