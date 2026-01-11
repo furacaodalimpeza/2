@@ -948,6 +948,12 @@ mark {
   transform: scale(1.03);
 }
 
+  html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* impede mexer para os lados */
+}
+
 </style>
 </head>
 
@@ -2665,6 +2671,16 @@ mark {
   </div> 
   
 <script>
+
+  function getUserId() {
+  let id = localStorage.getItem("userId");
+  if (!id) {
+    id = "user_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
+    localStorage.setItem("userId", id);
+  }
+  return id;
+}
+
 let carrinho = [];
 let totalGeral = 0;
 let ultimoTotal = 0;
@@ -2864,10 +2880,13 @@ function abrirModal() {
     alert("🛒 Seu carrinho está vazio.");
     return;
   }
+
+  document.body.style.overflow = "hidden"; // TRAVA A TELA
   document.getElementById("modalCliente").style.display = "flex";
 }
 
 function fecharModal() {
+  document.body.style.overflow = "auto"; // LIBERA A TELA
   document.getElementById("modalCliente").style.display = "none";
 }
 
@@ -2883,6 +2902,7 @@ function confirmarPedido() {
   }
 
   const numeroPedido = gerarNumeroPedido();
+  localStorage.setItem("pedidoAtual", numeroPedido);
 
   let msg = "";
   msg += "🧾 *Pedido Nº " + numeroPedido + " – 🌪️🛒Furacão da Limpeza*%0A%0A";
@@ -2964,6 +2984,19 @@ function selecionarEstrela(nota) {
 
 // ENVIAR AVALIAÇÃO
 function enviarAvaliacao() {
+  
+  const pedidoAtual = localStorage.getItem("pedidoAtual");
+
+if (!pedidoAtual) {
+  alert("Avaliação disponível apenas após um pedido 😊");
+  return;
+}
+
+if (localStorage.getItem("avaliado_" + pedidoAtual)) {
+  alert("Este pedido já foi avaliado ⭐");
+  return;
+}
+
   if (estrelaSelecionada === 0) {
     alert("Selecione uma quantidade de estrelas ⭐");
     return;
@@ -2980,12 +3013,15 @@ if (!nome) {
   let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
 
  avaliacoes.push({
+  id: Date.now(),
+  userId: getUserId(),
   nome: nome,
   nota: estrelaSelecionada,
   comentario: comentario
 });
 
   localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
+  localStorage.setItem("avaliado_" + pedidoAtual, "true");
 
   document.getElementById("textoAvaliacao").value = "";
   document.getElementById("nomeCliente").value = "";
@@ -2999,6 +3035,10 @@ estrelas.forEach(e => e.style.opacity = "0.3");
 
   document.getElementById("msgAvaliacao").innerText =
     "Obrigado pela sua avaliação 💙";
+  
+  document.getElementById("boxAvaliacao").style.display = "none";
+document.getElementById("msgObrigadoAvaliacao").style.display = "block";
+
 }
 
 // CALCULAR MÉDIA
@@ -3037,6 +3077,7 @@ function mostrarAvaliacoes() {
   const lista = document.getElementById("listaAvaliacoes");
   if (!lista) return;
 
+  const meuId = getUserId();
   lista.innerHTML = "";
 
   avaliacoes.slice().reverse().forEach((a, index) => {
@@ -3048,9 +3089,13 @@ function mostrarAvaliacoes() {
         <p>${a.comentario || "Sem comentário"}</p>
         <strong>— ${a.nome || "Cliente"}</strong>
 
-        <button class="btn-remover" onclick="removerAvaliacao(${realIndex})">
-          ❌ Remover
-        </button>
+        ${
+          a.userId === meuId
+            ? `<button class="btn-remover" onclick="removerAvaliacao(${realIndex})">
+                ❌ Remover minha avaliação
+              </button>`
+            : ""
+        }
       </div>
     `;
   });
@@ -3133,7 +3178,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <br>
 
     <!-- AVALIAÇÃO DA LOJA -->
-<div class="avaliar-loja">
+<div class="avaliar-loja" id="boxAvaliacao">
 
   <h3>⭐ Avalie nossa loja</h3>
 
@@ -3145,6 +3190,11 @@ document.addEventListener("DOMContentLoaded", () => {
     <span onclick="selecionarEstrela(5)">⭐</span>
   </div>
 
+  <p id="msgObrigadoAvaliacao" style="display:none; font-size:16px; color:#1e88e5; margin-top:15px;">
+  💙 Obrigado por avaliar o nosso site do <strong>Furacão da Limpeza</strong>!  
+  Sua avaliação nos inspira a melhorar todos os dias e entregar sempre o melhor para você 🚀💙
+</p>
+  
   <input
   type="text"
   id="nomeCliente"
