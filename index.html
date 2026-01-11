@@ -954,6 +954,36 @@ mark {
   overflow-x: hidden; /* impede mexer para os lados */
 }
 
+  .avaliacao-admin {
+  border: 2px solid #1e88e5;
+  background: #f1f8ff;
+}
+
+.topo-avaliacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selo-admin {
+  background: #1e88e5;
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.btn-remover {
+  margin-top: 8px;
+  background: #ff5252;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 </style>
 </head>
 
@@ -2681,6 +2711,10 @@ mark {
   return id;
 }
 
+  function isAdmin() {
+  return localStorage.getItem("adminFuracao") === "true";
+}
+
 let carrinho = [];
 let totalGeral = 0;
 let ultimoTotal = 0;
@@ -3017,7 +3051,8 @@ if (!nome) {
   userId: getUserId(),
   nome: nome,
   nota: estrelaSelecionada,
-  comentario: comentario
+  comentario: comentario,
+  admin: isAdmin()
 });
 
   localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
@@ -3083,16 +3118,23 @@ function mostrarAvaliacoes() {
   avaliacoes.slice().reverse().forEach((a, index) => {
     const realIndex = avaliacoes.length - 1 - index;
 
+    const classeAdmin = a.admin ? "avaliacao-admin" : "";
+    const seloAdmin = a.admin ? `<span class="selo-admin">ADMIN</span>` : "";
+
     lista.innerHTML += `
-      <div class="avaliacao-card">
-        <div class="estrelas">${"⭐".repeat(a.nota)}</div>
+      <div class="avaliacao-card ${classeAdmin}">
+        <div class="topo-avaliacao">
+          <div class="estrelas">${"⭐".repeat(a.nota)}</div>
+          ${seloAdmin}
+        </div>
+
         <p>${a.comentario || "Sem comentário"}</p>
         <strong>— ${a.nome || "Cliente"}</strong>
 
         ${
-          a.userId === meuId
+          (isAdmin() || a.userId === meuId)
             ? `<button class="btn-remover" onclick="removerAvaliacao(${realIndex})">
-                ❌ Remover minha avaliação
+                ❌ Remover
               </button>`
             : ""
         }
@@ -3103,6 +3145,15 @@ function mostrarAvaliacoes() {
 
 function removerAvaliacao(index) {
   let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+  const meuId = getUserId();
+
+  if (!avaliacoes[index]) return;
+
+  // 🔒 VERIFICA PERMISSÃO
+  if (!isAdmin() && avaliacoes[index].userId !== meuId) {
+    alert("Você não tem permissão para remover este comentário.");
+    return;
+  }
 
   if (!confirm("Deseja remover esta avaliação?")) return;
 
