@@ -2702,6 +2702,12 @@ mark {
   
 <script>
 
+/* 🔐 ATIVAR ADMIN PELO LINK */
+const params = new URLSearchParams(window.location.search);
+if (params.get("admin") === "0000") {
+  localStorage.setItem("adminFuracao", "true");
+}
+
   function getUserId() {
   let id = localStorage.getItem("userId");
   if (!id) {
