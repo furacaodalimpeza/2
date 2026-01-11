@@ -984,6 +984,21 @@ mark {
   cursor: pointer;
 }
 
+  #seloVerificado {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+  background: #1e88e5;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,.3);
+  z-index: 9999;
+  display: none;
+}
+
 </style>
 </head>
 
@@ -3176,6 +3191,13 @@ document.addEventListener("DOMContentLoaded", () => {
   mostrarAvaliacoes();
 });
 
+  document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("adminFuracao") === "true") {
+    const selo = document.getElementById("seloVerificado");
+    if (selo) selo.style.display = "block";
+  }
+});
+
 </script>
 
   <section class="avaliacoes-publicas">
@@ -3273,6 +3295,8 @@ document.addEventListener("DOMContentLoaded", () => {
     <button onclick="voltarComprar()">Voltar às compras</button>
   </div>
 </div>
-  
+
+  <div id="seloVerificado">✔️ Verificado</div>
+
 </body>
 </html>
