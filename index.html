@@ -3283,59 +3283,60 @@ function mostrarAvaliacoes() {
         const podeRemover = souAdmin || a.userId === meuId;
 
         lista.innerHTML += `
-  <div class="avaliacao-card ${a.admin ? "avaliacao-admin" : ""}">
-    
-    <div class="topo-avaliacao">
-      <div class="estrelas">
-        ${renderEstrelas(a.nota)}
-      </div>
-      ${a.admin ? `<span class="selo-admin">ADMIN</span>` : ""}
-    </div>
+          <div class="avaliacao-card ${a.admin ? "avaliacao-admin" : ""}">
+            
+            <div class="topo-avaliacao">
+              <div class="estrelas">
+                ${renderEstrelas(a.nota)}
+              </div>
+              ${a.admin ? `<span class="selo-admin">ADMIN</span>` : ""}
+            </div>
 
-    <p>${a.comentario || "Sem comentário"}</p>
-    <strong>— ${a.nome}</strong>
+            <p>${a.comentario || "Sem comentário"}</p>
+            <strong>— ${a.nome}</strong>
 
-    ${
-      a.respostaAdmin
-        ? `<div class="resposta-admin">
-             <strong>Resposta da loja:</strong>
-             <p>${a.respostaAdmin}</p>
-           </div>`
-        : ""
-    }
+            ${
+              a.respostaAdmin
+                ? `<div class="resposta-admin">
+                     <strong>Resposta da loja:</strong>
+                     <p>${a.respostaAdmin}</p>
+                   </div>`
+                : ""
+            }
 
-    ${
-      souAdmin && !a.respostaAdmin
-        ? `
-        <textarea id="resp_${doc.id}"
-          placeholder="Responder avaliação..."></textarea>
+            ${
+              souAdmin && !a.respostaAdmin
+                ? `
+                <textarea id="resp_${doc.id}"
+                  placeholder="Responder avaliação..."></textarea>
 
-        <button onclick="responderAvaliacao('${doc.id}')">
-          Responder
-        </button>
-        `
-        : ""
-    }
+                <button onclick="responderAvaliacao('${doc.id}')">
+                  Responder
+                </button>
+                `
+                : ""
+            }
 
-    ${
-      podeRemover
-        ? `
-        <button class="btn-remover"
-          onclick="removerAvaliacao('${doc.id}', '${a.userId}')">
-          🗑️ Remover
-        </button>
-        `
-        : ""
-    }
-
-  </div>
-`;
+            ${
+              podeRemover
+                ? `
+                <button class="btn-remover"
+                  onclick="removerAvaliacao('${doc.id}', '${a.userId}')">
+                  🗑️ Remover
+                </button>
+                `
+                : ""
+            }
+          </div>
+        `;
+      });
+    });
+}
 
 
 function removerAvaliacao(idDoc, donoId) {
   const meuId = getUserId();
 
-  // 🔐 Permissão
   if (!isAdmin() && donoId !== meuId) {
     alert("Você não pode remover este comentário.");
     return;
@@ -3344,13 +3345,8 @@ function removerAvaliacao(idDoc, donoId) {
   if (!confirm("Deseja remover este comentário?")) return;
 
   db.collection("avaliacoes").doc(idDoc).delete()
-    .then(() => {
-      alert("Comentário removido com sucesso");
-    })
-    .catch(err => {
-      alert("Erro ao remover comentário");
-      console.error(err);
-    });
+    .then(() => alert("Comentário removido"))
+    .catch(() => alert("Erro ao remover"));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -3363,9 +3359,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function renderEstrelas(nota) {
-  let html = "";
+function responderAvaliacao(idDoc) {
+  const campo = document.getElementById("resp_" + idDoc);
+  if (!campo) return;
 
+  const texto = campo.value.trim();
+  if (!texto) {
+    alert("Digite uma resposta");
+    return;
+  }
+
+  db.collection("avaliacoes")
+    .doc(idDoc)
+    .update({ respostaAdmin: texto })
+    .then(() => alert("Resposta enviada ✅"));
+}
+
+        function renderEstrelas(nota) {
+  let html = "";
   for (let i = 1; i <= 5; i++) {
     if (nota >= i) {
       html += `<span class="estrela cheia">★</span>`;
@@ -3375,32 +3386,7 @@ function renderEstrelas(nota) {
       html += `<span class="estrela vazia">★</span>`;
     }
   }
-
   return html;
-}
-
-        function responderAvaliacao(idDoc) {
-  const texto = document
-    .getElementById("resp_" + idDoc)
-    .value
-    .trim();
-
-  if (!texto) {
-    alert("Digite uma resposta");
-    return;
-  }
-
-  db.collection("avaliacoes")
-    .doc(idDoc)
-    .update({
-      respostaAdmin: texto
-    })
-    .then(() => {
-      alert("Resposta enviada com sucesso ✅");
-    })
-    .catch(() => {
-      alert("Erro ao responder");
-    });
 }
 
 </script>
