@@ -1015,6 +1015,42 @@ mark {
   -webkit-text-fill-color: transparent;
 }
 
+  .avaliar-loja .estrelas span {
+  font-size: 28px;
+  cursor: pointer;
+  color: #ccc; /* CINZA quando não selecionado */
+  transition: 0.2s;
+}
+
+.avaliar-loja .estrelas span.ativa {
+  color: gold; /* AMARELA cheia */
+}
+
+.avaliar-loja .estrelas span.meia {
+  background: linear-gradient(90deg, gold 50%, #ccc 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+  .estrela {
+  font-size: 20px;
+  margin-right: 2px;
+}
+
+.estrela.cheia {
+  color: gold;
+}
+
+.estrela.vazia {
+  color: #ccc;
+}
+
+.estrela.meia {
+  background: linear-gradient(90deg, gold 50%, #ccc 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 </style>
 </head>
 
@@ -3149,26 +3185,6 @@ function voltarTopo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-let estrelaSelecionada = 0;
-
-// SELECIONAR ESTRELAS (CORRETO)
-function selecionarEstrela(nota) {
-  estrelaSelecionada = nota;
-
-  document.querySelectorAll(".avaliar-loja .estrelas span")
-    .forEach((estrela, index) => {
-      const valor = index + 1;
-
-      estrela.classList.remove("ativa", "meia");
-
-      if (nota >= valor) {
-        estrela.classList.add("ativa");
-      } else if (nota + 0.5 === valor) {
-        estrela.classList.add("meia");
-      }
-    });
-}
-
 // ENVIAR AVALIAÇÃO
 function enviarAvaliacao() {
   
@@ -3214,7 +3230,8 @@ if (!nome) {
   estrelaSelecionada = 0;
 
   const estrelas = document.querySelectorAll(".avaliar-loja .estrelas span");
-estrelas.forEach(e => e.style.opacity = "0.3");
+document.querySelectorAll(".avaliar-loja .estrelas span")
+  .forEach(e => e.classList.remove("ativa", "meia"));
 
   document.getElementById("msgAvaliacao").innerText =
     "Obrigado pela sua avaliação 💙";
@@ -3227,38 +3244,21 @@ document.getElementById("msgObrigadoAvaliacao").style.display = "block";
 
 // CALCULAR MÉDIA
 function atualizarMedia() {
-  const mediaEl = document.getElementById("mediaAvaliacao");
-  const totalEl = document.getElementById("totalAvaliacoes");
-
-  if (!mediaEl || !totalEl) return;
-
-  db.collection("avaliacoes").onSnapshot(snapshot => {
-    let soma = 0;
+  db.collection("avaliacoes").get().then(snapshot => {
     let total = 0;
+    let soma = 0;
 
     snapshot.forEach(doc => {
-      const a = doc.data();
-      soma += Number(a.nota);
+      soma += doc.data().nota;
       total++;
     });
 
-    if (total === 0) {
-      mediaEl.innerText = "0.0";
-      totalEl.innerText = "0";
-      return;
-    }
+    if (total === 0) return;
 
-    const media = soma / total;
+    const media = (soma / total).toFixed(1);
 
-    mediaEl.innerText = media.toFixed(1);
-    totalEl.innerText = total;
-
-    const box = document.querySelector(".resumo-avaliacao");
-    if (box) {
-      box.classList.remove("animar-media");
-      void box.offsetWidth;
-      box.classList.add("animar-media");
-    }
+    document.getElementById("mediaNota").innerHTML =
+      renderEstrelas(media) + ` <span>(${media})</span>`;
   });
 }
 
@@ -3284,7 +3284,9 @@ function mostrarAvaliacoes() {
         lista.innerHTML += `
           <div class="avaliacao-card ${a.admin ? "avaliacao-admin" : ""}">
             <div class="topo-avaliacao">
-              <div class="estrelas">${"⭐".repeat(a.nota)}</div>
+           <div class="estrelas">
+          ${renderEstrelas(a.nota)}
+        </div>
               ${a.admin ? `<span class="selo-admin">ADMIN</span>` : ""}
             </div>
 
@@ -3334,6 +3336,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+function renderEstrelas(nota) {
+  let html = "";
+
+  for (let i = 1; i <= 5; i++) {
+    if (nota >= i) {
+      html += `<span class="estrela cheia">★</span>`;
+    } else if (nota >= i - 0.5) {
+      html += `<span class="estrela meia">★</span>`;
+    } else {
+      html += `<span class="estrela vazia">★</span>`;
+    }
+  }
+
+  return html;
+}
 
 </script>
 
@@ -3398,13 +3415,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   <h3>⭐ Avalie nossa loja</h3>
 
-  <div class="estrelas">
-    <span onclick="selecionarEstrela(1)">⭐</span>
-    <span onclick="selecionarEstrela(2)">⭐</span>
-    <span onclick="selecionarEstrela(3)">⭐</span>
-    <span onclick="selecionarEstrela(4)">⭐</span>
-    <span onclick="selecionarEstrela(5)">⭐</span>
-  </div>
+  <div class="estrelas" id="estrelas">
+  <span data-index="1">⭐</span>
+  <span data-index="2">⭐</span>
+  <span data-index="3">⭐</span>
+  <span data-index="4">⭐</span>
+  <span data-index="5">⭐</span>
+</div>
 
   <p id="msgObrigadoAvaliacao" style="display:none; font-size:16px; color:#1e88e5; margin-top:15px;">
   💙 Obrigado por avaliar o nosso site do <strong>Furacão da Limpeza</strong>!  
@@ -3434,6 +3451,56 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
   <div id="seloVerificado">✔️ Verificado</div>
+
+  <script>
+let estrelaSelecionada = 0;
+
+const estrelas = document.querySelectorAll(".estrelas span");
+
+function atualizarEstrelas(valor) {
+  estrelas.forEach((estrela, index) => {
+    estrela.classList.remove("ativa", "meia");
+
+    const estrelaValor = index + 1;
+
+    if (valor >= estrelaValor) {
+      estrela.classList.add("ativa");
+    } 
+    else if (valor + 0.5 === estrelaValor) {
+      estrela.classList.add("meia");
+    }
+  });
+}
+
+// clique com meia estrela
+estrelas.forEach((estrela, index) => {
+  estrela.addEventListener("mousemove", (e) => {
+    const largura = estrela.offsetWidth;
+    const x = e.offsetX;
+
+    if (x < largura / 2) {
+      atualizarEstrelas(index + 0.5);
+    } else {
+      atualizarEstrelas(index + 1);
+    }
+  });
+
+  estrela.addEventListener("mouseleave", () => {
+    atualizarEstrelas(estrelaSelecionada);
+  });
+
+  estrela.addEventListener("click", (e) => {
+    const largura = estrela.offsetWidth;
+    const x = e.offsetX;
+
+    estrelaSelecionada = x < largura / 2 ? index + 0.5 : index + 1;
+    atualizarEstrelas(estrelaSelecionada);
+  });
+});
+
+// começa tudo cinza
+atualizarEstrelas(0);
+</script>
 
 </body>
 </html>
