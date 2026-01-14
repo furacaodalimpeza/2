@@ -999,6 +999,22 @@ mark {
   display: none;
 }
 
+  .estrelas span {
+  font-size: 26px;
+  cursor: pointer;
+  color: #ccc; /* cinza quando não selecionado */
+}
+
+.estrelas span.ativa {
+  color: gold; /* cheia */
+}
+
+.estrelas span.meia {
+  background: linear-gradient(90deg, gold 50%, #ccc 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 </style>
 </head>
 
@@ -3135,13 +3151,22 @@ function voltarTopo() {
 
 let estrelaSelecionada = 0;
 
-// SELECIONAR ESTRELAS
+// SELECIONAR ESTRELAS (CORRETO)
 function selecionarEstrela(nota) {
   estrelaSelecionada = nota;
 
-  document.querySelectorAll(".avaliar-loja .estrelas span").forEach((e, i) => {
-    e.style.opacity = i < nota ? "1" : "0.3";
-  });
+  document.querySelectorAll(".avaliar-loja .estrelas span")
+    .forEach((estrela, index) => {
+      const valor = index + 1;
+
+      estrela.classList.remove("ativa", "meia");
+
+      if (nota >= valor) {
+        estrela.classList.add("ativa");
+      } else if (nota + 0.5 === valor) {
+        estrela.classList.add("meia");
+      }
+    });
 }
 
 // ENVIAR AVALIAÇÃO
