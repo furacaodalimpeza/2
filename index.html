@@ -999,31 +999,15 @@ mark {
   display: none;
 }
 
-  .estrelas span {
-  font-size: 26px;
-  cursor: pointer;
-  color: #ccc; /* cinza quando não selecionado */
-}
-
-.estrelas span.ativa {
-  color: gold; /* cheia */
-}
-
-.estrelas span.meia {
-  background: linear-gradient(90deg, gold 50%, #ccc 50%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
   .avaliar-loja .estrelas span {
   font-size: 28px;
   cursor: pointer;
-  color: #ccc; /* CINZA quando não selecionado */
+  color: #ccc;
   transition: 0.2s;
 }
 
 .avaliar-loja .estrelas span.ativa {
-  color: gold; /* AMARELA cheia */
+  color: gold;
 }
 
 .avaliar-loja .estrelas span.meia {
@@ -3450,40 +3434,57 @@ function renderEstrelas(nota) {
   <div id="seloVerificado">✔️ Verificado</div>
 
   <script>
-let estrelaSelecionada = 0; // inicia com meia nota
+let estrelaSelecionada = 0;
 const estrelas = document.querySelectorAll(".avaliar-loja .estrelas span");
 
-function atualizarEstrelas(media = 0) {
-  estrelas.forEach((e, i) => {
-    const nota = i + 1;
-    e.classList.remove("ativa", "meia");
-    if (media >= nota) e.classList.add("ativa");
-    else if (media + 0.5 >= nota) e.classList.add("meia");
+function atualizarEstrelas(nota) {
+  estrelas.forEach((estrela, i) => {
+    estrela.classList.remove("ativa", "meia");
+
+    const valor = i + 1;
+
+    if (nota >= valor) {
+      estrela.classList.add("ativa");
+    } else if (nota >= valor - 0.5) {
+      estrela.classList.add("meia");
+    }
   });
 }
 
-// Marca ao clicar
+// CLICK + MEIA ESTRELA
 estrelas.forEach((estrela, i) => {
-  estrela.addEventListener("click", () => {
-    estrelaSelecionada = i + 1;
+  estrela.addEventListener("click", (e) => {
+    const largura = estrela.offsetWidth;
+    const posicao = e.offsetX;
+
+    // metade esquerda = meia | direita = cheia
+    estrelaSelecionada =
+      posicao < largura / 2 ? i + 0.5 : i + 1;
+
     atualizarEstrelas(estrelaSelecionada);
   });
-});
 
-// Marca ao passar o mouse (hover)
-estrelas.forEach((estrela, i) => {
-  estrela.addEventListener("mouseover", () => {
-    atualizarEstrelas(i + 1);
+  // HOVER COM MEIA
+  estrela.addEventListener("mousemove", (e) => {
+    const largura = estrela.offsetWidth;
+    const posicao = e.offsetX;
+
+    const preview =
+      posicao < largura / 2 ? i + 0.5 : i + 1;
+
+    atualizarEstrelas(preview);
   });
 });
 
-// Retorna à nota selecionada quando tirar mouse
-document.querySelector(".avaliar-loja .estrelas").addEventListener("mouseleave", () => {
-  atualizarEstrelas(estrelaSelecionada);
-});
+// VOLTA PARA A NOTA SELECIONADA
+document
+  .querySelector(".avaliar-loja .estrelas")
+  .addEventListener("mouseleave", () => {
+    atualizarEstrelas(estrelaSelecionada);
+  });
 
-// Inicializa meia nota
-atualizarEstrelas(estrelaSelecionada);
+// inicia vazio
+atualizarEstrelas(0);
 </script>
 
 </body>
