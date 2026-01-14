@@ -1715,6 +1715,22 @@ mark {
 </div>
 </div>
 
+  <div class="produto">
+<img src="img/maridao.jpg">
+<h3>Maridao</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span> 1L R$ 9,00</span>
+    <button onclick="addProduto('maridao 1L',9)">Adicionar</button>
+  </div>
+  <div class="variacoes">
+  <div class="linha">
+    <span> 5L R$ 35,00</span>
+    <button onclick="addProduto('Maridao 5L',35)">Adicionar</button>
+  </div>
+</div>
+</div> 
+
 <div class="produto">
 <img src="img/cera-incolor.jpg">
 <h3>Cera Incolor</h3>
@@ -1881,7 +1897,6 @@ mark {
 
 </div>
 
-  
 <!-- CASA -->
 <div id="casa" class="categoria">
 <h2>Casa</h2>
@@ -1902,7 +1917,7 @@ mark {
   </div>
 </div>
 </div>
- 
+
 <div class="produto">
 <img src="img/papel-toalha.jpg">
 <h3>Papel Toalha</h3>
@@ -1977,29 +1992,6 @@ mark {
 </div>
 </div>
 
-  <div class="produto">
-<img src="img/bom-ar-coala.jpg">
-<h3>Bom Ar Coala</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span>Bom Ar Coala Orquídea Negra R$ 20,00</span>
-    <button onclick="addProduto('Bom Ar Coala Orquídea Negra',20)">Adicionar</button>
-  </div>
-  <div class="linha">
-    <span>Bom Ar Coala Chá Branco R$ 20,00</span>
-    <button onclick="addProduto('Bom Ar Coala Chá Branco',20)">Adicionar</button>
-  </div>
-  <div class="linha">
-    <span>Bom Ar Coala Flores de Cacto R$ 20,00</span>
-    <button onclick="addProduto('Bom Ar Coala Flores de Cacto',20)">Adicionar</button>
-  </div>
-  <div class="linha">
-    <span>Bom Ar Coala Ameixa Dourada R$ 20,00</span>
-    <button onclick="addProduto('Bom Ar Coala Ameixa Dourada',20)">Adicionar</button>
-  </div>
-</div>
-</div>
-
 <div class="produto">
 <img src="img/perflex-5.jpg">
 <h3>Perflex 5 Unidades</h3>
@@ -2045,6 +2037,27 @@ mark {
 </div>
 </div>
 
+ <div class="produto">
+<img src="img/timer-egg.jpg">
+<h3>Timer Egg</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span> R$ 15,00</span>
+    <button onclick="addProduto('Tmer Egg',15)">Adicionar</button>
+  </div>
+</div>
+</div>
+
+  <div class="produto">
+<img src="img/chuveiro-torneira.jpg">
+<h3>Chuveiro Para Torneira</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span> R$ 13,00</span>
+    <button onclick="addProduto('Chuveiro para Torneira',13)">Adicionar</button>
+  </div>
+</div>
+</div>
 <div class="produto">
 <img src="img/panela-antiaderente.jpg">
 <h3>Frigideira Antiaderente</h3>
@@ -2363,6 +2376,21 @@ mark {
 </div>
 </div>
 
+  <div class="produto">
+<img src="img/bloco-perfumado.jpg">
+<h3>Bloco Perfumado para Colocar em Caixa Acoplada</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span>Bom Ar Coala Orquídea Negra R$ 24,00</span>
+    <button onclick="addProduto('Bloco Perfumado 1 Unid.',20)">Adicionar</button>
+  </div>
+  <div class="linha">
+    <span>Bloco Perfumado 3 Unid. R$ 20,00</span>
+    <button onclick="addProduto('Bloco Perfumado 3 Unid.',24)">Adicionar</button>
+  </div>
+</div>
+</div>
+  
 <div class="produto">
 <img src="img/aplik.jpg">
 <h3>Pastilha Aplik 3 Unid.</h3>
@@ -2610,7 +2638,30 @@ mark {
         </div>
       </div>
     </div>
-    
+
+  <div class="produto">
+<img src="img/bom-ar-coala.jpg">
+<h3>Bom Ar Coala</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span>Bom Ar Coala Orquídea Negra R$ 20,00</span>
+    <button onclick="addProduto('Bom Ar Coala Orquídea Negra',20)">Adicionar</button>
+  </div>
+  <div class="linha">
+    <span>Bom Ar Coala Chá Branco R$ 20,00</span>
+    <button onclick="addProduto('Bom Ar Coala Chá Branco',20)">Adicionar</button>
+  </div>
+  <div class="linha">
+    <span>Bom Ar Coala Flores de Cacto R$ 20,00</span>
+    <button onclick="addProduto('Bom Ar Coala Flores de Cacto',20)">Adicionar</button>
+  </div>
+  <div class="linha">
+    <span>Bom Ar Coala Ameixa Dourada R$ 20,00</span>
+    <button onclick="addProduto('Bom Ar Coala Ameixa Dourada',20)">Adicionar</button>
+  </div>
+</div>
+</div>
+  
   </div>
  </div>
 
@@ -2752,8 +2803,26 @@ mark {
 
   </div>
   </div> 
-  
+
+  <!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
+
+  // 🔥 CONFIG FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyA8-fpwjzmnJpNjyiPKadi7orolAZLZ0N8",
+  authDomain: "furacao-da-limpeza.firebaseapp.com",
+  projectId: "furacao-da-limpeza",
+  storageBucket: "furacao-da-limpeza.appspot.com",
+  messagingSenderId: "54403413522",
+  appId: "1:54403413522:web:4ffdf4e054d4ebdbcaccab"
+};
+
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 /* 🔐 ATIVAR ADMIN PELO LINK */
 const params = new URLSearchParams(window.location.search);
@@ -3103,26 +3172,21 @@ if (!nome) {
   return;
 }
 
-  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
-
- avaliacoes.push({
-  id: Date.now(),
+  db.collection("avaliacoes").add({
+  idPedido: localStorage.getItem("pedidoAtual"),
   userId: getUserId(),
   nome: nome,
   nota: estrelaSelecionada,
   comentario: comentario,
-  admin: isAdmin()
+  admin: isAdmin(),
+  data: new Date()
 });
 
-  localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
   localStorage.setItem("avaliado_" + pedidoAtual, "true");
 
   document.getElementById("textoAvaliacao").value = "";
   document.getElementById("nomeCliente").value = "";
   estrelaSelecionada = 0;
-
-  atualizarMedia();
-  mostrarAvaliacoes();
 
   const estrelas = document.querySelectorAll(".avaliar-loja .estrelas span");
 estrelas.forEach(e => e.style.opacity = "0.3");
@@ -3133,108 +3197,118 @@ estrelas.forEach(e => e.style.opacity = "0.3");
   document.getElementById("boxAvaliacao").style.display = "none";
 document.getElementById("msgObrigadoAvaliacao").style.display = "block";
 
+  return;
 }
 
 // CALCULAR MÉDIA
 function atualizarMedia() {
-  const avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
-  const total = avaliacoes.length;
-
   const mediaEl = document.getElementById("mediaAvaliacao");
   const totalEl = document.getElementById("totalAvaliacoes");
 
-  if (total === 0) {
-    if (mediaEl) mediaEl.innerText = "0.0";
-    if (totalEl) totalEl.innerText = "0";
-    return;
-  }
+  if (!mediaEl || !totalEl) return;
 
-  let soma = 0;
-  avaliacoes.forEach(a => soma += Number(a.nota));
+  db.collection("avaliacoes").onSnapshot(snapshot => {
+    let soma = 0;
+    let total = 0;
 
-  const media = soma / total;
+    snapshot.forEach(doc => {
+      const a = doc.data();
+      soma += Number(a.nota);
+      total++;
+    });
 
-  if (mediaEl) mediaEl.innerText = media.toFixed(1);
-  if (totalEl) totalEl.innerText = total;
+    if (total === 0) {
+      mediaEl.innerText = "0.0";
+      totalEl.innerText = "0";
+      return;
+    }
 
-  const box = document.querySelector(".resumo-avaliacao");
-  if (box) {
-    box.classList.remove("animar-media");
-    void box.offsetWidth;
-    box.classList.add("animar-media");
-  }
+    const media = soma / total;
+
+    mediaEl.innerText = media.toFixed(1);
+    totalEl.innerText = total;
+
+    const box = document.querySelector(".resumo-avaliacao");
+    if (box) {
+      box.classList.remove("animar-media");
+      void box.offsetWidth;
+      box.classList.add("animar-media");
+    }
+  });
 }
 
 // MOSTRAR AVALIAÇÕES
 function mostrarAvaliacoes() {
-  const avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
   const lista = document.getElementById("listaAvaliacoes");
   if (!lista) return;
 
   const meuId = getUserId();
-  lista.innerHTML = "";
+  const souAdmin = isAdmin();
 
-  avaliacoes.slice().reverse().forEach((a, index) => {
-    const realIndex = avaliacoes.length - 1 - index;
+  lista.innerHTML = "Carregando avaliações...";
 
-    const classeAdmin = a.admin ? "avaliacao-admin" : "";
-    const seloAdmin = a.admin ? `<span class="selo-admin">ADMIN</span>` : "";
+  db.collection("avaliacoes")
+    .orderBy("data", "desc")
+    .onSnapshot(snapshot => {
+      lista.innerHTML = "";
 
-    lista.innerHTML += `
-      <div class="avaliacao-card ${classeAdmin}">
-        <div class="topo-avaliacao">
-          <div class="estrelas">${"⭐".repeat(a.nota)}</div>
-          ${seloAdmin}
-        </div>
+      snapshot.forEach(doc => {
+        const a = doc.data();
+        const podeRemover = souAdmin || a.userId === meuId;
 
-        <p>${a.comentario || "Sem comentário"}</p>
-        <strong>— ${a.nome || "Cliente"}</strong>
+        lista.innerHTML += `
+          <div class="avaliacao-card ${a.admin ? "avaliacao-admin" : ""}">
+            <div class="topo-avaliacao">
+              <div class="estrelas">${"⭐".repeat(a.nota)}</div>
+              ${a.admin ? `<span class="selo-admin">ADMIN</span>` : ""}
+            </div>
 
-        ${
-          (isAdmin() || a.userId === meuId)
-            ? `<button class="btn-remover" onclick="removerAvaliacao(${realIndex})">
-                ❌ Remover
-              </button>`
-            : ""
-        }
-      </div>
-    `;
-  });
+            <p>${a.comentario || "Sem comentário"}</p>
+            <strong>— ${a.nome}</strong>
+
+            ${podeRemover ? `
+              <button class="btn-remover"
+                onclick="removerAvaliacao('${doc.id}', '${a.userId}')">
+                🗑️ Remover
+              </button>
+            ` : ""}
+          </div>
+        `;
+      });
+    });
 }
 
-function removerAvaliacao(index) {
-  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+function removerAvaliacao(idDoc, donoId) {
   const meuId = getUserId();
 
-  if (!avaliacoes[index]) return;
-
-  // 🔒 VERIFICA PERMISSÃO
-  if (!isAdmin() && avaliacoes[index].userId !== meuId) {
-    alert("Você não tem permissão para remover este comentário.");
+  // 🔐 Permissão
+  if (!isAdmin() && donoId !== meuId) {
+    alert("Você não pode remover este comentário.");
     return;
   }
 
-  if (!confirm("Deseja remover esta avaliação?")) return;
+  if (!confirm("Deseja remover este comentário?")) return;
 
-  avaliacoes.splice(index, 1);
-  localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
-
-  atualizarMedia();
-  mostrarAvaliacoes();
+  db.collection("avaliacoes").doc(idDoc).delete()
+    .then(() => {
+      alert("Comentário removido com sucesso");
+    })
+    .catch(err => {
+      alert("Erro ao remover comentário");
+      console.error(err);
+    });
 }
 
-// AO ABRIR O SITE
 document.addEventListener("DOMContentLoaded", () => {
-  atualizarMedia();
   mostrarAvaliacoes();
-});
+  atualizarMedia();
 
-  document.addEventListener("DOMContentLoaded", () => {
   if (localStorage.getItem("adminFuracao") === "true") {
     const selo = document.getElementById("seloVerificado");
     if (selo) selo.style.display = "block";
   }
 });
+
 
 </script>
 
