@@ -1035,6 +1035,26 @@ mark {
   -webkit-text-fill-color: transparent;
 }
 
+  .resposta-admin {
+  background: #f1f8ff;
+  border-left: 4px solid #1e88e5;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.avaliacao-card textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px;
+  font-size: 14px;
+}
+
+.avaliacao-card button {
+  margin-top: 5px;
+}
+
 </style>
 </head>
 
@@ -3263,28 +3283,54 @@ function mostrarAvaliacoes() {
         const podeRemover = souAdmin || a.userId === meuId;
 
         lista.innerHTML += `
-          <div class="avaliacao-card ${a.admin ? "avaliacao-admin" : ""}">
-            <div class="topo-avaliacao">
-           <div class="estrelas">
-          ${renderEstrelas(a.nota)}
-        </div>
-              ${a.admin ? `<span class="selo-admin">ADMIN</span>` : ""}
-            </div>
+  <div class="avaliacao-card ${a.admin ? "avaliacao-admin" : ""}">
+    
+    <div class="topo-avaliacao">
+      <div class="estrelas">
+        ${renderEstrelas(a.nota)}
+      </div>
+      ${a.admin ? `<span class="selo-admin">ADMIN</span>` : ""}
+    </div>
 
-            <p>${a.comentario || "Sem comentário"}</p>
-            <strong>— ${a.nome}</strong>
+    <p>${a.comentario || "Sem comentário"}</p>
+    <strong>— ${a.nome}</strong>
 
-            ${podeRemover ? `
-              <button class="btn-remover"
-                onclick="removerAvaliacao('${doc.id}', '${a.userId}')">
-                🗑️ Remover
-              </button>
-            ` : ""}
-          </div>
-        `;
-      });
-    });
-}
+    ${
+      a.respostaAdmin
+        ? `<div class="resposta-admin">
+             <strong>Resposta da loja:</strong>
+             <p>${a.respostaAdmin}</p>
+           </div>`
+        : ""
+    }
+
+    ${
+      souAdmin && !a.respostaAdmin
+        ? `
+        <textarea id="resp_${doc.id}"
+          placeholder="Responder avaliação..."></textarea>
+
+        <button onclick="responderAvaliacao('${doc.id}')">
+          Responder
+        </button>
+        `
+        : ""
+    }
+
+    ${
+      podeRemover
+        ? `
+        <button class="btn-remover"
+          onclick="removerAvaliacao('${doc.id}', '${a.userId}')">
+          🗑️ Remover
+        </button>
+        `
+        : ""
+    }
+
+  </div>
+`;
+
 
 function removerAvaliacao(idDoc, donoId) {
   const meuId = getUserId();
@@ -3331,6 +3377,30 @@ function renderEstrelas(nota) {
   }
 
   return html;
+}
+
+        function responderAvaliacao(idDoc) {
+  const texto = document
+    .getElementById("resp_" + idDoc)
+    .value
+    .trim();
+
+  if (!texto) {
+    alert("Digite uma resposta");
+    return;
+  }
+
+  db.collection("avaliacoes")
+    .doc(idDoc)
+    .update({
+      respostaAdmin: texto
+    })
+    .then(() => {
+      alert("Resposta enviada com sucesso ✅");
+    })
+    .catch(() => {
+      alert("Erro ao responder");
+    });
 }
 
 </script>
@@ -3451,15 +3521,15 @@ function atualizarEstrelas(nota) {
   });
 }
 
-// CLICK + MEIA ESTRELA
+// CLIQUE COM MEIA ESTRELA
 estrelas.forEach((estrela, i) => {
   estrela.addEventListener("click", (e) => {
     const largura = estrela.offsetWidth;
-    const posicao = e.offsetX;
+    const pos = e.offsetX;
 
     // metade esquerda = meia | direita = cheia
     estrelaSelecionada =
-      posicao < largura / 2 ? i + 0.5 : i + 1;
+      pos < largura / 2 ? i + 0.5 : i + 1;
 
     atualizarEstrelas(estrelaSelecionada);
   });
@@ -3467,25 +3537,26 @@ estrelas.forEach((estrela, i) => {
   // HOVER COM MEIA
   estrela.addEventListener("mousemove", (e) => {
     const largura = estrela.offsetWidth;
-    const posicao = e.offsetX;
+    const pos = e.offsetX;
 
     const preview =
-      posicao < largura / 2 ? i + 0.5 : i + 1;
+      pos < largura / 2 ? i + 0.5 : i + 1;
 
     atualizarEstrelas(preview);
   });
 });
 
-// VOLTA PARA A NOTA SELECIONADA
+// VOLTA PARA A NOTA SALVA
 document
   .querySelector(".avaliar-loja .estrelas")
   .addEventListener("mouseleave", () => {
     atualizarEstrelas(estrelaSelecionada);
   });
 
-// inicia vazio
+// inicia zerado
 atualizarEstrelas(0);
 </script>
+
 
 </body>
 </html>
