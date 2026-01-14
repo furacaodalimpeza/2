@@ -999,21 +999,32 @@ mark {
   display: none;
 }
 
-  .avaliar-loja .estrelas span {
-  font-size: 28px;
-  cursor: pointer;
-  color: #ccc;
-  transition: 0.2s;
+  .avaliar-loja .estrelas {
+  display: flex;
+  gap: 6px;
 }
 
+.avaliar-loja .estrelas span {
+  position: relative;
+  font-size: 32px;
+  cursor: pointer;
+  color: #ccc; /* base cinza */
+}
+
+/* estrela cheia */
 .avaliar-loja .estrelas span.ativa {
   color: gold;
 }
 
-.avaliar-loja .estrelas span.meia {
-  background: linear-gradient(90deg, gold 50%, #ccc 50%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* meia estrela REAL */
+.avaliar-loja .estrelas span.meia::before {
+  content: "★";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  color: gold;
 }
 
   .estrela {
