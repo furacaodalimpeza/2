@@ -1737,16 +1737,16 @@ mark {
 <img src="img/limpa-pedra.jpg">
 <h3>Limpa Pedra </h3>
 <div class="variacoes">
-  <div class="linha">
-    </span> Clineza 2L — R$ 18,00</span>
-    <button onclick="addProduto('Limpa Pedra Clineza 2L',18)">Adicionar</button>
-  </div>
+ <div class="linha">
+  <span>Clineza 2L — R$ 18,00</span>
+  <button onclick="addProduto('Limpa Pedra Clineza 2L',18)">Adicionar</button>
+</div>
   <div class="linha">
     <span> Bonrruque 2L — R$ 18,00</span>
     <button onclick="addProduto('Limpa Pedra Bonrruque 2L',18)">Adicionar</button>
   </div>
   <div class="linha">
-    <span> Bonrruque 5L — R$ 40,00</span>
+    <span>Bonrruque 5L — R$ 40,00</span>
     <button onclick="addProduto('Limpa Pedra Bonrruque 5L',40)">Adicionar</button>
   </div>
 </div>
@@ -1767,21 +1767,18 @@ mark {
 </div>
 </div>
 
-  <div class="produto">
-<img src="img/maridao.jpg">
-<h3>Maridao</h3>
-<div class="variacoes">
-  <div class="linha">
-    <span> 1L R$ 9,00</span>
-    <button onclick="addProduto('maridao 1L',9)">Adicionar</button>
-  </div>
+  <<div class="produto">
   <div class="variacoes">
-  <div class="linha">
-    <span> 5L R$ 35,00</span>
-    <button onclick="addProduto('Maridao 5L',35)">Adicionar</button>
+    <div class="linha">
+      <span>1L R$ 9,00</span>
+      <button onclick="addProduto('Maridao 1L',9)">Adicionar</button>
+    </div>
+    <div class="linha">
+      <span>5L R$ 35,00</span>
+      <button onclick="addProduto('Maridao 5L',35)">Adicionar</button>
+    </div>
   </div>
 </div>
-</div> 
 
 <div class="produto">
 <img src="img/cera-incolor.jpg">
@@ -1838,7 +1835,7 @@ mark {
   </div>
   <div class="linha">
     <span>Búfalo 500ML — R$ 14,00</span>
-    <button onclick="addProduto('Removedor Búfalo 500ML',19)">Adicionar</button>
+    <button onclick="addProduto('Removedor Bufalo 500ML',14)">Adicionar</button>
   </div>
   <div class="linha">
     <span>Suprema 1L — R$ 14,00</span>
@@ -1864,7 +1861,7 @@ mark {
 <div class="variacoes">
   <div class="linha">
     <span> YpÊ 300ML — R$ 12,00</span>
-    <button onclick="addProduto('Sapólio Ypê 300ML',13)">Adicionar</button>
+    <button onclick="addProduto('Sapólio Ypê 300ML',12)">Adicionar</button>
   </div>
   <div class="linha">
     <span> Cif 450ML — R$ 20,00</span>
@@ -1878,8 +1875,8 @@ mark {
 <h3>Percabonato</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>R$ 25,00</span>
-    <button onclick="addProduto('Percabonato ',25)">Adicionar</button>
+    <span>500g R$ 25,00</span>
+    <button onclick="addProduto('Percabonato 500g',25)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -1889,8 +1886,8 @@ mark {
 <h3>Bircabonato</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>R$ 15,00</span>
-    <button onclick="addProduto('Bircabonato ',15)">Adicionar</button>
+    <span>500g R$ 15,00</span>
+    <button onclick="addProduto('Bircabonato 500g',15)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -2002,7 +1999,7 @@ mark {
 <div class="variacoes">
   <div class="linha">
     <span> R$ 9,00</span>
-    <button onclick="addProduto('Luvas M,',9)">Adicionar</button>
+    <button onclick="addProduto('Luvas M',9)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -3453,53 +3450,40 @@ function renderEstrelas(nota) {
   <div id="seloVerificado">✔️ Verificado</div>
 
   <script>
-let estrelaSelecionada = 0;
+let estrelaSelecionada = 0; // inicia com meia nota
+const estrelas = document.querySelectorAll(".avaliar-loja .estrelas span");
 
-const estrelas = document.querySelectorAll(".estrelas span");
-
-function atualizarEstrelas(valor) {
-  estrelas.forEach((estrela, index) => {
-    estrela.classList.remove("ativa", "meia");
-
-    const estrelaValor = index + 1;
-
-    if (valor >= estrelaValor) {
-      estrela.classList.add("ativa");
-    } 
-    else if (valor + 0.5 === estrelaValor) {
-      estrela.classList.add("meia");
-    }
+function atualizarEstrelas(media = 0) {
+  estrelas.forEach((e, i) => {
+    const nota = i + 1;
+    e.classList.remove("ativa", "meia");
+    if (media >= nota) e.classList.add("ativa");
+    else if (media + 0.5 >= nota) e.classList.add("meia");
   });
 }
 
-// clique com meia estrela
-estrelas.forEach((estrela, index) => {
-  estrela.addEventListener("mousemove", (e) => {
-    const largura = estrela.offsetWidth;
-    const x = e.offsetX;
-
-    if (x < largura / 2) {
-      atualizarEstrelas(index + 0.5);
-    } else {
-      atualizarEstrelas(index + 1);
-    }
-  });
-
-  estrela.addEventListener("mouseleave", () => {
-    atualizarEstrelas(estrelaSelecionada);
-  });
-
-  estrela.addEventListener("click", (e) => {
-    const largura = estrela.offsetWidth;
-    const x = e.offsetX;
-
-    estrelaSelecionada = x < largura / 2 ? index + 0.5 : index + 1;
+// Marca ao clicar
+estrelas.forEach((estrela, i) => {
+  estrela.addEventListener("click", () => {
+    estrelaSelecionada = i + 1;
     atualizarEstrelas(estrelaSelecionada);
   });
 });
 
-// começa tudo cinza
-atualizarEstrelas(0);
+// Marca ao passar o mouse (hover)
+estrelas.forEach((estrela, i) => {
+  estrela.addEventListener("mouseover", () => {
+    atualizarEstrelas(i + 1);
+  });
+});
+
+// Retorna à nota selecionada quando tirar mouse
+document.querySelector(".avaliar-loja .estrelas").addEventListener("mouseleave", () => {
+  atualizarEstrelas(estrelaSelecionada);
+});
+
+// Inicializa meia nota
+atualizarEstrelas(estrelaSelecionada);
 </script>
 
 </body>
