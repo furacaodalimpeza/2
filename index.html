@@ -3392,27 +3392,17 @@ function filtrarProdutos() {
   const textoBusca = normalizarTexto(input.value);
 
   const produtos = document.querySelectorAll(".produto");
-  const categorias = document.querySelectorAll(".categoria");
-  const abas = document.querySelector(".abas");
   const mensagem = document.getElementById("mensagemBusca");
   const barraPesquisa = document.querySelector(".barra-pesquisa");
 
-  // ❌ só imagens extras (NÃO img do produto)
-  const imagensExtras = document.querySelectorAll(
-    ".banner, .manutencao, .em-reforma, .imagem-destaque"
-  );
+  const conteudoAbas = document.getElementById("conteudo-abas");
+
+  let encontrou = false;
 
   if (textoBusca !== "") {
-    if (abas) abas.style.display = "none";
 
-    categorias.forEach(cat => {
-      cat.style.display = "block";
-      cat.classList.add("ativa");
-    });
-
-    imagensExtras.forEach(img => img.style.display = "none");
-
-    let encontrou = false;
+    // ❌ ESCONDE TUDO DAS ABAS (imagem + nome)
+    if (conteudoAbas) conteudoAbas.style.display = "none";
 
     produtos.forEach(produto => {
       const nomesExtras = produto.dataset.nomes || "";
@@ -3444,14 +3434,8 @@ function filtrarProdutos() {
     }
 
   } else {
-    if (abas) abas.style.display = "flex";
-
-    categorias.forEach((cat, index) => {
-      cat.style.display = index === 0 ? "block" : "none";
-      cat.classList.toggle("ativa", index === 0);
-    });
-
-    imagensExtras.forEach(img => img.style.display = "");
+    // 🔙 VOLTA AO NORMAL
+    if (conteudoAbas) conteudoAbas.style.display = "block";
 
     produtos.forEach(produto => {
       produto.style.display = "block";
