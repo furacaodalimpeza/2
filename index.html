@@ -1096,6 +1096,23 @@ mark {
   animation: aparecer 0.4s ease;
 }
 
+  .produto {
+  position: relative;
+}
+
+.icone-busca {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #ff6600;
+  color: #fff;
+  font-size: 14px;
+  padding: 4px 6px;
+  border-radius: 50%;
+  animation: aparecer 0.4s ease;
+}
+
 </style>
 </head>
 
@@ -1509,7 +1526,7 @@ mark {
 </div>
 </div>
 
-<div class="produto" data-nome="Detergente Amoniaco">
+<div class="produto" data-nome="Detergente Amoniaco, Limpa Tudo">
 <img src="img/limpa-tudo.jpg">
 <h3>Detergente Amoniaco</h3>
 <div class="variacoes">
@@ -2815,6 +2832,7 @@ mark {
     <button onclick="addProduto('Tapete Banheiro 3 Peças Antiderrapante Branco ',60)">Adicionar</button>
   </div>
 </div>
+  <span class="icone-busca">🔍</span>
 </div>
 
 <div class="produto" data-nome="Tapete Banheiro 3 peças antiaderrente Preto">
@@ -3379,13 +3397,12 @@ function filtrarProdutos() {
   const mensagem = document.getElementById("mensagemBusca");
   const barraPesquisa = document.querySelector(".barra-pesquisa");
 
-  // Imagens / banners que NÃO devem aparecer na busca
+  // ❌ só imagens extras (NÃO img do produto)
   const imagensExtras = document.querySelectorAll(
-    ".banner, .manutencao, .em-reforma, .imagem-destaque, img"
+    ".banner, .manutencao, .em-reforma, .imagem-destaque"
   );
 
   if (textoBusca !== "") {
-
     if (abas) abas.style.display = "none";
 
     categorias.forEach(cat => {
@@ -3398,41 +3415,35 @@ function filtrarProdutos() {
     let encontrou = false;
 
     produtos.forEach(produto => {
-      const nomeProduto = normalizarTexto(
-        produto.dataset.nome || produto.innerText
+      const nomesExtras = produto.dataset.nomes || "";
+      const textoProduto = normalizarTexto(
+        produto.innerText + " " + nomesExtras
       );
 
-      if (nomeProduto.includes(textoBusca)) {
+      const icone = produto.querySelector(".icone-busca");
+
+      if (textoProduto.includes(textoBusca)) {
         produto.style.display = "block";
+        if (icone) icone.style.display = "block";
         encontrou = true;
       } else {
         produto.style.display = "none";
+        if (icone) icone.style.display = "none";
       }
     });
 
     if (!encontrou) {
       mensagem.style.display = "block";
-
-      // 🔽 ROLA A TELA ATÉ A MENSAGEM
-      mensagem.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
+      mensagem.scrollIntoView({ behavior: "smooth", block: "center" });
     } else {
       mensagem.style.display = "none";
-
-      // 🔽 ROLA ATÉ O PRIMEIRO PRODUTO ENCONTRADO
       const primeiroProduto = document.querySelector(".produto[style*='block']");
       if (primeiroProduto) {
-        primeiroProduto.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
+        primeiroProduto.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
 
   } else {
-    // 🔙 VOLTA AO NORMAL
     if (abas) abas.style.display = "flex";
 
     categorias.forEach((cat, index) => {
@@ -3444,15 +3455,12 @@ function filtrarProdutos() {
 
     produtos.forEach(produto => {
       produto.style.display = "block";
+      const icone = produto.querySelector(".icone-busca");
+      if (icone) icone.style.display = "none";
     });
 
     mensagem.style.display = "none";
-
-    // 🔼 VOLTA A TELA PARA A BARRA DE PESQUISA
-    barraPesquisa.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
+    barraPesquisa.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 }
 
