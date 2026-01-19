@@ -3338,30 +3338,39 @@ window.onload = () => {
 function normalizarTexto(texto) {
   return texto
     .toLowerCase()
-    .normalize("NFD")              // separa letras dos acentos
-    .replace(/[\u0300-\u036f]/g, "") // remove os acentos
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .trim();
 }
   
 function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
   const textoBusca = normalizarTexto(input.value);
+
   const produtos = document.querySelectorAll(".produto");
   const categorias = document.querySelectorAll(".categoria");
   const abas = document.querySelector(".abas");
 
-  // 🔎 QUANDO ESTÁ PESQUISANDO
+  const titulosCategoria = document.querySelectorAll(
+    ".categoria h2, .categoria h3, .em-reforma"
+  );
+
   if (textoBusca !== "") {
 
-    // ESCONDE AS ABAS
+    // 🔍 MODO BUSCA
     if (abas) abas.style.display = "none";
 
-    // ESCONDE TODAS AS CATEGORIAS (TÍTULOS / MANUTENÇÃO)
+    // MOSTRA TODAS AS CATEGORIAS (IMPORTANTE)
     categorias.forEach(cat => {
-      cat.style.display = "none";
+      cat.style.display = "block";
+      cat.classList.add("ativa");
     });
 
-    // MOSTRA APENAS OS PRODUTOS ENCONTRADOS
+    // ESCONDE TÍTULOS / AVISOS
+    titulosCategoria.forEach(t => t.style.display = "none");
+
+    let encontrou = false;
+
     produtos.forEach(produto => {
       const nomeProduto = normalizarTexto(
         produto.dataset.nome || produto.innerText
@@ -3369,27 +3378,33 @@ function filtrarProdutos() {
 
       if (nomeProduto.includes(textoBusca)) {
         produto.style.display = "block";
+        encontrou = true;
       } else {
         produto.style.display = "none";
       }
     });
 
-  } else {
-    // 🔙 QUANDO LIMPA A BUSCA (VOLTA AO NORMAL)
+    if (!encontrou) {
+      console.log("Nenhum produto encontrado");
+    }
 
+  } else {
+
+    // 🔙 VOLTA AO NORMAL
     if (abas) abas.style.display = "flex";
 
     categorias.forEach((cat, index) => {
       cat.style.display = index === 0 ? "block" : "none";
+      cat.classList.toggle("ativa", index === 0);
     });
+
+    titulosCategoria.forEach(t => t.style.display = "block");
 
     produtos.forEach(produto => {
       produto.style.display = "block";
     });
   }
 }
-
-
 
   // ABRIR / FECHAR CARRINHO
 function toggleCarrinho() {
