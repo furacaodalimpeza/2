@@ -1081,6 +1081,21 @@ mark {
   justify-content: center;
 }
 
+  @keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#mensagemBusca {
+  animation: aparecer 0.4s ease;
+}
+
 </style>
 </head>
 
@@ -3362,14 +3377,15 @@ function filtrarProdutos() {
   const categorias = document.querySelectorAll(".categoria");
   const abas = document.querySelector(".abas");
   const mensagem = document.getElementById("mensagemBusca");
+  const barraPesquisa = document.querySelector(".barra-pesquisa");
 
-  // TODAS AS IMAGENS GRANDES / BANNERS
+  // Imagens / banners que NÃO devem aparecer na busca
   const imagensExtras = document.querySelectorAll(
-    ".imagem-destaque, .banner, .manutencao, .em-reforma, img"
+    ".banner, .manutencao, .em-reforma, .imagem-destaque, img"
   );
 
   if (textoBusca !== "") {
-    // 🔍 MODO BUSCA
+
     if (abas) abas.style.display = "none";
 
     categorias.forEach(cat => {
@@ -3394,11 +3410,25 @@ function filtrarProdutos() {
       }
     });
 
-    // ✅ CONTROLA A MENSAGEM
     if (!encontrou) {
       mensagem.style.display = "block";
+
+      // 🔽 ROLA A TELA ATÉ A MENSAGEM
+      mensagem.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
     } else {
       mensagem.style.display = "none";
+
+      // 🔽 ROLA ATÉ O PRIMEIRO PRODUTO ENCONTRADO
+      const primeiroProduto = document.querySelector(".produto[style*='block']");
+      if (primeiroProduto) {
+        primeiroProduto.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
     }
 
   } else {
@@ -3417,6 +3447,12 @@ function filtrarProdutos() {
     });
 
     mensagem.style.display = "none";
+
+    // 🔼 VOLTA A TELA PARA A BARRA DE PESQUISA
+    barraPesquisa.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
   }
 }
 
