@@ -3347,29 +3347,48 @@ function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
   const textoBusca = normalizarTexto(input.value);
   const produtos = document.querySelectorAll(".produto");
+  const categorias = document.querySelectorAll(".categoria");
+  const abas = document.querySelector(".abas");
 
-  // MOSTRA TODAS AS CATEGORIAS DURANTE A BUSCA
-  document.querySelectorAll(".categoria").forEach(cat => {
-    cat.style.display = "block";
-  });
+  // 🔎 QUANDO ESTÁ PESQUISANDO
+  if (textoBusca !== "") {
 
-  produtos.forEach(produto => {
-    const nomeProduto = normalizarTexto(
-      produto.dataset.nome || produto.innerText
-    );
+    // ESCONDE AS ABAS
+    if (abas) abas.style.display = "none";
 
-    if (textoBusca === "") {
+    // ESCONDE TODAS AS CATEGORIAS (TÍTULOS / MANUTENÇÃO)
+    categorias.forEach(cat => {
+      cat.style.display = "none";
+    });
+
+    // MOSTRA APENAS OS PRODUTOS ENCONTRADOS
+    produtos.forEach(produto => {
+      const nomeProduto = normalizarTexto(
+        produto.dataset.nome || produto.innerText
+      );
+
+      if (nomeProduto.includes(textoBusca)) {
+        produto.style.display = "block";
+      } else {
+        produto.style.display = "none";
+      }
+    });
+
+  } else {
+    // 🔙 QUANDO LIMPA A BUSCA (VOLTA AO NORMAL)
+
+    if (abas) abas.style.display = "flex";
+
+    categorias.forEach((cat, index) => {
+      cat.style.display = index === 0 ? "block" : "none";
+    });
+
+    produtos.forEach(produto => {
       produto.style.display = "block";
-      return;
-    }
-
-    if (nomeProduto.includes(textoBusca)) {
-      produto.style.display = "block";
-    } else {
-      produto.style.display = "none";
-    }
-  });
+    });
+  }
 }
+
 
 
   // ABRIR / FECHAR CARRINHO
