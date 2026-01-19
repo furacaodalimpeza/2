@@ -3335,27 +3335,35 @@ window.onload = () => {
   atualizar();
 };
 
+function normalizarTexto(texto) {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")              // separa letras dos acentos
+    .replace(/[\u0300-\u036f]/g, "") // remove os acentos
+    .trim();
+}
+  
 function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
-  const texto = input.value.toLowerCase().trim();
+  const textoBusca = normalizarTexto(input.value);
   const produtos = document.querySelectorAll(".produto");
 
-  // 🔹 MOSTRA TODAS AS CATEGORIAS DURANTE A BUSCA
+  // MOSTRA TODAS AS CATEGORIAS DURANTE A BUSCA
   document.querySelectorAll(".categoria").forEach(cat => {
     cat.style.display = "block";
   });
 
   produtos.forEach(produto => {
-    const nome =
-      produto.dataset.nome ||
-      produto.innerText;
+    const nomeProduto = normalizarTexto(
+      produto.dataset.nome || produto.innerText
+    );
 
-    if (texto === "") {
+    if (textoBusca === "") {
       produto.style.display = "block";
       return;
     }
 
-    if (nome.toLowerCase().includes(texto)) {
+    if (nomeProduto.includes(textoBusca)) {
       produto.style.display = "block";
     } else {
       produto.style.display = "none";
