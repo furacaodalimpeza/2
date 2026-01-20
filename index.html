@@ -3770,15 +3770,27 @@ function gerarNumeroPedido() {
 
 // ABAS
 function mostrarCategoria(classe, btn) {
-  document.querySelectorAll(".produto").forEach(p => {
-    p.style.display = p.classList.contains(classe) ? "block" : "none";
+  const produtos = document.querySelectorAll(".produto");
+
+  produtos.forEach(p => {
+    if (p.className.split(" ").includes(classe)) {
+      p.style.display = "block";
+    } else {
+      p.style.display = "none";
+    }
   });
 
-  document.querySelectorAll(".abas button").forEach(b => b.classList.remove("ativa"));
+  document.querySelectorAll(".abas button").forEach(b => {
+    b.classList.remove("ativa");
+  });
+
   if (btn) btn.classList.add("ativa");
 
-  document.getElementById("mensagemBusca").style.display = "none";
-  document.getElementById("limparBusca").style.display = "none";
+  const msg = document.getElementById("mensagemBusca");
+  if (msg) msg.style.display = "none";
+
+  const limpar = document.getElementById("limparBusca");
+  if (limpar) limpar.style.display = "none";
 }
 
 function normalizarTexto(texto) {
