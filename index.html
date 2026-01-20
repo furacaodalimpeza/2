@@ -111,8 +111,6 @@ h2 { text-align: center; color: #0a7cff; }
   width: 100%;
   height: auto;
   object-fit: contain;
-  border-radius: 8px;
-  display: block;
 }
 
 .linha {
@@ -3773,24 +3771,24 @@ function gerarNumeroPedido() {
 
 // ABAS
 function mostrarCategoria(classe, btn) {
-  const produtos = document.querySelectorAll(".produto");
-
-  produtos.forEach(p => {
-    p.style.display = p.classList.contains(classe) ? "block" : "none";
+  // esconder todas as categorias
+  document.querySelectorAll(".categoria").forEach(c => {
+    c.style.display = "none";
   });
 
-  document.querySelectorAll(".abas button").forEach(b => {
-    b.classList.remove("ativa");
-  });
+  // mostrar só a categoria clicada
+  const categoria = document.getElementById(classe);
+  if (categoria) categoria.style.display = "block";
 
+  // marcar botão ativo
+  document.querySelectorAll(".abas button").forEach(b => b.classList.remove("ativa"));
   if (btn) btn.classList.add("ativa");
 
-  const msg = document.getElementById("mensagemBusca");
-  if (msg) msg.style.display = "none";
-
-  const limpar = document.getElementById("limparBusca");
-  if (limpar) limpar.style.display = "none";
+  // reset busca
+  document.getElementById("mensagemBusca").style.display = "none";
+  document.getElementById("limparBusca").style.display = "none";
 }
+
 
 function normalizarTexto(texto) {
   return texto
