@@ -1150,6 +1150,21 @@ mark {
   animation: lupaPulse 0.6s ease;
 }
 
+  #limparBusca {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  color: #999;
+  display: none;
+}
+
+#limparBusca:hover {
+  color: #ff6600;
+}
+
 </style>
 </head>
 
@@ -3800,70 +3815,69 @@ function normalizarTexto(texto) {
   
 function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
-  const textoBusca = normalizarTexto(input.value);
+  const filtro = input.value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
-  const categorias = document.querySelectorAll(".categoria");
   const produtos = document.querySelectorAll(".produto");
   const mensagem = document.getElementById("mensagemBusca");
+  const limpar = document.getElementById("limparBusca");
 
   let encontrou = false;
+  let primeiroEncontrado = null;
 
-  // esconde todas as lupas
-  document.querySelectorAll(".icone-busca").forEach(i => {
-    i.style.display = "none";
+  produtos.forEach(produto => {
+    const nomes = produto.dataset.nomes
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    if (filtro && nomes.includes(filtro)) {
+      produto.style.display = "block";
+      produto.classList.add("encontrado");
+      encontrou = true;
+
+      if (!primeiroEncontrado) {
+        primeiroEncontrado = produto;
+      }
+    } else {
+      produto.style.display = "none";
+      produto.classList.remove("encontrado");
+    }
   });
 
-  if (textoBusca !== "") {
-    categorias.forEach(cat => {
-      let categoriaTem = false;
+  mensagem.style.display = encontrou ? "none" : "block";
+  limpar.style.display = filtro ? "block" : "none";
 
-      cat.querySelectorAll(".produto").forEach(produto => {
-        const nomesExtras = produto.dataset.nomes || "";
-        const h3 = produto.querySelector("h3");
-        if (!h3) return;
-
-        const textoProduto = normalizarTexto(
-          h3.innerText + " " + nomesExtras
-        );
-
-        const palavras = textoBusca.split(" ");
-        const corresponde = palavras.every(p =>
-          textoProduto.includes(p)
-        );
-
-        if (corresponde) {
-          produto.style.display = "block";
-          categoriaTem = true;
-          encontrou = true;
-
-          const icone = produto.querySelector(".icone-busca");
-          if (icone) icone.style.display = "block";
-        } else {
-          produto.style.display = "none";
-        }
-      });
-
-      cat.style.display = categoriaTem ? "block" : "none";
+  if (primeiroEncontrado) {
+    primeiroEncontrado.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
     });
-
-    if (mensagem) mensagem.style.display = encontrou ? "none" : "block";
-
-  } else {
-    // volta ao normal
-    categorias.forEach((cat, i) => {
-      cat.style.display = i === 0 ? "block" : "none";
-    });
-
-    produtos.forEach(produto => {
-      produto.style.display = "block";
-      const icone = produto.querySelector(".icone-busca");
-      if (icone) icone.style.display = "none";
-    });
-
-    if (mensagem) mensagem.style.display = "none";
   }
 }
 
+  function limparBusca() {
+  const input = document.getElementById("pesquisaProduto");
+  const produtos = document.querySelectorAll(".produto");
+  const limpar = document.getElementById("limparBusca");
+  const mensagem = document.getElementById("mensagemBusca");
+
+  input.value = "";
+  limpar.style.display = "none";
+  mensagem.style.display = "none";
+
+  produtos.forEach(produto => {
+    produto.style.display = "block";
+    produto.classList.remove("encontrado");
+  });
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
 
   // ABRIR / FECHAR CARRINHO
 function toggleCarrinho() {
