@@ -1113,6 +1113,16 @@ mark {
   animation: aparecer 0.4s ease;
 }
 
+  #resultadosBusca {
+  margin-bottom: 20px;
+}
+
+#resultadosBusca h2 {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #ff6600;
+}
+
 </style>
 </head>
 
@@ -1191,9 +1201,9 @@ mark {
   
 <div class="container">
   
-<div id="limpeza" class="categoria ativa">
-<h2>Produtos de Limpeza</h2>
-<div class="produtos">
+  <div id="limpeza" class="categoria ativa" data-nome="Produtos de Limpeza">
+    <h2>Produtos de Limpeza</h2>
+    <div class="produtos">
   
 <!-- produtos limpeza -->
 <div class="produto" 
@@ -2267,9 +2277,9 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 </div>
 
 <!-- CASA -->
-<div id="casa" class="categoria">
-<h2>Casa</h2>
-<div class="produtos">
+<div id="casa" class="categoria" data-nome="Casa">
+  <h2>Casa</h2>
+  <div class="produtos">
  
 <!-- produtos casa -->
 <div class="produto"
@@ -3026,9 +3036,9 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 </div>
 
   <!-- BANHEIRO -->
-<div id="banheiro" class="categoria">
-<h2>Banheiro</h2>
-<div class="produtos">
+<div id="banheiro" class="categoria" data-nome="Banheiro">
+  <h2>Banheiro</h2>
+  <div class="produtos">
   
 <!-- produtos banheiro -->
   <div class="produto"
@@ -3416,9 +3426,10 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
   
   
   <!-- AUTOMOTIVO -->
-<div id="automotivo" class="categoria">
+<div id="automotivo" class="categoria" data-nome="Automotivo">
   <h2>Automotivo</h2>
   <div class="produtos">
+
   
    <div class="produto" 
      data-nomes="shampoo automotivo, shampoo carro, lavagem automotiva">
@@ -3764,58 +3775,71 @@ function filtrarProdutos() {
   const mensagem = document.getElementById("mensagemBusca");
   const barraPesquisa = document.querySelector(".barra-pesquisa");
 
-  const conteudoAbas = document.getElementById("conteudo-abas");
-
   let encontrou = false;
 
   if (textoBusca !== "") {
+    // ❌ Esconde todas as abas
+    document.querySelectorAll(".categoria").forEach(cat => cat.style.display = "none");
 
-    // ❌ ESCONDE TUDO DAS ABAS (imagem + nome)
-    if (conteudoAbas) conteudoAbas.style.display = "none";
+    // Remove resultados antigos
+    const resultadosContainer = document.getElementById("resultadosBusca");
+    if (!resultadosContainer) {
+      const div = document.createElement("div");
+      div.id = "resultadosBusca";
+      div.style.marginBottom = "20px";
+      barraPesquisa.parentNode.insertBefore(div, barraPesquisa.nextSibling);
+    }
+    document.getElementById("resultadosBusca").innerHTML = "";
 
     produtos.forEach(produto => {
       const nomesExtras = produto.dataset.nomes || "";
-      const textoProduto = normalizarTexto(
-        produto.innerText + " " + nomesExtras
-      );
-
-      const icone = produto.querySelector(".icone-busca");
+      const textoProduto = normalizarTexto(produto.innerText + " " + nomesExtras);
 
       if (textoProduto.includes(textoBusca)) {
-        produto.style.display = "block";
-        if (icone) icone.style.display = "block";
         encontrou = true;
+
+        // Pega o nome da aba
+        const abaNome = produto.closest(".categoria").dataset.nome || "";
+
+        // Mostra produto dentro do container de resultados
+        const resultadosDiv = document.getElementById("resultadosBusca");
+        
+        // Cria título da aba apenas uma vez
+        if (!document.querySelector(`#resultadosBusca .aba-${abaNome.replace(/\s+/g,'-')}`)) {
+          const tituloAba = document.createElement("h2");
+          tituloAba.className = `aba-${abaNome.replace(/\s+/g,'-')}`;
+          tituloAba.innerText = abaNome;
+          resultadosDiv.appendChild(tituloAba);
+        }
+
+        resultadosDiv.appendChild(produto);
+        produto.style.display = "block";
       } else {
         produto.style.display = "none";
-        if (icone) icone.style.display = "none";
       }
     });
 
     if (!encontrou) {
-      mensagem.style.display = "block";
-      mensagem.scrollIntoView({ behavior: "smooth", block: "center" });
+      if (mensagem) mensagem.style.display = "block";
     } else {
-      mensagem.style.display = "none";
+      if (mensagem) mensagem.style.display = "none";
       const primeiroProduto = document.querySelector(".produto[style*='block']");
-      if (primeiroProduto) {
-        primeiroProduto.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      if (primeiroProduto) primeiroProduto.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
   } else {
-    // 🔙 VOLTA AO NORMAL
-    if (conteudoAbas) conteudoAbas.style.display = "block";
+    // 🔙 Volta ao normal (todas as abas)
+    document.querySelectorAll(".categoria").forEach(cat => cat.style.display = "block");
+    produtos.forEach(produto => produto.style.display = "block");
 
-    produtos.forEach(produto => {
-      produto.style.display = "block";
-      const icone = produto.querySelector(".icone-busca");
-      if (icone) icone.style.display = "none";
-    });
+    // Remove container de resultados
+    const resultadosDiv = document.getElementById("resultadosBusca");
+    if (resultadosDiv) resultadosDiv.innerHTML = "";
 
-    mensagem.style.display = "none";
-    barraPesquisa.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (mensagem) mensagem.style.display = "none";
   }
 }
+
 
   // ABRIR / FECHAR CARRINHO
 function toggleCarrinho() {
