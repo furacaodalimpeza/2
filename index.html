@@ -1197,17 +1197,21 @@ mark {
 
 <div class="abas">
   <div class="linha-abas">
-    <button onclick="mostrarCategoria('limpeza',this)">Produtos de Limpeza</button>
+    <button onclick="mostrarCategoria('produtos-limpeza',this)" class="ativa">
+      Produtos de Limpeza
+    </button>
     <button onclick="mostrarCategoria('casa',this)">Casa</button>
     <button onclick="mostrarCategoria('automotivo',this)">Automotivo</button>
   </div>
+
   <div class="linha-abas">
-  <button onclick="mostrarCategoria('banheiro',this)">Banheiro</button>
-  <button onclick="mostrarCategoria('essencias',this)">Essências</button>
-  <button onclick="mostrarCategoria('kits',this)">🧼 Kits de Limpeza</button>
-</div>
+    <button onclick="mostrarCategoria('banheiro',this)">Banheiro</button>
+    <button onclick="mostrarCategoria('essencias',this)">Essências</button>
+    <button onclick="mostrarCategoria('kits',this)">🧼 Kits de Limpeza</button>
+  </div>
+
   <div class="linha-abas">
-  <button onclick="mostrarCategoria('perfumes',this)">Perfumes</button>
+    <button onclick="mostrarCategoria('perfumes',this)">Perfumes</button>
   </div>
 </div>
 
@@ -3773,11 +3777,7 @@ function mostrarCategoria(classe, btn) {
   const produtos = document.querySelectorAll(".produto");
 
   produtos.forEach(p => {
-    if (p.className.split(" ").includes(classe)) {
-      p.style.display = "block";
-    } else {
-      p.style.display = "none";
-    }
+    p.style.display = p.classList.contains(classe) ? "block" : "none";
   });
 
   document.querySelectorAll(".abas button").forEach(b => {
@@ -3918,7 +3918,7 @@ function confirmarPedido() {
   function voltarComprar() {
   document.getElementById("telaSucesso").style.display = "none";
   document.getElementById("carrinho").classList.remove("aberto");
-  mostrarCategoria("limpeza", document.querySelector(".abas button"));
+ mostrarCategoria("produtos-limpeza", document.querySelector(".abas button"));
 }
 
 function limparBusca() {
