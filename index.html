@@ -547,28 +547,35 @@ body {
   }
 }
 
- .barra-pesquisa {
+.barra-pesquisa {
+  position: relative;
   width: 100%;
-  max-width: 100%;
   padding: 0 12px;
   box-sizing: border-box;
 }
 
 .barra-pesquisa input {
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
+  padding: 12px 44px 12px 16px;
+  border-radius: 30px;       /* 🔥 arredondado */
+  border: 1px solid #d0d0d0;
+  font-size: 16px;
+  outline: none;
 }
 
-  #limparBusca {
+.barra-pesquisa input:focus {
+  border-color: #1e88e5;
+}
+
+#limparBusca {
   position: absolute;
-  right: 25px;
+  right: 26px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 18px;
-  color: #0a7cff;
   display: none;
+  font-size: 16px;
+  color: #888;
 }
 
 mark {
@@ -1147,21 +1154,6 @@ mark {
 .produto.encontrado .icone-busca {
   display: block;
   animation: lupaPulse 0.6s ease;
-}
-
-  #limparBusca {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 16px;
-  color: #999;
-  display: none;
-}
-
-#limparBusca:hover {
-  color: #ff6600;
 }
 
 </style>
