@@ -1123,6 +1123,22 @@ mark {
   color: #ff6600;
 }
 
+  .produto {
+  position: relative;
+}
+
+.icone-busca {
+  display: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #ff6600;
+  color: white;
+  font-size: 14px;
+  padding: 4px 6px;
+  border-radius: 50%;
+}
+
 </style>
 </head>
 
@@ -3768,62 +3784,55 @@ function normalizarTexto(texto) {
 }
   
 function filtrarProdutos() {
+function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
   const textoBusca = normalizarTexto(input.value);
 
   const categorias = document.querySelectorAll(".categoria");
   const produtos = document.querySelectorAll(".produto");
-  const mensagem = document.getElementById("mensagemBusca");
 
-  let encontrou = false;
+  // esconde todas as lupas
+  document.querySelectorAll(".icone-busca").forEach(i => {
+    i.style.display = "none";
+  });
 
   if (textoBusca !== "") {
     categorias.forEach(cat => {
-      let categoriaTemResultado = false;
+      let categoriaTem = false;
 
-      const produtosDaCategoria = cat.querySelectorAll(".produto");
-
-      produtosDaCategoria.forEach(produto => {
+      cat.querySelectorAll(".produto").forEach(produto => {
         const nomesExtras = produto.dataset.nomes || "";
         const textoProduto = normalizarTexto(
-          produto.innerText + " " + nomesExtras
+          produto.querySelector("h3").innerText + " " + nomesExtras
         );
 
-        if (textoProduto.includes(textoBusca)) {
+        const palavras = textoBusca.split(" ");
+        const corresponde = palavras.every(p =>
+          textoProduto.includes(p)
+        );
+
+        if (corresponde) {
           produto.style.display = "block";
-          categoriaTemResultado = true;
-          encontrou = true;
+          produto.querySelector(".icone-busca").style.display = "block";
+          categoriaTem = true;
         } else {
           produto.style.display = "none";
         }
       });
 
-      // Mostra a aba SOMENTE se tiver produto encontrado
-      cat.style.display = categoriaTemResultado ? "block" : "none";
+      cat.style.display = categoriaTem ? "block" : "none";
     });
-
-    if (mensagem) {
-      mensagem.style.display = encontrou ? "none" : "block";
-    }
 
   } else {
-    // 🔙 volta tudo ao normal
-    categorias.forEach(cat => {
-      cat.style.display = "none";
-      cat.classList.remove("ativa");
+    // volta tudo ao normal
+    categorias.forEach((cat, i) => {
+      cat.style.display = i === 0 ? "block" : "none";
     });
 
-    // ativa apenas a primeira aba
-    if (categorias[0]) {
-      categorias[0].style.display = "block";
-      categorias[0].classList.add("ativa");
-    }
-
-    produtos.forEach(produto => {
-      produto.style.display = "block";
+    produtos.forEach(p => {
+      p.style.display = "block";
+      p.querySelector(".icone-busca").style.display = "none";
     });
-
-    if (mensagem) mensagem.style.display = "none";
   }
 }
 
