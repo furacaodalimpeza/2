@@ -1139,6 +1139,17 @@ mark {
   border-radius: 50%;
 }
 
+  @keyframes lupaPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.produto.encontrado .icone-busca {
+  display: block;
+  animation: lupaPulse 0.6s ease;
+}
+
 </style>
 </head>
 
@@ -1225,6 +1236,8 @@ mark {
 <div class="produto" 
      data-nomes="desinfetante cha branco, desinfetante chá branco, cha branco concentrado, chá branco concentrado, desinfetante concentrado, desinfetante perfumado">
 
+  <span class="icone-busca">🔍</span>
+  
   <img src="img/desinfetante-cha.jpg" alt="Desinfetante Chá Branco">
 <h3>Desinfetante Concentrado Chá Branco</h3>
 <div class="variacoes">
@@ -1237,12 +1250,13 @@ mark {
     <button onclick="addProduto('Desinfetante Concentrado Chá Branco 5L',24)">Adicionar</button>
   </div>
 </div>
-  <span class="icone-busca">🔍</span>
 </div>
   
 <div class="produto" 
 data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de limpeza, cheiroso, top flour">
 
+<span class="icone-busca">🔍</span>
+  
    <img src="img/desinfetante-top.jpg" alt="Desinfetante Top Flour">
 <h3>Desinfetante Top Flour</h3>
 <div class="variacoes">
@@ -1259,6 +1273,8 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 
 <div class="produto" 
 data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de limpeza, cheiroso, jorge tadeu">
+
+<span class="icone-busca">🔍</span>
   
  <img src="img/jorge-tadeu.jpg" alt="Desinfetante Jorge Tadeu">
 <h3>Desinfetante Jorge Tadeu</h3>
@@ -1272,7 +1288,6 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
     <button onclick="addProduto('Desinfetante Jorge Tadeu 5L',15)">Adicionar</button>
   </div>
 </div>
-  <span class="icone-busca">🔍</span>
 </div>
   
 <div class="produto" 
@@ -3784,12 +3799,14 @@ function normalizarTexto(texto) {
 }
   
 function filtrarProdutos() {
-function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
   const textoBusca = normalizarTexto(input.value);
 
   const categorias = document.querySelectorAll(".categoria");
   const produtos = document.querySelectorAll(".produto");
+  const mensagem = document.getElementById("mensagemBusca");
+
+  let encontrou = false;
 
   // esconde todas as lupas
   document.querySelectorAll(".icone-busca").forEach(i => {
@@ -3802,8 +3819,11 @@ function filtrarProdutos() {
 
       cat.querySelectorAll(".produto").forEach(produto => {
         const nomesExtras = produto.dataset.nomes || "";
+        const h3 = produto.querySelector("h3");
+        if (!h3) return;
+
         const textoProduto = normalizarTexto(
-          produto.querySelector("h3").innerText + " " + nomesExtras
+          h3.innerText + " " + nomesExtras
         );
 
         const palavras = textoBusca.split(" ");
@@ -3813,8 +3833,11 @@ function filtrarProdutos() {
 
         if (corresponde) {
           produto.style.display = "block";
-          produto.querySelector(".icone-busca").style.display = "block";
           categoriaTem = true;
+          encontrou = true;
+
+          const icone = produto.querySelector(".icone-busca");
+          if (icone) icone.style.display = "block";
         } else {
           produto.style.display = "none";
         }
@@ -3823,18 +3846,24 @@ function filtrarProdutos() {
       cat.style.display = categoriaTem ? "block" : "none";
     });
 
+    if (mensagem) mensagem.style.display = encontrou ? "none" : "block";
+
   } else {
-    // volta tudo ao normal
+    // volta ao normal
     categorias.forEach((cat, i) => {
       cat.style.display = i === 0 ? "block" : "none";
     });
 
-    produtos.forEach(p => {
-      p.style.display = "block";
-      p.querySelector(".icone-busca").style.display = "none";
+    produtos.forEach(produto => {
+      produto.style.display = "block";
+      const icone = produto.querySelector(".icone-busca");
+      if (icone) icone.style.display = "none";
     });
+
+    if (mensagem) mensagem.style.display = "none";
   }
 }
+
 
   // ABRIR / FECHAR CARRINHO
 function toggleCarrinho() {
