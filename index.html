@@ -547,18 +547,17 @@ body {
   }
 }
 
-  .barra-pesquisa {
-  max-width: 1100px;
-  margin: 10px auto 20px auto;
-  padding: 0 15px;
+ .barra-pesquisa {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 12px;
+  box-sizing: border-box;
 }
 
 .barra-pesquisa input {
   width: 100%;
-  padding: 14px 18px;
-  border-radius: 30px;
-  border: 2px solid #0a7cff;
-  font-size: 16px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
   #limparBusca {
@@ -1221,12 +1220,12 @@ mark {
 </div>
 
 <div class="barra-pesquisa" style="position:relative;">
-  <input 
-    type="text" 
-    id="pesquisaProduto" 
-    placeholder="🔍 Pesquise um produto"
-    onkeyup="filtrarProdutos()"
-  >
+ <input 
+  type="search"
+  id="pesquisaProduto" 
+  placeholder="🔍 Pesquise um produto"
+  oninput="filtrarProdutos()"
+>
   <span id="limparBusca" onclick="limparBusca()">✖</span>
 </div>
 
@@ -3780,30 +3779,17 @@ function gerarNumeroPedido() {
 }
 
 // ABAS
-function mostrarCategoria(id,btn){
-  document.querySelectorAll(".categoria").forEach(c=>c.classList.remove("ativa"));
-  document.querySelectorAll(".abas button").forEach(b=>b.classList.remove("ativa"));
-  document.getElementById(id).classList.add("ativa");
-  btn.classList.add("ativa");
-  document.getElementById("carrinho").classList.remove("aberto");
+function mostrarCategoria(classe, btn) {
+  document.querySelectorAll(".produto").forEach(p => {
+    p.style.display = p.classList.contains(classe) ? "block" : "none";
+  });
+
+  document.querySelectorAll(".abas button").forEach(b => b.classList.remove("ativa"));
+  if (btn) btn.classList.add("ativa");
+
+  document.getElementById("mensagemBusca").style.display = "none";
+  document.getElementById("limparBusca").style.display = "none";
 }
-
-window.onload = () => {
-  if (!localStorage.getItem("nomeCliente")) {
-    const nome = prompt("Digite o nome da cliente:");
-    if (nome && nome.trim() !== "") {
-      localStorage.setItem("nomeCliente", nome);
-    }
-  }
-
-  const nome = localStorage.getItem("nomeCliente");
-  if (nome) {
-    document.getElementById("nomeClienteTopo").innerText = nome;
-    document.getElementById("nomeClienteExibido").innerText = "👤 Cliente: " + nome;
-  }
-
-  atualizar();
-};
 
 function normalizarTexto(texto) {
   return texto
@@ -3815,32 +3801,26 @@ function normalizarTexto(texto) {
   
 function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
-  const filtro = input.value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+  const filtro = normalizarTexto(input.value);
 
   const produtos = document.querySelectorAll(".produto");
   const mensagem = document.getElementById("mensagemBusca");
   const limpar = document.getElementById("limparBusca");
 
   let encontrou = false;
-  let primeiroEncontrado = null;
+
+  // 🔹 SE LIMPAR A BUSCA
+  if (filtro === "") {
+    limparBusca();
+    return;
+  }
 
   produtos.forEach(produto => {
-    const nomes = produto.dataset.nomes
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-
-    if (filtro && nomes.includes(filtro)) {
+    const nomes = normalizarTexto(produto.dataset.nomes || "");
+    if (nomes.includes(filtro)) {
       produto.style.display = "block";
       produto.classList.add("encontrado");
       encontrou = true;
-
-      if (!primeiroEncontrado) {
-        primeiroEncontrado = produto;
-      }
     } else {
       produto.style.display = "none";
       produto.classList.remove("encontrado");
@@ -3848,35 +3828,7 @@ function filtrarProdutos() {
   });
 
   mensagem.style.display = encontrou ? "none" : "block";
-  limpar.style.display = filtro ? "block" : "none";
-
-  if (primeiroEncontrado) {
-    primeiroEncontrado.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
-  }
-}
-
-  function limparBusca() {
-  const input = document.getElementById("pesquisaProduto");
-  const produtos = document.querySelectorAll(".produto");
-  const limpar = document.getElementById("limparBusca");
-  const mensagem = document.getElementById("mensagemBusca");
-
-  input.value = "";
-  limpar.style.display = "none";
-  mensagem.style.display = "none";
-
-  produtos.forEach(produto => {
-    produto.style.display = "block";
-    produto.classList.remove("encontrado");
-  });
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  limpar.style.display = "block";
 }
 
   // ABRIR / FECHAR CARRINHO
@@ -3968,29 +3920,25 @@ function confirmarPedido() {
 }
 
 function limparBusca() {
-  document.getElementById("pesquisaProduto").value = "";
-  filtrarProdutos();
-}
+  const input = document.getElementById("pesquisaProduto");
+  const produtos = document.querySelectorAll(".produto");
+  const limpar = document.getElementById("limparBusca");
+  const mensagem = document.getElementById("mensagemBusca");
 
-function restaurarBusca() {
-  document.querySelectorAll(".categoria").forEach((cat, index) => {
-    cat.style.display = index === 0 ? "block" : "none";
-    cat.classList.toggle("ativa", index === 0);
+  input.value = "";
+  limpar.style.display = "none";
+  mensagem.style.display = "none";
+
+  produtos.forEach(produto => {
+    produto.style.display = "block";
+    produto.classList.remove("encontrado");
   });
 
-  document.querySelectorAll(".produto").forEach(p => {
-    p.style.display = "block";
-  });
+  // 🔥 volta sempre para Produtos de Limpeza
+  mostrarCategoria("limpeza", document.querySelector(".abas button"));
 
-  document.getElementById("limparBusca").style.display = "none";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
-// MOSTRAR / ESCONDER BOTÃO VOLTAR AO TOPO
-window.addEventListener("scroll", () => {
-  const btn = document.getElementById("btnTopo");
-  if (!btn) return;
-  btn.style.display = window.scrollY > 400 ? "flex" : "none";
-});
 
 // VOLTAR AO TOPO
 function voltarTopo() {
@@ -4069,8 +4017,10 @@ function atualizarMedia() {
 
     const media = (soma / total).toFixed(1);
 
-    document.getElementById("mediaNota").innerHTML =
+    document.getElementById("mediaAvaliacao").innerHTML =
       renderEstrelas(media) + ` <span>(${media})</span>`;
+
+    document.getElementById("totalAvaliacoes").innerText = total;
   });
 }
 
