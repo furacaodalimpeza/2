@@ -3771,75 +3771,61 @@ function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
   const textoBusca = normalizarTexto(input.value);
 
+  const categorias = document.querySelectorAll(".categoria");
   const produtos = document.querySelectorAll(".produto");
   const mensagem = document.getElementById("mensagemBusca");
-  const barraPesquisa = document.querySelector(".barra-pesquisa");
 
   let encontrou = false;
 
   if (textoBusca !== "") {
-    // ❌ Esconde todas as abas
-    document.querySelectorAll(".categoria").forEach(cat => cat.style.display = "none");
+    categorias.forEach(cat => {
+      let categoriaTemResultado = false;
 
-    // Remove resultados antigos
-    const resultadosContainer = document.getElementById("resultadosBusca");
-    if (!resultadosContainer) {
-      const div = document.createElement("div");
-      div.id = "resultadosBusca";
-      div.style.marginBottom = "20px";
-      barraPesquisa.parentNode.insertBefore(div, barraPesquisa.nextSibling);
-    }
-    document.getElementById("resultadosBusca").innerHTML = "";
+      const produtosDaCategoria = cat.querySelectorAll(".produto");
 
-    produtos.forEach(produto => {
-      const nomesExtras = produto.dataset.nomes || "";
-      const textoProduto = normalizarTexto(produto.innerText + " " + nomesExtras);
+      produtosDaCategoria.forEach(produto => {
+        const nomesExtras = produto.dataset.nomes || "";
+        const textoProduto = normalizarTexto(
+          produto.innerText + " " + nomesExtras
+        );
 
-      if (textoProduto.includes(textoBusca)) {
-        encontrou = true;
-
-        // Pega o nome da aba
-        const abaNome = produto.closest(".categoria").dataset.nome || "";
-
-        // Mostra produto dentro do container de resultados
-        const resultadosDiv = document.getElementById("resultadosBusca");
-        
-        // Cria título da aba apenas uma vez
-        if (!document.querySelector(`#resultadosBusca .aba-${abaNome.replace(/\s+/g,'-')}`)) {
-          const tituloAba = document.createElement("h2");
-          tituloAba.className = `aba-${abaNome.replace(/\s+/g,'-')}`;
-          tituloAba.innerText = abaNome;
-          resultadosDiv.appendChild(tituloAba);
+        if (textoProduto.includes(textoBusca)) {
+          produto.style.display = "block";
+          categoriaTemResultado = true;
+          encontrou = true;
+        } else {
+          produto.style.display = "none";
         }
+      });
 
-        resultadosDiv.appendChild(produto);
-        produto.style.display = "block";
-      } else {
-        produto.style.display = "none";
-      }
+      // Mostra a aba SOMENTE se tiver produto encontrado
+      cat.style.display = categoriaTemResultado ? "block" : "none";
     });
 
-    if (!encontrou) {
-      if (mensagem) mensagem.style.display = "block";
-    } else {
-      if (mensagem) mensagem.style.display = "none";
-      const primeiroProduto = document.querySelector(".produto[style*='block']");
-      if (primeiroProduto) primeiroProduto.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (mensagem) {
+      mensagem.style.display = encontrou ? "none" : "block";
     }
 
   } else {
-    // 🔙 Volta ao normal (todas as abas)
-    document.querySelectorAll(".categoria").forEach(cat => cat.style.display = "block");
-    produtos.forEach(produto => produto.style.display = "block");
+    // 🔙 volta tudo ao normal
+    categorias.forEach(cat => {
+      cat.style.display = "none";
+      cat.classList.remove("ativa");
+    });
 
-    // Remove container de resultados
-    const resultadosDiv = document.getElementById("resultadosBusca");
-    if (resultadosDiv) resultadosDiv.innerHTML = "";
+    // ativa apenas a primeira aba
+    if (categorias[0]) {
+      categorias[0].style.display = "block";
+      categorias[0].classList.add("ativa");
+    }
+
+    produtos.forEach(produto => {
+      produto.style.display = "block";
+    });
 
     if (mensagem) mensagem.style.display = "none";
   }
 }
-
 
   // ABRIR / FECHAR CARRINHO
 function toggleCarrinho() {
