@@ -207,11 +207,21 @@ h2 { text-align: center; color: #0a7cff; }
   transform: scale(1.03);
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-  70% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+@keyframes pulseWhatsapp {
+  0% { 
+    transform: scale(1); 
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); 
+  }
+  70% { 
+    transform: scale(1.05); 
+    box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); 
+  }
+  100% { 
+    transform: scale(1); 
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); 
+  }
 }
+
 .btn-whatsapp.liberado { animation: liberar 0.4s ease; }
 @keyframes liberar {
   0% { transform: scale(0.9); }
@@ -582,48 +592,6 @@ mark {
   border-radius: 4px;
 }
 
-  /* BOTÃO VOLTAR AO TOPO – AJUSTADO */
-#voltarTopo {
-  position: fixed;
-  bottom: 100px; /* desce o botão */
-  right: 16px;
-  display: none;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(180deg, #25d366, #1ebe5d);
-  color: #fff;
-  padding: 10px 14px; /* menor */
-  border-radius: 28px;
-  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
-  cursor: pointer;
-  z-index: 3000;
-  animation: pulseTopo 2.2s infinite;
-}
-
-#voltarTopo button {
-  background: #fff;
-  color: #25d366;
-  border: none;
-  width: 34px;   /* menor */
-  height: 34px;
-  border-radius: 50%;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#voltarTopo span {
-  font-weight: bold;
-  font-size: 13px; /* menor */
-}
-
-  @media (max-width: 600px) {
-  #voltarTopo {
-    bottom: 120px; /* evita conflito com botões */
-    right: 12px;
-  }
-}
-
   /* BOTÃO VOLTAR AO TOPO */
   #btnTopo {
   position: fixed;
@@ -814,10 +782,6 @@ mark {
   margin: 10px 0;
 }
 
-.animar-media {
-  animation: pulseMedia 0.6s ease;
-}
-
 @keyframes pulseMedia {
   0% { transform: scale(1); }
   50% { transform: scale(1.15); }
@@ -911,21 +875,6 @@ mark {
 /* ANIMAÇÃO DA MÉDIA */
 .animar-media {
   animation: pulse 0.4s ease;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    background-color: #f3f7ff;
-  }
-  50% {
-    transform: scale(1.08);
-    background-color: #dbe7ff;
-  }
-  100% {
-    transform: scale(1);
-    background-color: #f3f7ff;
-  }
 }
 
   #btnWhatsapp,
@@ -4035,11 +3984,11 @@ function confirmarPedido() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-  // 🔥 volta sempre para Produtos de Limpeza
+// 🔥 volta sempre para Produtos de Limpeza
+document.addEventListener("DOMContentLoaded", () => {
   mostrarCategoria("limpeza", document.querySelector(".abas button"));
-
   window.scrollTo({ top: 0, behavior: "smooth" });
-}
+});
 
 // VOLTAR AO TOPO
 function voltarTopo() {
@@ -4250,6 +4199,18 @@ function responderAvaliacao(idDoc) {
   }
   return html;
 }
+
+  // MOSTRAR / ESCONDER BOTÃO VOLTAR AO TOPO
+window.addEventListener("scroll", () => {
+  const btn = document.getElementById("btnTopo");
+  if (!btn) return;
+
+  if (window.scrollY > 300) {
+    btn.style.display = "flex";
+  } else {
+    btn.style.display = "none";
+  }
+});
 
 </script>
 
