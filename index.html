@@ -3660,7 +3660,6 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
       <option value="Dinheiro">Dinheiro</option>
       <option value="Cartão de Débito">Cartão de Débito</option>
       <option value="Cartão de Crédito">Cartão de Crédito</option>
-      <option value="Pagar Depois">Pagar Depois</option>
     </select>
 
     <button class="btn-confirmar" onclick="confirmarPedido()">Confirmar Pedido</button>
@@ -3885,6 +3884,11 @@ function filtrarProdutos() {
 
   mensagem.style.display = encontrou ? "none" : "block";
   limpar.style.display = "block";
+}
+
+  // ABRIR / FECHAR CARRINHO
+function toggleCarrinho() {
+  document.getElementById("carrinho").classList.toggle("aberto");
 }
 
 // ALTERAR QUANTIDADE
