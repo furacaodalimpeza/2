@@ -3848,14 +3848,13 @@ function normalizarTexto(texto) {
 function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
   const filtro = normalizarTexto(input.value);
-
   const produtos = document.querySelectorAll(".produto");
   const mensagem = document.getElementById("mensagemBusca");
   const limpar = document.getElementById("limparBusca");
 
   let encontrou = false;
+  let primeiraCategoria = null;
 
-  // 🔹 SE LIMPAR A BUSCA
   if (filtro === "") {
     limparBusca();
     return;
@@ -3863,23 +3862,29 @@ function filtrarProdutos() {
 
   produtos.forEach(produto => {
     const nomes = normalizarTexto(produto.dataset.nomes || "");
+    const categoria = produto.closest(".categoria"); // pega a aba do produto
+
     if (nomes.includes(filtro)) {
       produto.style.display = "block";
       produto.classList.add("encontrado");
       encontrou = true;
+
+      // Guarda a primeira aba que contém produto encontrado
+      if (!primeiraCategoria) primeiraCategoria = categoria;
     } else {
       produto.style.display = "none";
       produto.classList.remove("encontrado");
     }
   });
 
+  // Abre a aba da primeira categoria com produto encontrado
+  if (primeiraCategoria) {
+    document.querySelectorAll(".categoria").forEach(c => c.classList.remove("ativa"));
+    primeiraCategoria.classList.add("ativa");
+  }
+
   mensagem.style.display = encontrou ? "none" : "block";
   limpar.style.display = "block";
-}
-
-  // ABRIR / FECHAR CARRINHO
-function toggleCarrinho() {
-  document.getElementById("carrinho").classList.toggle("aberto");
 }
 
 // ALTERAR QUANTIDADE
