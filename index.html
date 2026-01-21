@@ -4013,10 +4013,11 @@ function confirmarPedido() {
   function voltarComprar() {
   document.getElementById("telaSucesso").style.display = "none";
   document.getElementById("carrinho").classList.remove("aberto");
- mostrarCategoria("produtos-limpeza", document.querySelector(".abas button"));
+
+  mostrarCategoria("limpeza", document.querySelector(".abas button"));
 }
 
-function limparBusca() {
+ function limparBusca() {
   const input = document.getElementById("pesquisaProduto");
   const produtos = document.querySelectorAll(".produto");
   const limpar = document.getElementById("limparBusca");
@@ -4030,6 +4031,9 @@ function limparBusca() {
     produto.style.display = "block";
     produto.classList.remove("encontrado");
   });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
   // 🔥 volta sempre para Produtos de Limpeza
   mostrarCategoria("limpeza", document.querySelector(".abas button"));
