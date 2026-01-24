@@ -1108,6 +1108,15 @@ input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
 
+  .aviso-kits {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
 </style>
 </head>
 
@@ -1157,7 +1166,7 @@ input[type="search"]::-webkit-search-cancel-button {
   <div class="linha-abas">
     <button onclick="mostrarCategoria('banheiro',this)">Banheiro</button>
     <button onclick="mostrarCategoria('essencias',this)">Essências</button>
-    <button onclick="mostrarCategoria('kits',this)">🧼 Kits de Limpeza</button>
+   <button onclick="mostrarCategoria('aba-kits',this)">🧼 Kits de Limpeza</button>
   </div>
 
   <div class="linha-abas">
@@ -2359,33 +2368,71 @@ Versátil, eficiente e fácil de usar em casa.
 </div>
 </div>
   
-<div id="kits" class="categoria">
+<!-- ABA KITS DE LIMPEZA -->
+<div id="aba-kits" class="categoria">
+  <h2>🧺 Kits de Limpeza</h2>
+  <div class="aviso-kits">
+  ⚠️ Atenção: Kits de Limpeza com pagamento apenas via <strong>PIX ou Dinheiro</strong>.
+  </div>
+  <p class="descricao-aba">
+    Kits completos com os produtos mais usados no dia a dia, com preço especial.
+  </p>
+  <div class="produtos">
 
-  <h2>🧼 Kits de Limpeza</h2>
+<div class="produto kit kits"
+     data-nomes="kit limpeza completo, limpeza casa, produtos limpeza, desconto">
 
-  <p style="
-    text-align:center;
-    font-size:18px;
-    font-weight:bold;
-    color:#ff9800;
-    margin-bottom:15px;
-  ">
-    🚧 Estamos em reforma 🚧
+  <img src="img/kit-limpeza-completo.jpg" alt="Kit de Limpeza Completo">
+  <span class="icone-busca">🔍</span>
+
+  <h3>Kit de Limpeza Completo</h3>
+  <p class="kit-desc">
+    Sabão Líquido, Amaciante, Veja Multiuso, Desinfetante,
+    Cândida (limpeza geral), Cândida Colorida (para roupas),
+    Álcool Perfumado, Pedra Sanitária, Vassoura de Canto, Rodo Médio,
+    Esponja, Pano de Chão, Pano de Prato e Saco de Lixo.
   </p>
 
-  <div style="text-align:center;">
-    <img 
-      src="img/reformas.jpg"
-      alt="Aba Kits de Limpeza em reforma"
-      style="
-        max-width:100%;
-        width:320px;
-        border-radius:14px;
-        box-shadow:0 6px 16px rgba(0,0,0,.25);
-      "
-    >
+  <div class="variacoes">
+    <div class="linha">
+      <span>
+        <del>R$ 150,50</del>
+        <strong> R$ 130,00</strong>
+      </span>
+      <button onclick="addProduto('Kit de Limpeza Completo',130)">
+        Adicionar
+      </button>
+    </div>
   </div>
+</div>
 
+<div class="produto kit kits"
+     data-nomes="kit limpeza simples, limpeza casa, produtos limpeza, desconto">
+
+  <img src="img/kit-limpeza-simples.jpg" alt="Kit de Limpeza Simples">
+  <span class="icone-busca">🔍</span>
+
+  <h3>Kit de Limpeza Simples</h3>
+  <p class="kit-desc">
+    Sabão Líquido, Amaciante, Detergente, Candida, 
+    Candida Colorida, Veja Multiuso e Desinfetante 
+  </p>
+
+  <div class="variacoes">
+    <div class="linha">
+      <span>
+        <del>R$ 67,00</del>
+        <strong> R$ 60,00</strong>
+      </span>
+      <button onclick="addProduto('Kit de Limpeza Simples',60)">
+        Adicionar
+      </button>
+    </div>
+  </div>
+</div>
+    
+    
+  </div>
 </div>
 
 <!-- CASA -->
@@ -3967,19 +4014,25 @@ function gerarNumeroPedido() {
 }
 
 // ABAS
-function mostrarCategoria(classe, btn) {
-  // troca abas
+function mostrarCategoria(id, btn) {
   document.querySelectorAll(".categoria").forEach(c => {
     c.classList.remove("ativa");
   });
 
-  document.getElementById(classe).classList.add("ativa");
+  const categoria = document.getElementById(id);
+  if (!categoria) {
+    console.error("Categoria não encontrada:", id);
+    return;
+  }
 
-  // botões ativos
-  document.querySelectorAll(".abas button").forEach(b => b.classList.remove("ativa"));
+  categoria.classList.add("ativa");
+
+  document.querySelectorAll(".abas button").forEach(b =>
+    b.classList.remove("ativa")
+  );
+
   if (btn) btn.classList.add("ativa");
 
-  // limpa busca ao trocar aba
   limparBusca();
 }
 
@@ -3994,7 +4047,7 @@ function normalizarTexto(texto) {
 function filtrarProdutos() {
   const input = document.getElementById("pesquisaProduto");
   const filtro = normalizarTexto(input.value);
-  const produtos = document.querySelectorAll(".produto");
+ const produtos = document.querySelectorAll(".categoria .produto");
   const mensagem = document.getElementById("mensagemBusca");
   const limpar = document.getElementById("limparBusca");
 
@@ -4084,35 +4137,43 @@ function confirmarPedido() {
   const numeroPedido = gerarNumeroPedido();
   localStorage.setItem("pedidoAtual", numeroPedido);
 
-  let msg = "";
-  msg += "🧾 *Pedido Nº " + numeroPedido + " – 🌪️🛒Furacão da Limpeza*%0A%0A";
-  msg += "👤 *Cliente:* " + nome + "%0A";
-  msg += "📞 *Telefone:* " + tel + "%0A";
-  msg += "📍 *Endereço:* " + end + "%0A";
-  msg += "💳 *Pagamento:* " + pag + "%0A%0A";
-  msg += "🛒 *Itens do pedido:*%0A";
+  let msg = `🧾 *Pedido Nº ${numeroPedido} – 🌪️🛒 Furacão da Limpeza*
+
+👤 *Cliente:* ${nome}
+📞 *Telefone:* ${tel}
+📍 *Endereço:* ${end}
+💳 *Pagamento:* ${pag}
+
+🛒 *Itens do pedido:*
+`;
 
   carrinho.forEach(p => {
-  const subtotal = p.preco * p.qtd;
-  msg += `• ${p.nome} — ${p.qtd}x (R$ ${subtotal.toFixed(2)})%0A`;
-});
+    const subtotal = p.preco * p.qtd;
+    msg += `• ${p.nome} — ${p.qtd}x (R$ ${subtotal.toFixed(2)})\n`;
+  });
 
-  msg += `%0A💰 *Total:* R$ ${totalGeral.toFixed(2)}%0A%0A`;
-  msg += "Assim que confirmarmos, preparamos tudo com carinho para você 🙏🏼✨";
+  msg += `
+💰 *Total:* R$ ${totalGeral.toFixed(2)}
 
-    // ABRE WHATSAPP EM OUTRA ABA (SEM SAIR DO SITE)
+Assim que confirmarmos, preparamos tudo com carinho para você 🙏✨
+`;
+
+  // ✅ CODIFICA A MENSAGEM (ESSENCIAL)
+  const msgFinal = encodeURIComponent(msg);
+
   window.open(
-    "https://wa.me/5515997647804?text=" + msg,
+    "https://wa.me/5515997647804?text=" + msgFinal,
     "_blank"
   );
 
-  // MOSTRA TELA DE SUCESSO IMEDIATAMENTE
-  document.getElementById("telaSucesso").style.display = "flex";
+  // MOSTRA TELA DE SUCESSO
+document.getElementById("telaSucesso").style.display = "flex";
 
-  // LIMPA CARRINHO DEPOIS
-  carrinho = [];
-  atualizar();
-  fecharModal();
+// LIMPA CARRINHO
+carrinho = [];
+atualizar();
+fecharModal();
+
 }
 
   function voltarComprar() {
@@ -4124,7 +4185,6 @@ function confirmarPedido() {
 
  function limparBusca() {
   const input = document.getElementById("pesquisaProduto");
-  const produtos = document.querySelectorAll(".produto");
   const limpar = document.getElementById("limparBusca");
   const mensagem = document.getElementById("mensagemBusca");
 
@@ -4132,7 +4192,11 @@ function confirmarPedido() {
   limpar.style.display = "none";
   mensagem.style.display = "none";
 
-  produtos.forEach(produto => {
+  // 🔥 MOSTRA APENAS OS PRODUTOS DA ABA ATIVA
+  const abaAtiva = document.querySelector(".categoria.ativa");
+  if (!abaAtiva) return;
+
+  abaAtiva.querySelectorAll(".produto").forEach(produto => {
     produto.style.display = "block";
     produto.classList.remove("encontrado");
   });
