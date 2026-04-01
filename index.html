@@ -1117,6 +1117,23 @@ input[type="search"]::-webkit-search-cancel-button {
   margin-bottom: 15px;
 }
 
+.produto {
+  position: relative;
+}
+
+.selo-novo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff3b3b;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+  
 </style>
 </head>
 
@@ -1200,9 +1217,31 @@ input[type="search"]::-webkit-search-cancel-button {
 <div id="limpeza" class="categoria ativa">
   <h2>Produtos de Limpeza</h2>
   <div class="produtos">
-  
-<!-- produtos limpeza -->
+
 <div class="produto limpeza"
+     data-nomes="desinfetante cereja e avela, desinfetante cereja e avelã, cereja e avela forte, cereja e avelã forte, desinfetante cereja forte, desinfetante avela forte, desinfetante perfumado forte, desinfetante quase concentrado, desinfetante intenso, desinfetante aroma doce"
+     data-novo="2026-04-01">
+
+  <span class="selo-novo">NOVO</span>
+  
+  <img src="img/desinfetante-cereja-avela.jpg" alt="Desinfetante Cereja e Avela">
+  <span class="icone-busca">🔍</span>
+
+  <h3>Desinfetante Cereja e Avelã</h3>
+
+  <div class="variacoes">
+    <div class="linha">
+      <span>2L — R$ 7,00</span>
+      <button onclick="addProduto('Desinfetante Cereja e Avelã 2L',7)">Adicionar</button>
+    </div>
+    <div class="linha">
+      <span>5L — R$ 17,00</span>
+      <button onclick="addProduto('Desinfetante Cereja e Avelã 5L',17)">Adicionar</button>
+    </div>
+  </div>
+</div>
+    
+    <div class="produto limpeza"
      data-nomes="desinfetante cha branco, desinfetante chá branco, cha branco concentrado, chá branco concentrado, desinfetante concentrado, desinfetante perfumado">
   
   <img src="img/desinfetante-cha.jpg" alt="Desinfetante Chá Branco">
@@ -1466,12 +1505,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Cloro Liquido Clineza</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 13,00</span>
-    <button onclick="addProduto('Cloro Liquido Clineza 2L',13)">Adicionar</button>
+    <span>2L — R$ 14,00</span>
+    <button onclick="addProduto('Cloro Liquido Clineza 2L',14)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 26,00</span>
-    <button onclick="addProduto('Cloro Liquido Clineza 5L',26)">Adicionar</button>
+    <span>5L — R$ 28,00</span>
+    <button onclick="addProduto('Cloro Liquido Clineza 5L',28)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -1505,12 +1544,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Candida Colorida</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 11,00</span>
-    <button onclick="addProduto('Candida Colorida 2L',11)">Adicionar</button>
+    <span>2L — R$ 12,00</span>
+    <button onclick="addProduto('Candida Colorida 2L',12)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 22,00</span>
-    <button onclick="addProduto('Candida Colorida 5L',22)">Adicionar</button>
+    <span>5L — R$ 25,00</span>
+    <button onclick="addProduto('Candida Colorida 5L',25)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -1544,12 +1583,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Sabão Líquido Bonrruque</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 12,00</span>
-    <button onclick="addProduto('Sabão Bonrruque 2L',12)">Adicionar</button>
+    <span>2L — R$ 14,00</span>
+    <button onclick="addProduto('Sabão Bonrruque 2L',14)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 25,00</span>
-    <button onclick="addProduto('Sabão Bonrruque 5L',25)">Adicionar</button>
+    <span>5L — R$ 28,00</span>
+    <button onclick="addProduto('Sabão Bonrruque 5L',28)">Adicionar</button>
   </div>
 </div>
 </div>
@@ -1562,12 +1601,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Sabão Liquido Clineza</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 13,00</span>
-    <button onclick="addProduto('Sabao Liquido Clineza 2L',13)">Adicionar</button>
+    <span>2L — R$ 15,00</span>
+    <button onclick="addProduto('Sabao Liquido Clineza 2L',15)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 27,00</span>
-    <button onclick="addProduto('Sabao Liquido Clineza 5L',27)">Adicionar</button>
+    <span>5L — R$ 30,00</span>
+    <button onclick="addProduto('Sabao Liquido Clineza 5L',30)">Adicionar</button>
   </div>
 </div>
      
@@ -1581,17 +1620,36 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Sabão de Coco</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 12,00</span>
-    <button onclick="addProduto('Sabão de Coco 2L',12)">Adicionar</button>
+    <span>2L — R$ 14,00</span>
+    <button onclick="addProduto('Sabão de Coco 2L',14)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 25,00</span>
-    <button onclick="addProduto('Sabão de Coco 5L',25)">Adicionar</button>
+    <span>5L — R$ 28,00</span>
+    <button onclick="addProduto('Sabão de Coco 5L',28)">Adicionar</button>
   </div>
 </div>
     
 </div>
 
+<div class="produto limpeza"
+     data-nomes="sabao de coco clineza, clineza, sabão de coco, sabao coco, sabão coco, lava roupas, limpeza, uso diario, roupas brancas, roupas delicadas">
+
+<img src="img/sabao-de-coco.jpg" alt="Sabao de Coco">
+  <span class="icone-busca">🔍</span>
+<h3>Sabão de Coco Clineza</h3>
+<div class="variacoes">
+  <div class="linha">
+    <span>2L — R$ 15,00</span>
+    <button onclick="addProduto('Sabão de Coco Clineza 2L',15)">Adicionar</button>
+  </div>
+  <div class="linha">
+    <span>5L — R$ 30,00</span>
+    <button onclick="addProduto('Sabão de Coco Clineza 5L',30)">Adicionar</button>
+  </div>
+</div>
+    
+</div>
+    
 <div class="produto limpeza"
      data-nomes="detergente pequeno, detergente 500ml, detergente econômico, detergente cozinha, detergente louça, limpeza diaria">
 
@@ -1619,12 +1677,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Detergente Neutro</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 10,00</span>
-    <button onclick="addProduto('Detergente Neutro 2L',10)">Adicionar</button>
+    <span>2L — R$ 11,00</span>
+    <button onclick="addProduto('Detergente Neutro 2L',11)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 20,00</span>
-    <button onclick="addProduto('Detergente Neutro 5L',20)">Adicionar</button>
+    <span>5L — R$ 23,00</span>
+    <button onclick="addProduto('Detergente Neutro 5L',23)">Adicionar</button>
   </div>
 </div>
     
@@ -1638,12 +1696,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Detergente Concentrado</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 12,00</span>
-    <button onclick="addProduto('Detergente Concentrado 2L',12)">Adicionar</button>
+    <span>2L — R$ 14,00</span>
+    <button onclick="addProduto('Detergente Concentrado 2L',14)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 25,00</span>
-    <button onclick="addProduto('Detergente Concentrado 5L',25)">Adicionar</button>
+    <span>5L — R$ 28,00</span>
+    <button onclick="addProduto('Detergente Concentrado 5L',28)">Adicionar</button>
   </div>
 </div>
     
@@ -1657,12 +1715,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Detergente</h3>
 <div class="variacoes">
   <div class="linha">
-    <span> Maçã 2L — R$ 10,00</span>
-    <button onclick="addProduto('Detergente Maçã 2L',10)">Adicionar</button>
+    <span> Maçã 2L — R$ 11,00</span>
+    <button onclick="addProduto('Detergente Maçã 2L',11)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>Limão 2L — R$ 10,00</span>
-    <button onclick="addProduto('Detergente Limão 2L',10)">Adicionar</button>
+    <span>Limão 2L — R$ 11,00</span>
+    <button onclick="addProduto('Detergente Limão 2L',11)">Adicionar</button>
   </div>
 </div>
     
@@ -1699,12 +1757,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Amaciante</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 10,00</span>
-    <button onclick="addProduto('Amaciante 2L',10)">Adicionar</button>
+    <span>2L — R$ 11,00</span>
+    <button onclick="addProduto('Amaciante 2L',11)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 20,00</span>
-    <button onclick="addProduto('Amaciante 5L',20)">Adicionar</button>
+    <span>5L — R$ 23,00</span>
+    <button onclick="addProduto('Amaciante 5L',23)">Adicionar</button>
   </div>
 </div>
     
@@ -1718,8 +1776,8 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Amaciante Concentrado</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>Downy 2L — R$ 15,00</span>
-    <button onclick="addProduto('Amaciante Downy 2L',15)">Adicionar</button>
+    <span>Downy 2L — R$ 16,00</span>
+    <button onclick="addProduto('Amaciante Downy 2L',16)">Adicionar</button>
   </div>
   <div class="linha">
     <span>Amac. Branco 2L — R$ 16,00</span>
@@ -1737,12 +1795,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Amaciante Clineza</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>Amac. Blue Iris 2L — R$ 10,00</span>
-    <button onclick="addProduto('Amaciante Blue Iris 2L',10)">Adicionar</button>
+    <span>Amac. Blue Iris 2L — R$ 11,00</span>
+    <button onclick="addProduto('Amaciante Blue Iris 2L',11)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>Amac. Pink Sky 2L — R$ 10,00</span>
-    <button onclick="addProduto('Amaciante Pink Sky 2L',10)">Adicionar</button>
+    <span>Amac. Pink Sky 2L — R$ 11,00</span>
+    <button onclick="addProduto('Amaciante Pink Sky 2L',11)">Adicionar</button>
   </div>
 </div>
     
@@ -1794,12 +1852,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Veja Multiuso Bonrruque</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 12,00</span>
-    <button onclick="addProduto('Veja Multiuso Bonrruque 2L',12)">Adicionar</button>
+    <span>2L — R$ 14,00</span>
+    <button onclick="addProduto('Veja Multiuso Bonrruque 2L',14)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 25,00</span>
-    <button onclick="addProduto('Veja Multiuso Bonrruque 5L',25)">Adicionar</button>
+    <span>5L — R$ 28,00</span>
+    <button onclick="addProduto('Veja Multiuso Bonrruque 5L',28)">Adicionar</button>
   </div>
 </div>
     
@@ -1813,12 +1871,12 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Veja Multiuso Clineza</h3>
 <div class="variacoes">
   <div class="linha">
-    <span>2L — R$ 12,00</span>
-    <button onclick="addProduto('Veja Multiuso Clineza 2L',12)">Adicionar</button>
+    <span>2L — R$ 14,00</span>
+    <button onclick="addProduto('Veja Multiuso Clineza 2L',14)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>5L — R$ 25,00</span>
-    <button onclick="addProduto('Veja Multiuso Clineza 5L',25)">Adicionar</button>
+    <span>5L — R$ 28,00</span>
+    <button onclick="addProduto('Veja Multiuso Clineza 5L',28)">Adicionar</button>
   </div>
 </div>
     
@@ -2050,8 +2108,8 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
     <button onclick="addProduto('Limpa Alumínio 1L',10)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>2L — R$ 14,00</span>
-    <button onclick="addProduto('Limpa Alumínio 2L',14)">Adicionar</button>
+    <span>2L — R$ 15,00</span>
+    <button onclick="addProduto('Limpa Alumínio 2L',15)">Adicionar</button>
   </div>
   <div class="linha">
     <span>5L — R$ 30,00</span>
@@ -2072,16 +2130,16 @@ data-nomes="desinfetante, desinfetante liquido, limpa tudo, limpeza, produto de 
 <h3>Limpa Pedra </h3>
 <div class="variacoes">
  <div class="linha">
-  <span>Clineza 2L — R$ 18,00</span>
-  <button onclick="addProduto('Limpa Pedra Clineza 2L',18)">Adicionar</button>
+  <span>Clineza 2L — R$ 20,00</span>
+  <button onclick="addProduto('Limpa Pedra Clineza 2L',20)">Adicionar</button>
 </div>
   <div class="linha">
-    <span> Bonrruque 2L — R$ 18,00</span>
-    <button onclick="addProduto('Limpa Pedra Bonrruque 2L',18)">Adicionar</button>
+    <span> Bonrruque 2L — R$ 20,00</span>
+    <button onclick="addProduto('Limpa Pedra Bonrruque 2L',20)">Adicionar</button>
   </div>
   <div class="linha">
-    <span>Bonrruque 5L — R$ 40,00</span>
-    <button onclick="addProduto('Limpa Pedra Bonrruque 5L',40)">Adicionar</button>
+    <span>Bonrruque 5L — R$ 45,00</span>
+    <button onclick="addProduto('Limpa Pedra Bonrruque 5L',45)">Adicionar</button>
   </div>
 </div>
     
@@ -4503,6 +4561,28 @@ window.addEventListener("scroll", () => {
   }
 });
 
+  // 🔥 CONTROLE AUTOMÁTICO DO SELO NOVO
+const DIAS_NOVO = 30;
+
+document.querySelectorAll('.produto').forEach(produto => {
+  const dataNovo = produto.getAttribute("data-novo");
+
+  if (!dataNovo) return;
+
+  const dataCriacao = new Date(dataNovo);
+  const hoje = new Date();
+
+  const diffTempo = hoje - dataCriacao;
+  const diffDias = diffTempo / (1000 * 60 * 60 * 24);
+
+  if (diffDias > DIAS_NOVO) {
+    const selo = produto.querySelector(".selo-novo");
+    if (selo) selo.remove();
+
+    produto.classList.remove("novo");
+  }
+});
+  
 </script>
 
   <section class="avaliacoes-publicas">
